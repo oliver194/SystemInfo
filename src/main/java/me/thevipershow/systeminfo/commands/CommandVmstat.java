@@ -18,11 +18,11 @@ public class CommandVmstat implements Command {
         final String swapUsed = Utils.formatData(SystemValues.getMemory().getVirtualMemory().getSwapUsed());
 
         player.sendMessage(Utils.color("&2«« &7Memory info &2»»"));
-        player.sendMessage(String.format(Utils.color("&7Available memory: &b%s"), available));
-        player.sendMessage(String.format(Utils.color("&7Allocated memory: &b%s"), allocated));
-        player.sendMessage(String.format(Utils.color("&7Total memory: &b%s"), total));
-        player.sendMessage(String.format(Utils.color("&7Swap total memory: &b%s"), swapTotal));
-        player.sendMessage(Utils.color(String.format("&7Swap used memory: &b%s", swapUsed)));
+        player.sendMessage(String.format(Utils.color("&7Available memory: &a%s"), available));
+        player.sendMessage(String.format(Utils.color("&7Allocated memory: &a%s"), allocated));
+        player.sendMessage(String.format(Utils.color("&7Total memory: &a%s"), total));
+        player.sendMessage(String.format(Utils.color("&7Swap total memory: &a%s"), swapTotal));
+        player.sendMessage(Utils.color(String.format("&7Swap used memory: &a%s", swapUsed)));
     }
 
     @Override

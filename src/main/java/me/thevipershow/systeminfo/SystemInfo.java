@@ -14,10 +14,15 @@ import java.util.List;
 
 public final class SystemInfo extends JavaPlugin {
 
+
     public static SystemInfo instance;
     public static LocalDateTime time;
     private final List<me.thevipershow.systeminfo.interfaces.Command> commands = new ArrayList<>();
 
+    /**
+     * This fills {@link SystemInfo#commands} with all the Classes implementing
+     * the Command interface.
+     */
     private void completeCommandsList() {
         commands.add(new CommandCpuLoad());
         commands.add(new CommandDevices());
