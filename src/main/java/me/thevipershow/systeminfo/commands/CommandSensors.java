@@ -23,7 +23,7 @@ public class CommandSensors implements Command {
 
     private String getVoltage() {
         String cpuVoltage = Double.toString(SystemValues.getSensors().getCpuVoltage());
-        String voltageRevised = cpuVoltage.isBlank() ? "&cNot available" : cpuVoltage;
+        String voltageRevised = cpuVoltage.isEmpty() ? "&cNot available" : cpuVoltage;
         return String.format("&7Cpu voltage: &a%s",
                 voltageRevised);
     }

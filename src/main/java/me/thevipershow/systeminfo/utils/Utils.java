@@ -77,7 +77,7 @@ public class Utils {
      */
     public static String countEntitiesInWorlds(World.Environment environment) {
         StringBuilder entitiesInWorlds = new StringBuilder();
-        Bukkit.getWorlds().stream().filter(world -> world.getEnvironment().equals(environment)).collect(Collectors.toUnmodifiableList()).forEach(world -> entitiesInWorlds.append(world.getEntities().size()).append(" "));
+        Bukkit.getWorlds().stream().filter(world -> world.getEnvironment().equals(environment)).collect(Collectors.toList()).forEach(world -> entitiesInWorlds.append(world.getEntities().size()).append(" "));
         return entitiesInWorlds.toString();
     }
 
@@ -92,7 +92,7 @@ public class Utils {
      */
     public static String loadedChunksInWorlds(World.Environment environment) {
         StringBuilder loadedChunksInWorlds = new StringBuilder();
-        Bukkit.getWorlds().stream().filter(world -> world.getEnvironment().equals(environment)).collect(Collectors.toUnmodifiableList()).forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
+        Bukkit.getWorlds().stream().filter(world -> world.getEnvironment().equals(environment)).collect(Collectors.toList()).forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
         return loadedChunksInWorlds.toString();
     }
 
