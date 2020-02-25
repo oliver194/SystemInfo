@@ -43,6 +43,7 @@ public final class SystemInfo extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GuiClickListener(), instance);
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
