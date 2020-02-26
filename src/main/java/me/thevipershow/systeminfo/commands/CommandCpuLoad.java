@@ -4,7 +4,7 @@ import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import oshi.util.Util;
 
 public class CommandCpuLoad implements Command {
@@ -30,23 +30,23 @@ public class CommandCpuLoad implements Command {
         return cpuLoads.toString();
     }
 
-    private void printCpuLoad(Player player) {
-        player.sendMessage(Utils.color("&2» &7System load: &2«"));
-        player.sendMessage(Utils.color(String.format("&7Cpu load: &a%.2f%%", getCpuLoad())));
-        player.sendMessage(Utils.color(getAverageLoads()));
+    private void printCpuLoad(CommandSender sender) {
+        sender.sendMessage(Utils.color("&2» &7System load: &2«"));
+        sender.sendMessage(Utils.color(String.format("&7Cpu load: &a%.2f%%", getCpuLoad())));
+        sender.sendMessage(Utils.color(getAverageLoads()));
     }
 
     @Override
-    public void action(Player player, String name, String[] args) {
+    public void action(CommandSender sender, String name, String[] args) {
         if (name.equals("cpuload")) {
             if (args.length == 0) {
-                if (player.hasPermission("systeminfo.commands.cpuload")) {
-                    printCpuLoad(player);
+                if (sender.hasPermission("systeminfo.commands.cpuload")) {
+                    printCpuLoad(sender);
                 } else {
-                    player.sendMessage(Messages.NO_PERMISSIONS.value(true));
+                    sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
                 }
             } else {
-                player.sendMessage(Messages.OUT_OF_ARGS.value(true));
+                sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
             }
         }
     }

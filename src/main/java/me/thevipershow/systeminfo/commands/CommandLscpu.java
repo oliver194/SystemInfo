@@ -4,6 +4,7 @@ import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import oshi.hardware.CentralProcessor;
 import oshi.software.os.OperatingSystem;
@@ -12,27 +13,27 @@ public class CommandLscpu implements Command {
 
     SystemValues systemValues = SystemValues.getInstance();
 
-    private void printLscpu(Player player) {
-        player.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
-        player.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", systemValues.getOSFamily(), systemValues.getOSManufacturer(), systemValues.getOSVersion())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", systemValues.getCpuVendor())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", systemValues.getCpuModel(), systemValues.getCpuModelName())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", systemValues.getCpuMaxFrequency())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", systemValues.getCpuStepping())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", systemValues.getCpuCores(), systemValues.getCpuThreads())));
+    private void printLscpu(CommandSender sender) {
+        sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
+        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", systemValues.getOSFamily(), systemValues.getOSManufacturer(), systemValues.getOSVersion())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", systemValues.getCpuVendor())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", systemValues.getCpuModel(), systemValues.getCpuModelName())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", systemValues.getCpuMaxFrequency())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", systemValues.getCpuStepping())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", systemValues.getCpuCores(), systemValues.getCpuThreads())));
     }
 
     @Override
-    public void action(Player player, String name, String[] args) {
+    public void action(CommandSender sender, String name, String[] args) {
         if (name.equals("lscpu")) {
-            if (player.hasPermission("systeminfo.commands.lscpu")) {
+            if (sender.hasPermission("systeminfo.commands.lscpu")) {
                 if (args.length == 0) {
-                    printLscpu(player);
+                    printLscpu(sender);
                 } else {
-                    player.sendMessage(Messages.OUT_OF_ARGS.value(true));
+                    sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
                 }
             } else {
-                player.sendMessage(Messages.NO_PERMISSIONS.value(true));
+                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
         }
     }

@@ -59,11 +59,7 @@ public final class SystemInfo extends JavaPlugin {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (sender instanceof Player) {
-            final Player player = (Player) sender;
-            commands.forEach(command1 -> command1.action(player, command.getName(), args));
-        }
+        commands.forEach(c -> c.action(sender, command.getName(), args));
         return true;
     }
 }

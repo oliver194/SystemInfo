@@ -1,9 +1,9 @@
 package me.thevipershow.systeminfo.interfaces;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 public interface Command {
 
-    void action(Player player, String name, String[] args);
+    void action(CommandSender sender, String name, String[] args);
 
 }
