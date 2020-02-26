@@ -10,8 +10,10 @@ import oshi.hardware.HWPartition;
 
 public class CommandDisks implements Command {
 
+    SystemValues systemValues = SystemValues.getInstance();
+
     private void printDisks(Player player) {
-        for (HWDiskStore disk : SystemValues.getDiskStores()) {
+        for (HWDiskStore disk : systemValues.getDiskStores()) {
             player.sendMessage(Utils.builderHover(String.format("&7[%s %s", disk.getName(), disk.getModel()),
                     String.format("&7Serial: &a%s\n&7Disk Read: &a%s\n&7Disk Written: &a%s\n",
                             disk.getSerial(), Utils.formatData(disk.getReadBytes()), Utils.formatData(disk.getWriteBytes()))));

@@ -9,19 +9,21 @@ import oshi.util.Util;
 
 public class CommandCpuLoad implements Command {
 
+    SystemValues systemValues = SystemValues.getInstance();
+
     private long[] previousTicks;
     private long[][] previousMultiTicks;
 
     private double getCpuLoad() {
-        previousTicks = SystemValues.getCentralProcessor().getSystemCpuLoadTicks();
-        previousMultiTicks = SystemValues.getCentralProcessor().getProcessorCpuLoadTicks();
+        previousTicks = systemValues.getSystemCpuLoadTicks();
+        previousMultiTicks = systemValues.getProcessorCpuLoadTicks();
         Util.sleep(1000);
-        return SystemValues.getCentralProcessor().getSystemCpuLoadBetweenTicks(previousTicks) * 100;
+        return systemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100;
     }
 
     private String getAverageLoads() {
         StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
-        double[] load = SystemValues.getCentralProcessor().getProcessorCpuLoadBetweenTicks(previousMultiTicks);
+        double[] load = systemValues.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
         for (double average : load) {
             cpuLoads.append(String.format(" %.1f%%", average * 100));
         }

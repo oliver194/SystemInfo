@@ -55,3 +55,6 @@ target/classes/me/thevipershow/systeminfo/commands/CommandHtop.class
 target/original-SystemInfo-1.0-SNAPSHOT.jar
 target/original-SystemInfo-1.0-SNAPSHOT.jar
 target/original-SystemInfo-1.0.1.jar
+.idea/uiDesigner.xml
+target/classes/me/thevipershow/systeminfo/api/SysteminfoPlaceholder.class
+.idea/libraries/Maven__me_clip_placeholderapi_2_10_4.xml

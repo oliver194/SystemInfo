@@ -10,29 +10,16 @@ import oshi.software.os.OperatingSystem;
 
 public class CommandLscpu implements Command {
 
-    private final OperatingSystem os = SystemValues.getOperatingSystem();
-    private final CentralProcessor cpu = SystemValues.getCentralProcessor();
-    private final CentralProcessor.ProcessorIdentifier cpuIdentifier = cpu.getProcessorIdentifier();
-
-    private String cpuVendor() {
-        String cpuVendorName = cpuIdentifier.getVendor().toLowerCase();
-        if (cpuVendorName.contains("amd")) {
-            return "Amd";
-        } else if (cpuVendorName.contains("intel")) {
-            return "Intel";
-        } else {
-            return "Unknown";
-        }
-    }
+    SystemValues systemValues = SystemValues.getInstance();
 
     private void printLscpu(Player player) {
         player.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
-        player.sendMessage(Utils.color(String.format(" &7Os: &a%s %s %s", os.getFamily(), os.getManufacturer(), os.getVersionInfo().getVersion())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", cpuVendor())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", cpuIdentifier.getModel(), cpuIdentifier.getName())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", cpu.getMaxFreq()/1e9 )));
-        player.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", cpuIdentifier.getStepping())));
-        player.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", cpu.getPhysicalProcessorCount(), cpu.getLogicalProcessorCount())));
+        player.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", systemValues.getOSFamily(), systemValues.getOSManufacturer(), systemValues.getOSVersion())));
+        player.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", systemValues.getCpuVendor())));
+        player.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", systemValues.getCpuModel(), systemValues.getCpuModelName())));
+        player.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", systemValues.getCpuMaxFrequency())));
+        player.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", systemValues.getCpuStepping())));
+        player.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", systemValues.getCpuCores(), systemValues.getCpuThreads())));
     }
 
     @Override

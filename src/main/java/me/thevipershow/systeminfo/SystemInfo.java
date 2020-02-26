@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo;
 
+import me.thevipershow.systeminfo.api.SysteminfoPlaceholder;
 import me.thevipershow.systeminfo.commands.*;
 import me.thevipershow.systeminfo.gui.GuiClickListener;
 import org.bukkit.Bukkit;
@@ -11,12 +12,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class SystemInfo extends JavaPlugin {
 
 
+    public static final String PLUGIN_VERSION = "1.0.2";
     public static SystemInfo instance;
     public static LocalDateTime time;
+    public static Logger logger;
     private final List<me.thevipershow.systeminfo.interfaces.Command> commands = new ArrayList<>();
 
     /**
@@ -37,8 +41,17 @@ public final class SystemInfo extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        completeCommandsList();
         instance = this;
+        logger = instance.getLogger();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new SysteminfoPlaceholder().register();
+        } else {
+            logger.info("Could not find PlaceholderAPI, placeholders won't be available.");
+        }
+
+
+        completeCommandsList();
         time = LocalDateTime.now();
         Bukkit.getPluginManager().registerEvents(new GuiClickListener(), instance);
     }
@@ -46,6 +59,7 @@ public final class SystemInfo extends JavaPlugin {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             commands.forEach(command1 -> command1.action(player, command.getName(), args));

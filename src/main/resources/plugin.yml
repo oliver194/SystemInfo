@@ -4,6 +4,7 @@ main: me.thevipershow.systeminfo.SystemInfo
 api-version: '1.13'
 load: STARTUP
 authors: [TheViperShow]
+softdepend: [PlaceholderAPI]
 description: "An amazing plugin to monitor your hardware and server stats"
 commands:
   systeminfo:

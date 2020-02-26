@@ -9,10 +9,12 @@ import oshi.hardware.UsbDevice;
 
 public class CommandDevices implements Command {
 
+    SystemValues systemValues = SystemValues.getInstance();
+
     private void printDevices(Player player) {
         player.sendMessage(Utils.color("&2» &7Attached devices &2«"));
         player.sendMessage(Utils.color("&2» &7List:"));
-        for (UsbDevice usb : SystemValues.getHardwareAbstractionLayer().getUsbDevices(true)) {
+        for (UsbDevice usb : systemValues.getUsbDevices()) {
             player.sendMessage(Utils.color(String.format("&7- &a%s %s", usb.getVendor(), usb.getSerialNumber())));
             player.sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
             if (usb.getConnectedDevices().length != 0) {
@@ -28,7 +30,7 @@ public class CommandDevices implements Command {
     public void action(Player player, String name, String[] args) {
         if (name.equals("devices")) {
             if (player.hasPermission("systeminfo.commands.devices")) {
-                if(args.length==0) {
+                if (args.length == 0) {
                     printDevices(player);
                 } else {
                     player.sendMessage(Messages.OUT_OF_ARGS.value(true));
