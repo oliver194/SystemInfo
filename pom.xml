@@ -6,7 +6,7 @@
 
     <groupId>me.thevipershow</groupId>
     <artifactId>SystemInfo</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>SystemInfo</name>
@@ -40,13 +40,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <!-- Replace this with your package! -->
-                                    <shadedPattern>me.thevipershow.systeminfo.SystemInfo</shadedPattern>
-                                </relocation>
-                            </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>

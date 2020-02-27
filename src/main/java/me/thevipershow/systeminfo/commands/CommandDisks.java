@@ -5,16 +5,13 @@ import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
 
-public class CommandDisks implements Command {
-
-    SystemValues systemValues = SystemValues.getInstance();
+public final class CommandDisks implements Command {
 
     private void printDisks(CommandSender sender) {
-        for (HWDiskStore disk : systemValues.getDiskStores()) {
+        for (HWDiskStore disk : SystemValues.getDiskStores()) {
             sender.sendMessage(Utils.builderHover(String.format("&7[%s %s", disk.getName(), disk.getModel()),
                     String.format("&7Serial: &a%s\n&7Disk Read: &a%s\n&7Disk Written: &a%s\n",
                             disk.getSerial(), Utils.formatData(disk.getReadBytes()), Utils.formatData(disk.getWriteBytes()))));

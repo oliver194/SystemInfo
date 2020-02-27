@@ -5,12 +5,11 @@ import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class CommandUptime implements Command {
+public final class CommandUptime implements Command {
 
     private void uptime(CommandSender sender) {
         final long uptime = ChronoUnit.MINUTES.between(SystemInfo.time, LocalDateTime.now());

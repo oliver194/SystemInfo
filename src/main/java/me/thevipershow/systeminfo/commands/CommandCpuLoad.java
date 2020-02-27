@@ -7,23 +7,21 @@ import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
 import oshi.util.Util;
 
-public class CommandCpuLoad implements Command {
-
-    SystemValues systemValues = SystemValues.getInstance();
+public final class CommandCpuLoad implements Command {
 
     private long[] previousTicks;
     private long[][] previousMultiTicks;
 
     private double getCpuLoad() {
-        previousTicks = systemValues.getSystemCpuLoadTicks();
-        previousMultiTicks = systemValues.getProcessorCpuLoadTicks();
+        previousTicks = SystemValues.getSystemCpuLoadTicks();
+        previousMultiTicks = SystemValues.getProcessorCpuLoadTicks();
         Util.sleep(1000);
-        return systemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100;
+        return SystemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100;
     }
 
     private String getAverageLoads() {
         StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
-        double[] load = systemValues.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
+        double[] load = SystemValues.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
         for (double average : load) {
             cpuLoads.append(String.format(" %.1f%%", average * 100));
         }

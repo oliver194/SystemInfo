@@ -6,7 +6,7 @@ import me.thevipershow.systeminfo.gui.GuiClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.LocalDateTime;
@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 public final class SystemInfo extends JavaPlugin {
 
 
-    public static final String PLUGIN_VERSION = "1.0.2";
-    public static SystemInfo instance;
+    public static final String PLUGIN_VERSION = "1.0.4";
+    public static Plugin instance;
     public static LocalDateTime time;
     public static Logger logger;
     private final List<me.thevipershow.systeminfo.interfaces.Command> commands = new ArrayList<>();

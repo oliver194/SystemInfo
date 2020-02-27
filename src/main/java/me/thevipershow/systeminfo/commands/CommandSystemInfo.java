@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandSystemInfo implements Command {
+public final class CommandSystemInfo implements Command {
 
     private void systemInfo1(CommandSender sender) {
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));

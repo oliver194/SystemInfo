@@ -6,18 +6,16 @@ import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
 
-public class CommandSensors implements Command {
-
-    SystemValues systemValues = SystemValues.getInstance();
+public final class CommandSensors implements Command { ;
 
     @Override
     public void action(CommandSender sender, String name, String[] args) {
         if (name.equals("sensors")) {
             if (sender.hasPermission("systeminfo.commands.sensors")) {
                 if (args.length == 0) {
-                    sender.sendMessage(Utils.color(String.format("&7Fans RPM: &a%s", systemValues.getFansRPM())));
-                    sender.sendMessage(Utils.color(String.format("&7Cpu Voltage: &a%s", systemValues.getCpuVoltage())));
-                    sender.sendMessage(Utils.color(String.format("&7Cpu Temperature: %s", systemValues.getCpuTemperatureStatus())));
+                    sender.sendMessage(Utils.color(String.format("&7Fans RPM: &a%s", SystemValues.getFansRPM())));
+                    sender.sendMessage(Utils.color(String.format("&7Cpu Voltage: &a%s", SystemValues.getCpuVoltage())));
+                    sender.sendMessage(Utils.color(String.format("&7Cpu Temperature: %s", SystemValues.getCpuTemperatureStatus())));
                 }
             } else {
                 sender.sendMessage(Messages.NO_PERMISSIONS.value(true));

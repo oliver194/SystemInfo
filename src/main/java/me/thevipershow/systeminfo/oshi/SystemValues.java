@@ -8,157 +8,239 @@ import oshi.software.os.OperatingSystem;
 
 public final class SystemValues {
 
-    private static SystemValues instance = null;
+    private static final SystemInfo SYSTEM_INFO = new SystemInfo();
+    private static final OperatingSystem OPERATING_SYSTEM = SYSTEM_INFO.getOperatingSystem();
+    private static final HardwareAbstractionLayer HARDWARE_ABSTRACTION_LAYER = SYSTEM_INFO.getHardware();
+    private static final CentralProcessor CENTRAL_PROCESSOR = HARDWARE_ABSTRACTION_LAYER.getProcessor();
+    private static final Sensors SENSORS = HARDWARE_ABSTRACTION_LAYER.getSensors();
+    private static final GlobalMemory MEMORY = HARDWARE_ABSTRACTION_LAYER.getMemory();
+    private static final CentralProcessor.ProcessorIdentifier PROCESSOR_IDENTIFIER = CENTRAL_PROCESSOR.getProcessorIdentifier();
+    private static final VirtualMemory VIRTUAL_MEMORY = MEMORY.getVirtualMemory();
+    private static final OperatingSystem.OSVersionInfo OS_VERSION_INFO = OPERATING_SYSTEM.getVersionInfo();
 
     private SystemValues() {
     }
 
-    public static SystemValues getInstance() {
-        return instance == null ? new SystemValues() : instance;
+    /**
+     * @return Returns the formatted value of the system current maximum memory
+     */
+    public static String getMaxMemory() {
+        return Utils.formatData(MEMORY.getTotal());
     }
 
-    private final SystemInfo systemInfo = new SystemInfo();
-    private final OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
-    private final HardwareAbstractionLayer hardwareAbstractionLayer = systemInfo.getHardware();
-    private final CentralProcessor centralProcessor = hardwareAbstractionLayer.getProcessor();
-    private final Sensors sensors = hardwareAbstractionLayer.getSensors();
-    private final GlobalMemory memory = hardwareAbstractionLayer.getMemory();
-    private final CentralProcessor.ProcessorIdentifier cpuIdentifier = centralProcessor.getProcessorIdentifier();
-    private final VirtualMemory virtualMemory = memory.getVirtualMemory();
-    private final OperatingSystem.OSVersionInfo osVersionInfo = operatingSystem.getVersionInfo();
-
-    public String getMaxMemory() {
-        return Utils.formatData(memory.getTotal());
+    /**
+     * @return Returns the value of the system current maximum memory in bytes.
+     */
+    public static long getMaxMemory2() {
+        return MEMORY.getTotal();
     }
 
-    public long getMaxMemory2() {
-        return memory.getTotal();
+    /**
+     * @return Returns the formatted value of the system currently available memory.
+     */
+    public static String getAvailableMemory() {
+        return Utils.formatData(MEMORY.getAvailable());
     }
 
-    public String getAvailableMemory() {
-        return Utils.formatData(memory.getAvailable());
+    /**
+     * @return Returns the formatted value of the system currently used memory.
+     */
+    public static String getUsedMemory() {
+        return Utils.formatData(MEMORY.getTotal() - MEMORY.getAvailable());
     }
 
-    public String getUsedMemory() {
-        return Utils.formatData(memory.getTotal() - memory.getAvailable());
+    /**
+     * @return Returns the formatted value of the system current maximum swap memory.
+     */
+    public static String getTotalSwap() {
+        return Utils.formatData(VIRTUAL_MEMORY.getSwapTotal());
     }
 
-    public String getTotalSwap() {
-        return Utils.formatData(virtualMemory.getSwapTotal());
+    /**
+     * @return Returns the formatted value of the system currently used swap memory.
+     */
+    public static String getUsedSwap() {
+        return Utils.formatData(VIRTUAL_MEMORY.getSwapUsed());
     }
 
-    public String getUsedSwap() {
-        return Utils.formatData(virtualMemory.getSwapUsed());
+    /**
+     * @return Returns the cpu voltage with unit of measure if available, else return "Unavailable".
+     */
+    public static String getCpuVoltage() {
+        return SENSORS.getCpuVoltage() != 0 ? SENSORS.getCpuVoltage() + "V" : "Unavailable";
     }
 
-    public String getAvailableSwap() {
-        return Utils.formatData(virtualMemory.getSwapTotal() - virtualMemory.getSwapUsed());
+    /**
+     * @return Returns the cpu temperature with unit of measure if available, else return "Unavailable".
+     */
+    public static String getCpuTemperature() {
+        return SENSORS.getCpuTemperature() != 0f ? SENSORS.getCpuTemperature() + "C°" : "Unavailable";
     }
 
-    public String getCpuVoltage() {
-        return sensors.getCpuVoltage() != 0f ? String.valueOf(sensors.getCpuVoltage()) : "Unavailable";
-    }
-
-    public String getCpuTemperature() {
-        return sensors.getCpuTemperature() != 0f ? String.valueOf(sensors.getCpuTemperature()) : "Unavailable";
-    }
-
-    public String getCpuTemperatureStatus() {
-        double degrees = sensors.getCpuTemperature();
-        if (degrees > 0d) {
-            if (degrees <= 50.0d) {
-                return (String.format("&a%.1f &2Idle", degrees));
-            } else if (degrees <= 75.0d) {
-                return (String.format("&6%.1f &6Load", degrees));
-            } else {
-                return (String.format("&c%.1f &cOverload", degrees));
+    /**
+     * @return Returns the cpu temperature with unit of measure and status, else return "Unavailable"
+     * 0.0-50.0 is "Idle" status
+     * 50.0-75.0 is "Load" status
+     * 75.0-90.0 is "Overload" status
+     * else is "Not available"
+     */
+    public static String getCpuTemperatureStatus() {
+        double degrees = SENSORS.getCpuTemperature();
+        if (degrees > 0.0) {
+            if (degrees <= 50.0) {
+                return (String.format("&a%.1fC° &2Idle", degrees));
+            } else if (degrees <= 75.0) {
+                return (String.format("&6%.1fC° &6Load", degrees));
+            } else if (degrees <= 90.0) {
+                return (String.format("&c%.1fC° &cOverload", degrees));
             }
-        } else {
-            return "&cNot available";
         }
+        return "&cNot available";
     }
 
-    public String getFansRPM() {
+    /**
+     * @return Returns fans speed in RPM separated by a blank space.
+     */
+    public static String getFansRPM() {
         String rpm = "";
-        int[] speeds = sensors.getFanSpeeds();
-        for (int speed : speeds) rpm.concat(speed + " ");
+        int[] speeds = SENSORS.getFanSpeeds();
+        for (int speed : speeds)
+            rpm = rpm.concat(speed + " ");
         return rpm;
     }
 
-    public String getOSFamily() {
-        return operatingSystem.getFamily();
+    /**
+     * @return Get the current operating system family name.
+     */
+    public static String getOSFamily() {
+        return OPERATING_SYSTEM.getFamily();
     }
 
-    public String getOSManufacturer() {
-        return operatingSystem.getManufacturer();
+    /**
+     * @return Get the current operating system manufacturer name.
+     */
+    public static String getOSManufacturer() {
+        return OPERATING_SYSTEM.getManufacturer();
     }
 
-    public String getOSVersion() {
-        return osVersionInfo.getVersion();
+    /**
+     * @return Get the current operating system version name.
+     */
+    public static String getOSVersion() {
+        return OS_VERSION_INFO.getVersion();
     }
 
-    public String getCpuVendor() {
-        return cpuIdentifier.getVendor();
+    /**
+     * @return Get the name of the current cpu vendor.
+     */
+    public static String getCpuVendor() {
+        return PROCESSOR_IDENTIFIER.getVendor();
     }
 
-    public String getCpuModel() {
-        return cpuIdentifier.getModel();
+    /**
+     * @return Get the model of the current cpu.
+     */
+    public static String getCpuModel() {
+        return PROCESSOR_IDENTIFIER.getModel();
     }
 
-    public String getCpuModelName() {
-        return cpuIdentifier.getName();
+    /**
+     * @return Get the model name of the current cpu.
+     */
+    public static String getCpuModelName() {
+        return PROCESSOR_IDENTIFIER.getName();
     }
 
-    public String getCpuMaxFrequency() {
-        return String.format("%.2f", centralProcessor.getMaxFreq()/1E9f);
+    /**
+     * @return Get the max standard frequency of the current CPU with 2 decimals in GHz.
+     */
+    public static String getCpuMaxFrequency() {
+        return String.format("%.2f", CENTRAL_PROCESSOR.getMaxFreq() / 1E9F);
     }
 
-    public String getCpuStepping() {
-        return cpuIdentifier.getStepping();
+    public static String getCpuStepping() {
+        return PROCESSOR_IDENTIFIER.getStepping();
     }
 
-    public String getCpuCores() {
-        return String.valueOf(centralProcessor.getPhysicalProcessorCount());
+    /**
+     * @return
+     */
+    public static String getCpuCores() {
+        return String.valueOf(CENTRAL_PROCESSOR.getPhysicalProcessorCount());
     }
 
-    public String getCpuThreads() {
-        return String.valueOf(centralProcessor.getLogicalProcessorCount());
+    /**
+     * @return
+     */
+    public static String getCpuThreads() {
+        return String.valueOf(CENTRAL_PROCESSOR.getLogicalProcessorCount());
     }
 
-    public OSProcess[] getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
-        return operatingSystem.getProcesses(pids, processSort);
+    /**
+     * @param pids
+     * @param processSort
+     * @return
+     */
+    public static OSProcess[] getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
+        return OPERATING_SYSTEM.getProcesses(pids, processSort);
     }
 
-    public int getRunningProcesses() {
-        return operatingSystem.getProcessCount();
+    /**
+     * @return
+     */
+    public static int getRunningProcesses() {
+        return OPERATING_SYSTEM.getProcessCount();
     }
 
-    public int getThreadCount() {
-        return operatingSystem.getThreadCount();
+    /**
+     * @return
+     */
+    public static int getThreadCount() {
+        return OPERATING_SYSTEM.getThreadCount();
     }
 
-    public HWDiskStore[] getDiskStores() {
-        return hardwareAbstractionLayer.getDiskStores();
+    /**
+     * @return
+     */
+    public static HWDiskStore[] getDiskStores() {
+        return HARDWARE_ABSTRACTION_LAYER.getDiskStores();
     }
 
-    public UsbDevice[] getUsbDevices() {
-        return hardwareAbstractionLayer.getUsbDevices(true);
+    /**
+     * @return
+     */
+    public static UsbDevice[] getUsbDevices() {
+        return HARDWARE_ABSTRACTION_LAYER.getUsbDevices(true);
     }
 
-    public long[] getSystemCpuLoadTicks() {
-        return centralProcessor.getSystemCpuLoadTicks();
+    /**
+     * @return
+     */
+    public static long[] getSystemCpuLoadTicks() {
+        return CENTRAL_PROCESSOR.getSystemCpuLoadTicks();
     }
 
-    public long[][] getProcessorCpuLoadTicks() {
-        return centralProcessor.getProcessorCpuLoadTicks();
+    /**
+     * @return
+     */
+    public static long[][] getProcessorCpuLoadTicks() {
+        return CENTRAL_PROCESSOR.getProcessorCpuLoadTicks();
     }
 
-    public double getSystemCpuLoadBetweenTicks(long[] oldTicks) {
-        return centralProcessor.getSystemCpuLoadBetweenTicks(oldTicks);
+    /**
+     * @param oldTicks
+     * @return
+     */
+    public static double getSystemCpuLoadBetweenTicks(long[] oldTicks) {
+        return CENTRAL_PROCESSOR.getSystemCpuLoadBetweenTicks(oldTicks);
     }
 
-    public double[] getProcessorCpuLoadBetweenTicks(long[][] oldTicks) {
-        return centralProcessor.getProcessorCpuLoadBetweenTicks(oldTicks);
+    /**
+     * @param oldTicks
+     * @return
+     */
+    public static double[] getProcessorCpuLoadBetweenTicks(long[][] oldTicks) {
+        return CENTRAL_PROCESSOR.getProcessorCpuLoadBetweenTicks(oldTicks);
     }
 
 }

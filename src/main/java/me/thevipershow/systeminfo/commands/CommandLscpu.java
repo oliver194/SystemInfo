@@ -5,22 +5,17 @@ import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import oshi.hardware.CentralProcessor;
-import oshi.software.os.OperatingSystem;
 
-public class CommandLscpu implements Command {
-
-    SystemValues systemValues = SystemValues.getInstance();
+public final class CommandLscpu implements Command {
 
     private void printLscpu(CommandSender sender) {
         sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
-        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", systemValues.getOSFamily(), systemValues.getOSManufacturer(), systemValues.getOSVersion())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", systemValues.getCpuVendor())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", systemValues.getCpuModel(), systemValues.getCpuModelName())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", systemValues.getCpuMaxFrequency())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", systemValues.getCpuStepping())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", systemValues.getCpuCores(), systemValues.getCpuThreads())));
+        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", SystemValues.getOSFamily(), SystemValues.getOSManufacturer(), SystemValues.getOSVersion())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", SystemValues.getCpuVendor())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", SystemValues.getCpuModel(), SystemValues.getCpuModelName())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", SystemValues.getCpuMaxFrequency())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", SystemValues.getCpuStepping())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", SystemValues.getCpuCores(), SystemValues.getCpuThreads())));
     }
 
     @Override

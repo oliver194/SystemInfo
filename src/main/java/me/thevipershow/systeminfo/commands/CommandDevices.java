@@ -7,14 +7,12 @@ import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.UsbDevice;
 
-public class CommandDevices implements Command {
-
-    SystemValues systemValues = SystemValues.getInstance();
+public final class CommandDevices implements Command {
 
     private void printDevices(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Attached devices &2«"));
         sender.sendMessage(Utils.color("&2» &7List:"));
-        for (UsbDevice usb : systemValues.getUsbDevices()) {
+        for (UsbDevice usb : SystemValues.getUsbDevices()) {
             sender.sendMessage(Utils.color(String.format("&7- &a%s %s", usb.getVendor(), usb.getSerialNumber())));
             sender.sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
             if (usb.getConnectedDevices().length != 0) {

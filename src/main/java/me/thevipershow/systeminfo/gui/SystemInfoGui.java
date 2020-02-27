@@ -18,9 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SystemInfoGui {
-
-    private SystemValues values = SystemValues.getInstance();
+public final class SystemInfoGui {
     private Player player;
     private Inventory inventory;
     private final List<Integer> backgroundSlots = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
@@ -99,20 +97,20 @@ public class SystemInfoGui {
      */
     private void updateInventory(Inventory inventory) {
         createCustomItem(inventory, Material.LIME_CONCRETE, 1, 11, "&2Processor",
-                String.format("&7Vendor: &a%s", values.getCpuVendor()),
-                String.format("&7Model: &a%s %s", values.getCpuModel(), values.getCpuModelName()),
-                String.format("&7Clock speed: &a%s GHz", values.getCpuMaxFrequency()),
-                String.format("&7Cores: &a%s", values.getCpuCores()),
-                String.format("&7Threads: &a%s", values.getCpuThreads()));
+                String.format("&7Vendor: &a%s", SystemValues.getCpuVendor()),
+                String.format("&7Model: &a%s %s", SystemValues.getCpuModel(), SystemValues.getCpuModelName()),
+                String.format("&7Clock speed: &a%s GHz", SystemValues.getCpuMaxFrequency()),
+                String.format("&7Cores: &a%s", SystemValues.getCpuCores()),
+                String.format("&7Threads: &a%s", SystemValues.getCpuThreads()));
 
         createCustomItem(inventory, Material.GREEN_CONCRETE, 1, 13, "&2Memory",
-                String.format("&7Total:&a %s", values.getMaxMemory()),
-                String.format("&7Available:&a %s", values.getAvailableMemory()),
-                String.format("&7Swap:&a %s/%s", values.getUsedSwap(), values.getTotalSwap()));
+                String.format("&7Total:&a %s", SystemValues.getMaxMemory()),
+                String.format("&7Available:&a %s", SystemValues.getAvailableMemory()),
+                String.format("&7Swap:&a %s/%s", SystemValues.getUsedSwap(), SystemValues.getTotalSwap()));
 
         createCustomItem(inventory, Material.LIGHT_BLUE_CONCRETE, 1, 15, "&2Operating system",
-                String.format("&7Name: &a%s %s %s", values.getOSFamily(), values.getOSManufacturer(), values.getOSVersion()),
-                String.format("&7Processes: &a%d", values.getRunningProcesses()));
+                String.format("&7Name: &a%s %s %s", SystemValues.getOSFamily(), SystemValues.getOSManufacturer(), SystemValues.getOSVersion()),
+                String.format("&7Processes: &a%d", SystemValues.getRunningProcesses()));
 
         createCustomItem(inventory, Material.BLUE_CONCRETE, 1, 17, "&2Uptime",
                 String.format("&7Jvm uptime: &a%d min", ChronoUnit.MINUTES.between(SystemInfo.time, LocalDateTime.now())),
