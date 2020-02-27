@@ -53,3 +53,5 @@ It currently provides the following commands and features:
  systeminfo.command.vmstat
  systeminfo.command.help*
  ___
+ All of the commands are also avaiable from the console!
+![cmd](https://i.imgur.com/rVRZW3A.png)
