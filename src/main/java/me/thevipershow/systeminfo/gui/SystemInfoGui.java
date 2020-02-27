@@ -13,15 +13,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 public final class SystemInfoGui {
+    //TODO: Remove stupid instantiation and make methods static.
+
     private Player player;
     private Inventory inventory;
-    private final List<Integer> backgroundSlots = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
+    private final Set<Integer> backgroundSlots = new LinkedHashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 
     /**
      * This is the constructor and is used to open a new GUI to a player
@@ -49,12 +48,11 @@ public final class SystemInfoGui {
      *
      * @param inventory the inventory where the items will be set.
      */
-    private void fillBackground(Inventory inventory, List<Integer> backgroundSlots) {
-        AtomicInteger arr = new AtomicInteger();
+    private void fillBackground(Inventory inventory, Set<Integer> backgroundSlots) {
+        Iterator<Integer> invSlot = backgroundSlots.iterator();
         Bukkit.getScheduler().runTaskTimer(SystemInfo.instance, r -> {
-            if (arr.get() < backgroundSlots.size()) {
-                createCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, 1, backgroundSlots.get(arr.get()), "", "");
-                arr.getAndIncrement();
+            if (invSlot.hasNext()) {
+                createCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, 1, invSlot.next(), " ", " ");
             } else {
                 r.cancel();
             }
