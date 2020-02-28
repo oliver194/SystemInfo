@@ -16,9 +16,9 @@ public final class CommandSystemInfo implements Command {
         sender.spigot().sendMessage(Utils.builderHover("&7»» &fSystemInfo Help &7««", "This is the help page."));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/lscpu &aget processor info! &8[*]", "this returns processor info"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[*]", "this gets memory usage\nof the entire host"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/cputemp &aget sensors info! &8[*]", "gets various info from sensors"));
+        sender.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[*]", "gets various info from sensors"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[*]", "prints out a map of disks."));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/benchmark &aget CPU-benchmark score! &8[*]", "Makes a CPU benchmark and gives a score!"));
+        //sender.spigot().sendMessage(Utils.builderHover("&f- &7/benchmark &aget CPU-benchmark score! &8[*]", "Makes a CPU benchmark and gives a score!"));
         sender.spigot().sendMessage(Utils.builderClick("&7»» Click here for second page &f[*]", "/systeminfo 2"));
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
     }
