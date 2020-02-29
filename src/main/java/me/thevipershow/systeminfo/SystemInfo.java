@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public final class SystemInfo extends JavaPlugin {
 
 
-    public static final String PLUGIN_VERSION = "1.0.7";
+    public static String PLUGIN_VERSION;
     public static Plugin instance;
     public static LocalDateTime time;
     public static Logger logger;
@@ -37,12 +37,14 @@ public final class SystemInfo extends JavaPlugin {
         commands.add(new CommandUptime());
         commands.add(new CommandVmstat());
         commands.add(new CommandSensors());
+        commands.add(new CommandBenchmark());
     }
 
     @Override
     public void onEnable() {
         instance = this;
         logger = instance.getLogger();
+        time = LocalDateTime.now();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new SysteminfoPlaceholder().register();
@@ -50,9 +52,7 @@ public final class SystemInfo extends JavaPlugin {
             logger.info("Could not find PlaceholderAPI, placeholders won't be available.");
         }
 
-
         completeCommandsList();
-        time = LocalDateTime.now();
         Bukkit.getPluginManager().registerEvents(new GuiClickListener(), instance);
     }
 
@@ -60,6 +60,6 @@ public final class SystemInfo extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         commands.forEach(c -> c.action(sender, command.getName(), args));
-        return true;
+        return false;
     }
 }

@@ -34,3 +34,6 @@ commands:
   sensors:
     description: "get system's sensors."
     usage: "/<command>"
+  benchmark:
+    description: "benchmark CPU."
+    usage: "/<command>"
