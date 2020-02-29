@@ -53,7 +53,9 @@ public final class CommandSystemInfo implements Command {
                     stats(sender);
                 } else if (args.length == 1 && args[0].equals("gui")) {
                     if (sender instanceof Player) {
-                        new SystemInfoGui(((Player) sender));
+                        SystemInfoGui.createGui((Player) sender);
+                    } else {
+                        sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console .-."));
                     }
                 } else {
                     sender.sendMessage(Messages.INVALID_ARGS.value(true));
