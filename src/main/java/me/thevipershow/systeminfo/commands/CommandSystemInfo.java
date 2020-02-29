@@ -24,12 +24,12 @@ public final class CommandSystemInfo implements Command {
     }
 
     private void systemInfo2(CommandSender sender) {
-        sender.sendMessage(Utils.color("&7&l&m---------------------------------"));
+        sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/htop &aget processes list! &8[*]", "get a list of processes"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo <arg> &amain command &8[*]", "args = stats, version, easteregg"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/uptime &aget the machine uptime! &8[*]", "get the total uptime of machine"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/devices &aget devices list! &8[*]", "get every attached device"));
-        sender.sendMessage(Utils.color("&7&l&m---------------------------------"));
+        sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
     }
 
     private void stats(CommandSender sender) {

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public final class SystemInfo extends JavaPlugin {
 
 
-    public static final String PLUGIN_VERSION = "1.0.4";
+    public static final String PLUGIN_VERSION = "1.0.7";
     public static Plugin instance;
     public static LocalDateTime time;
     public static Logger logger;
