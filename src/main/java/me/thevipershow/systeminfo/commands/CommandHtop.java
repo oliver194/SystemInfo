@@ -31,11 +31,12 @@ public final class CommandHtop implements Command {
     }
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("htop")) {
             if (sender.hasPermission("systeminfo.commands.htop")) {
                 if (args.length == 0) {
                     printHtop(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
                 }
@@ -43,5 +44,6 @@ public final class CommandHtop implements Command {
                 sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
         }
+        return false;
     }
 }

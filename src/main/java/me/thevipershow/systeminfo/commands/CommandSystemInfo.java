@@ -18,7 +18,7 @@ public final class CommandSystemInfo implements Command {
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[*]", "this gets memory usage\nof the entire host"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[*]", "gets various info from sensors"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[*]", "prints out a map of disks."));
-        //sender.spigot().sendMessage(Utils.builderHover("&f- &7/benchmark &aget CPU-benchmark score! &8[*]", "Makes a CPU benchmark and gives a score!"));
+        sender.spigot().sendMessage(Utils.builderHover("&f- &7/benchmark &aget CPU-benchmark score! &8[*]", "Makes a CPU benchmark and gives a score!"));
         sender.spigot().sendMessage(Utils.builderClick("&7»» Click here for second page &f[*]", "/systeminfo 2"));
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
     }
@@ -40,23 +40,28 @@ public final class CommandSystemInfo implements Command {
     }
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("systeminfo")) {
             if (sender.hasPermission("systeminfo.command.help")) {
                 if (args.length == 0) {
                     systemInfo1(sender);
+                    return true;
                 } else if (args.length == 1 && args[0].equals("2")) {
                     systemInfo2(sender);
+                    return true;
                 } else if (args.length == 1 && args[0].equals("version")) {
                     sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.instance.getDescription().getVersion()));
+                    return true;
                 } else if (args.length == 1 && args[0].equals("stats")) {
                     stats(sender);
+                    return true;
                 } else if (args.length == 1 && args[0].equals("gui")) {
                     if (sender instanceof Player) {
                         SystemInfoGui.createGui((Player) sender);
                     } else {
                         sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console .-."));
                     }
+                    return true;
                 } else {
                     sender.sendMessage(Messages.INVALID_ARGS.value(true));
                 }
@@ -64,5 +69,6 @@ public final class CommandSystemInfo implements Command {
                 sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
         }
+        return false;
     }
 }

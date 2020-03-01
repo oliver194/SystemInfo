@@ -18,11 +18,12 @@ public final class CommandVmstat implements Command {
     }
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("vmstat")) {
             if (args.length == 0) {
                 if (sender.hasPermission("systeminfo.commands.vmstat")) {
                     vmstat(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
                 }
@@ -30,5 +31,6 @@ public final class CommandVmstat implements Command {
                 sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
             }
         }
+        return false;
     }
 }

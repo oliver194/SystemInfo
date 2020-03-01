@@ -25,11 +25,12 @@ public final class CommandDevices implements Command {
 
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("devices")) {
             if (sender.hasPermission("systeminfo.commands.devices")) {
                 if (args.length == 0) {
                     printDevices(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
                 }
@@ -37,5 +38,6 @@ public final class CommandDevices implements Command {
                 sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
         }
+        return false;
     }
 }

@@ -35,11 +35,12 @@ public final class CommandCpuLoad implements Command {
     }
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("cpuload")) {
             if (args.length == 0) {
                 if (sender.hasPermission("systeminfo.commands.cpuload")) {
                     printCpuLoad(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
                 }
@@ -47,5 +48,6 @@ public final class CommandCpuLoad implements Command {
                 sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
             }
         }
+        return false;
     }
 }

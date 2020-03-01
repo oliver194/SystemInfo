@@ -24,11 +24,12 @@ public final class CommandDisks implements Command {
     }
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("disks")) {
             if (sender.hasPermission("systeminfo.commands.disks")) {
                 if (args.length == 0) {
                     printDisks(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
                 }
@@ -36,5 +37,6 @@ public final class CommandDisks implements Command {
                 sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
         }
+        return false;
     }
 }

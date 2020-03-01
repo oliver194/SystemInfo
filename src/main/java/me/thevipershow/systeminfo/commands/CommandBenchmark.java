@@ -10,12 +10,14 @@ import java.util.Set;
 
 public class CommandBenchmark implements Command {
 
+
     private final int THREADS = Runtime.getRuntime().availableProcessors();
 
     private void createThreads(CommandSender commandSender) {
-        int k = 200000000 / THREADS;
+        int k = 200_000_000 / THREADS;
         for (int i = 0; i < THREADS; i++) {
-            new Calculator(k * i, k * (i + 1), i + 1, commandSender);
+            Calculator calc = new Calculator(k * i, k * (i + 1), i + 1, commandSender);
+            calc.start();
         }
     }
 
@@ -27,11 +29,12 @@ public class CommandBenchmark implements Command {
 
 
     @Override
-    public void action(CommandSender sender, String name, String[] args) {
+    public boolean action(CommandSender sender, String name, String[] args) {
         if (name.equals("benchmark")) {
             if (args.length == 0) {
                 if (sender.hasPermission("systeminfo.commands.cpuload")) {
                     message(sender);
+                    return true;
                 } else {
                     sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
                 }
@@ -39,9 +42,10 @@ public class CommandBenchmark implements Command {
                 Messages.OUT_OF_ARGS.value(true);
             }
         }
+        return false;
     }
 
-    final class Calculator implements Runnable {
+    final class Calculator extends Thread {
 
         private final int min;
         private final int max;
@@ -68,11 +72,11 @@ public class CommandBenchmark implements Command {
             this.max = max % 2 == 0 ? max - 1 : max;
             this.commandSender = commandSender;
             this.id = id;
-            fillSetRange();
         }
 
         @Override
         public void run() {
+            fillSetRange();
             removeNonPrimes();
             commandSender.sendMessage(Utils.color(String.format("&2» &7THREAD ID: &8[&a%d&8]", id)));
             commandSender.sendMessage(Utils.color(String.format("&7Calculation &a%d-%d &7Finished.", min, max)));
