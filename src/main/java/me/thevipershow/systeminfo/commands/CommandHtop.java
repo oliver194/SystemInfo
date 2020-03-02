@@ -1,17 +1,41 @@
 package me.thevipershow.systeminfo.commands;
 
 import me.thevipershow.systeminfo.enums.Messages;
-import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class CommandHtop implements Command {
+public final class CommandHtop extends Command {
+
+    public CommandHtop() {
+        super("htop",
+                "shows a list of the processes running on the system",
+                "/<command>",
+                new ArrayList<>());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String name, String[] args) {
+
+        if (sender.hasPermission("systeminfo.commands.htop")) {
+            if (args.length == 0) {
+                printHtop(sender);
+                return true;
+            } else {
+                sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
+            }
+        } else {
+            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
+        }
+        return false;
+    }
 
     private void printHtop(CommandSender sender) {
         sender.sendMessage(Utils.color("&2« &7Htop &2»"));
@@ -28,22 +52,5 @@ public final class CommandHtop implements Command {
                     Utils.formatData(osProcess.getResidentSetSize()),
                     osProcess.getName())));
         }
-    }
-
-    @Override
-    public boolean action(CommandSender sender, String name, String[] args) {
-        if (name.equals("htop")) {
-            if (sender.hasPermission("systeminfo.commands.htop")) {
-                if (args.length == 0) {
-                    printHtop(sender);
-                    return true;
-                } else {
-                    sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
-                }
-            } else {
-                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
-            }
-        }
-        return false;
     }
 }

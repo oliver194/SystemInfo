@@ -1,20 +1,27 @@
 package me.thevipershow.systeminfo.commands;
 
 import me.thevipershow.systeminfo.enums.Messages;
-import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.utils.Utils;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CommandBenchmark implements Command {
+public class CommandBenchmark extends Command {
 
+    public CommandBenchmark() {
+        super("benchmark",
+                "make a benchmark of your CPU",
+                "/<command>",
+                new ArrayList<>());
+    }
 
     private final int THREADS = Runtime.getRuntime().availableProcessors();
 
     private void createThreads(CommandSender commandSender) {
-        int k = 200_000_000 / THREADS;
+        int k = 175_000_000 / THREADS;
         for (int i = 0; i < THREADS; i++) {
             Calculator calc = new Calculator(k * i, k * (i + 1), i + 1, commandSender);
             calc.start();
@@ -27,25 +34,24 @@ public class CommandBenchmark implements Command {
         createThreads(sender);
     }
 
-
     @Override
-    public boolean action(CommandSender sender, String name, String[] args) {
-        if (name.equals("benchmark")) {
-            if (args.length == 0) {
-                if (sender.hasPermission("systeminfo.commands.cpuload")) {
-                    message(sender);
-                    return true;
-                } else {
-                    sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
-                }
+    public boolean execute(CommandSender sender, String name, String[] args) {
+
+        if (args.length == 0) {
+            if (sender.hasPermission("systeminfo.commands.cpuload")) {
+                message(sender);
+                return true;
             } else {
-                Messages.OUT_OF_ARGS.value(true);
+                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
             }
+        } else {
+            Messages.OUT_OF_ARGS.value(true);
         }
+
         return false;
     }
 
-    final class Calculator extends Thread {
+    static final class Calculator extends Thread {
 
         private final int min;
         private final int max;

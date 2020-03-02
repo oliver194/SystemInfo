@@ -1,14 +1,39 @@
 package me.thevipershow.systeminfo.commands;
 
 import me.thevipershow.systeminfo.enums.Messages;
-import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
 
-public final class CommandDisks implements Command {
+import java.util.ArrayList;
+
+public final class CommandDisks extends Command {
+
+
+    public CommandDisks() {
+        super("disks",
+                "get your system disks list",
+                "/<command>",
+                new ArrayList<>());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String name, String[] args) {
+        if (sender.hasPermission("systeminfo.commands.disks")) {
+            if (args.length == 0) {
+                printDisks(sender);
+                return true;
+            } else {
+                sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
+            }
+        } else {
+            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
+        }
+        return false;
+    }
 
     private void printDisks(CommandSender sender) {
         for (HWDiskStore disk : SystemValues.getDiskStores()) {
@@ -21,22 +46,5 @@ public final class CommandDisks implements Command {
             }
 
         }
-    }
-
-    @Override
-    public boolean action(CommandSender sender, String name, String[] args) {
-        if (name.equals("disks")) {
-            if (sender.hasPermission("systeminfo.commands.disks")) {
-                if (args.length == 0) {
-                    printDisks(sender);
-                    return true;
-                } else {
-                    sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
-                }
-            } else {
-                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
-            }
-        }
-        return false;
     }
 }

@@ -6,34 +6,3 @@ load: STARTUP
 authors: [TheViperShow]
 softdepend: [PlaceholderAPI]
 description: "An amazing plugin to monitor your hardware and server stats"
-commands:
-  systeminfo:
-    description: "main command of the plugin."
-    usage: "/<command> [stats|version|gui]"
-  vmstat:
-    description: "get system memory info."
-    usage: "/<command>"
-  uptime:
-    description: "get system uptime info."
-    usage: "/<command>"
-  lscpu:
-    description: "get system cpu info."
-    usage: "/<command>"
-  htop:
-    description: "get system processes info."
-    usage: "/<command>"
-  disks:
-    description: "get system's disks info."
-    usage: "/<command>"
-  devices:
-    description: "get system's devices info."
-    usage: "/<command>"
-  cpuload:
-    description: "get cpu load."
-    usage: "/<command>"
-  sensors:
-    description: "get system's sensors."
-    usage: "/<command>"
-  benchmark:
-    description: "benchmark CPU."
-    usage: "/<command>"

@@ -3,13 +3,53 @@ package me.thevipershow.systeminfo.commands;
 import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.gui.SystemInfoGui;
-import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.World;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public final class CommandSystemInfo implements Command {
+import java.util.ArrayList;
+
+public final class CommandSystemInfo extends Command {
+
+    public CommandSystemInfo() {
+        super("systeminfo",
+                "main command of SystemInfo plugin",
+                "/<command> [stats|gui|version|2]",
+                new ArrayList<>());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String name, String[] args) {
+        if (sender.hasPermission("systeminfo.command.help")) {
+            if (args.length == 0) {
+                systemInfo1(sender);
+                return true;
+            } else if (args.length == 1 && args[0].equals("2")) {
+                systemInfo2(sender);
+                return true;
+            } else if (args.length == 1 && args[0].equals("version")) {
+                sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.instance.getDescription().getVersion()));
+                return true;
+            } else if (args.length == 1 && args[0].equals("stats")) {
+                stats(sender);
+                return true;
+            } else if (args.length == 1 && args[0].equals("gui")) {
+                if (sender instanceof Player) {
+                    SystemInfoGui.createGui((Player) sender);
+                } else {
+                    sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console .-."));
+                }
+                return true;
+            } else {
+                sender.sendMessage(Messages.INVALID_ARGS.value(true));
+            }
+        } else {
+            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
+        }
+        return false;
+    }
 
     private void systemInfo1(CommandSender sender) {
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
@@ -37,38 +77,5 @@ public final class CommandSystemInfo implements Command {
         sender.sendMessage(String.format(Utils.color("&2» &7Overworld Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NORMAL), Utils.loadedChunksInWorlds(World.Environment.NORMAL)));
         sender.sendMessage(String.format(Utils.color("&2» &7Nether Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NETHER), Utils.loadedChunksInWorlds(World.Environment.NETHER)));
         sender.sendMessage(String.format(Utils.color("&2» &7End Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.THE_END), Utils.loadedChunksInWorlds(World.Environment.THE_END)));
-    }
-
-    @Override
-    public boolean action(CommandSender sender, String name, String[] args) {
-        if (name.equals("systeminfo")) {
-            if (sender.hasPermission("systeminfo.command.help")) {
-                if (args.length == 0) {
-                    systemInfo1(sender);
-                    return true;
-                } else if (args.length == 1 && args[0].equals("2")) {
-                    systemInfo2(sender);
-                    return true;
-                } else if (args.length == 1 && args[0].equals("version")) {
-                    sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.instance.getDescription().getVersion()));
-                    return true;
-                } else if (args.length == 1 && args[0].equals("stats")) {
-                    stats(sender);
-                    return true;
-                } else if (args.length == 1 && args[0].equals("gui")) {
-                    if (sender instanceof Player) {
-                        SystemInfoGui.createGui((Player) sender);
-                    } else {
-                        sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console .-."));
-                    }
-                    return true;
-                } else {
-                    sender.sendMessage(Messages.INVALID_ARGS.value(true));
-                }
-            } else {
-                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
-            }
-        }
-        return false;
     }
 }

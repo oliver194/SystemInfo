@@ -163,81 +163,83 @@ public final class SystemValues {
     }
 
     /**
-     * @return
+     * @return Get the amount of physical cores in the CPU
      */
     public static String getCpuCores() {
         return String.valueOf(CENTRAL_PROCESSOR.getPhysicalProcessorCount());
     }
 
     /**
-     * @return
+     * @return Get the amount of logical cores in the CPU
      */
     public static String getCpuThreads() {
         return String.valueOf(CENTRAL_PROCESSOR.getLogicalProcessorCount());
     }
 
     /**
-     * @param pids
-     * @param processSort
-     * @return
+     * @param pids        the number of processes to return
+     * @param processSort the type of resource to sort processes by
+     * @return returns an array of processes
      */
     public static OSProcess[] getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
         return OPERATING_SYSTEM.getProcesses(pids, processSort);
     }
 
     /**
-     * @return
+     * @return get the amount of total active processes
      */
     public static int getRunningProcesses() {
         return OPERATING_SYSTEM.getProcessCount();
     }
 
     /**
-     * @return
+     * @return get the amount of total threads running
      */
     public static int getThreadCount() {
         return OPERATING_SYSTEM.getThreadCount();
     }
 
     /**
-     * @return
+     * @return get an array of HWDiskStore which represents a NVM
+     * @see <a href=https://en.wikipedia.org/wiki/Non-volatile_memory>"Wikipedia Non-volatile memory</a>
      */
     public static HWDiskStore[] getDiskStores() {
         return HARDWARE_ABSTRACTION_LAYER.getDiskStores();
     }
 
     /**
-     * @return
+     * @return get an array of USB devices attached to the machine
+     * @see <a href=https://en.wikipedia.org/wiki/USB>Wikipedia USB</a>
      */
     public static UsbDevice[] getUsbDevices() {
         return HARDWARE_ABSTRACTION_LAYER.getUsbDevices(true);
     }
 
     /**
-     * @return
+     * @return Get the system cpu load ticks
      */
     public static long[] getSystemCpuLoadTicks() {
         return CENTRAL_PROCESSOR.getSystemCpuLoadTicks();
     }
 
     /**
-     * @return
+     * @return get the processor cpu load ticks
      */
     public static long[][] getProcessorCpuLoadTicks() {
         return CENTRAL_PROCESSOR.getProcessorCpuLoadTicks();
     }
 
     /**
-     * @param oldTicks
-     * @return
+     * @param oldTicks this is the previous value which will be compared to the current
+     * @return this will return a double value representing the current average processor load
      */
     public static double getSystemCpuLoadBetweenTicks(long[] oldTicks) {
         return CENTRAL_PROCESSOR.getSystemCpuLoadBetweenTicks(oldTicks);
     }
 
     /**
-     * @param oldTicks
-     * @return
+     * @param oldTicks this is the previous value which will be compared to the current
+     * @return returns an array of values which represent a load for each processing unit of the CPU.
      */
     public static double[] getProcessorCpuLoadBetweenTicks(long[][] oldTicks) {
         return CENTRAL_PROCESSOR.getProcessorCpuLoadBetweenTicks(oldTicks);

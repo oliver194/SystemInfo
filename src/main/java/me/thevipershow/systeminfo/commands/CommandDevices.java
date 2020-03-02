@@ -1,13 +1,37 @@
 package me.thevipershow.systeminfo.commands;
 
 import me.thevipershow.systeminfo.enums.Messages;
-import me.thevipershow.systeminfo.interfaces.Command;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.UsbDevice;
 
-public final class CommandDevices implements Command {
+import java.util.ArrayList;
+
+public final class CommandDevices extends Command {
+
+    public CommandDevices(){
+        super("devices",
+                "get a list of system devices",
+                "/<command>",
+                new ArrayList<>());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String name, String[] args) {
+        if (sender.hasPermission("systeminfo.commands.devices")) {
+            if (args.length == 0) {
+                printDevices(sender);
+                return true;
+            } else {
+                sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
+            }
+        } else {
+            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
+        }
+        return false;
+    }
 
     private void printDevices(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Attached devices &2«"));
@@ -21,23 +45,5 @@ public final class CommandDevices implements Command {
                 }
             }
         }
-    }
-
-
-    @Override
-    public boolean action(CommandSender sender, String name, String[] args) {
-        if (name.equals("devices")) {
-            if (sender.hasPermission("systeminfo.commands.devices")) {
-                if (args.length == 0) {
-                    printDevices(sender);
-                    return true;
-                } else {
-                    sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
-                }
-            } else {
-                sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
-            }
-        }
-        return false;
     }
 }

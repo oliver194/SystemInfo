@@ -6,7 +6,6 @@ public enum Messages {
 
     INVALID_ARGS("&4» &cInvalid arguments."),
     OUT_OF_ARGS("&4» &cArguments number is incorrect."),
-    INVALID_ARG_TYPE("&4» &cArgument type is invalid."),
     NO_PERMISSIONS("&4» &cInsufficient permissions.");
 
     private final String s;
