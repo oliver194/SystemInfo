@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Manager {
     private static final List<Command> commands = Arrays.asList(
-            new CommandBenchmark(),
+         //   new CommandBenchmark(), REMOVED , UNSTABLE ON MANY SERVERS
             new CommandCpuLoad(),
             new CommandDevices(),
             new CommandDisks(),

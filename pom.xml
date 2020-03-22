@@ -6,7 +6,7 @@
 
     <groupId>me.thevipershow</groupId>
     <artifactId>SystemInfo</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <packaging>jar</packaging>
 
     <name>SystemInfo</name>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
-            <version>4.3.1</version>
+            <version>4.4.2</version>
         </dependency>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>

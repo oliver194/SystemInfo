@@ -24,7 +24,11 @@ public final class CommandDisks extends Command {
     public boolean execute(CommandSender sender, String name, String[] args) {
         if (sender.hasPermission("systeminfo.commands.disks")) {
             if (args.length == 0) {
-                printDisks(sender);
+                try {
+                    printDisks(sender);
+                } catch (IllegalArgumentException e) {
+                    sender.sendColoredMessage("&c» Could not obtain info from this system.");
+                }
                 return true;
             } else {
                 sender.sendMessage(Messages.OUT_OF_ARGS.value(true));

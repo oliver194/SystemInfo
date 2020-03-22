@@ -3,10 +3,14 @@ package me.thevipershow.systeminfo;
 import me.thevipershow.systeminfo.api.SysteminfoPlaceholder;
 import me.thevipershow.systeminfo.commands.register.Manager;
 import me.thevipershow.systeminfo.gui.GuiClickListener;
+import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
@@ -29,7 +33,11 @@ public final class SystemInfo extends JavaPlugin {
             logger.info("Could not find PlaceholderAPI, placeholders won't be available.");
         }
 
-        new Manager(Bukkit.getCommandMap());
+        try {
+            new Manager(Utils.getCommandMap());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         Bukkit.getPluginManager().registerEvents(new GuiClickListener(), instance);
     }
 }

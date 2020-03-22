@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class CommandBenchmark extends Command {
 
     public CommandBenchmark() {

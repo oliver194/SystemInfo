@@ -3,8 +3,11 @@ package me.thevipershow.systeminfo.utils;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.command.CommandMap;
 
+import java.lang.reflect.Field;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -93,6 +96,32 @@ public class Utils {
         StringBuilder loadedChunksInWorlds = new StringBuilder();
         Bukkit.getWorlds().stream().filter(world -> world.getEnvironment().equals(environment)).collect(Collectors.toList()).forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
         return loadedChunksInWorlds.toString();
+    }
+
+    private static CommandMap commandMap;
+
+    /**
+     * This methods allows to use the CommandMap on different forks
+     *
+     * @return the CommandMap
+     * @throws NoSuchFieldException   if field isn't found
+     * @throws IllegalAccessException if access is invalid
+     */
+    public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {
+
+        if (commandMap == null) {
+            try {
+                commandMap = Bukkit.getCommandMap();
+                return commandMap;
+            } catch (NoSuchMethodError ignored) {
+                //exception is ignored
+            }
+            final Class<? extends Server> serverClass = Bukkit.getServer().getClass();
+            Field commandMapField = serverClass.getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+        }
+        return commandMap;
     }
 
 }
