@@ -27,7 +27,7 @@ public final class CommandDisks extends Command {
                 try {
                     printDisks(sender);
                 } catch (IllegalArgumentException e) {
-                    sender.sendColoredMessage("&c» Could not obtain info from this system.");
+                    sender.sendMessage("&c» Could not obtain info from this system.");
                 }
                 return true;
             } else {

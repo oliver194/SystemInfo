@@ -102,6 +102,7 @@ public class Utils {
 
     /**
      * This methods allows to use the CommandMap on different forks
+     * This method has been provided by electroniccat , thanks to him!
      *
      * @return the CommandMap
      * @throws NoSuchFieldException   if field isn't found
