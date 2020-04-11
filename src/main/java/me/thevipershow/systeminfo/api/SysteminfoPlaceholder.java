@@ -21,7 +21,7 @@ public final class SysteminfoPlaceholder extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return SystemInfo.PLUGIN_VERSION;
+        return SystemInfo.getInstance().getDescription().getVersion();
     }
 
     @Override

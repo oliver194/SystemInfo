@@ -30,7 +30,7 @@ public final class CommandSystemInfo extends Command {
                 systemInfo2(sender);
                 return true;
             } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
-                sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.instance.getDescription().getVersion()));
+                sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.getInstance().getDescription().getVersion()));
                 return true;
             } else if (args.length == 1 && args[0].equalsIgnoreCase("stats")) {
                 stats(sender);
