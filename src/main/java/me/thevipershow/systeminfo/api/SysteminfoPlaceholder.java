@@ -21,43 +21,32 @@ public final class SysteminfoPlaceholder extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return SystemInfo.PLUGIN_VERSION;
+        return SystemInfo.getInstance().getDescription().getVersion();
     }
 
     @Override
     public String onRequest(OfflinePlayer p, String params) {
-        StringBuilder toReturnString = new StringBuilder();
         switch (params) {
             case "cpu-model":
-                toReturnString.append(String.format("%s %s", values.getCpuModel(), values.getCpuModelName()));
-                break;
+                return String.format("%s %s", values.getCpuModel(), values.getCpuModelName());
             case "cpu-frequency":
-                toReturnString.append(values.getCpuMaxFrequency());
-                break;
+                return values.getCpuMaxFrequency();
             case "cpu-temperature":
-                toReturnString.append(values.getCpuTemperature());
-                break;
+                return values.getCpuTemperature();
             case "swap-max":
-                toReturnString.append(values.getTotalSwap());
-                break;
+                return values.getTotalSwap();
             case "swap-used":
-                toReturnString.append(values.getUsedSwap());
-                break;
+                return values.getUsedSwap();
             case "memory-max":
-                toReturnString.append(values.getMaxMemory());
-                break;
+                return values.getMaxMemory();
             case "memory-available":
-                toReturnString.append(values.getAvailableMemory());
-                break;
+                return values.getAvailableMemory();
             case "memory-used":
-                toReturnString.append(values.getUsedMemory());
-                break;
+                return values.getUsedMemory();
             case "processes":
-                toReturnString.append(values.getRunningProcesses());
-                break;
+                return Integer.toString(values.getRunningProcesses());
             default:
-                break;
+                return null;
         }
-        return toReturnString.toString();
     }
 }

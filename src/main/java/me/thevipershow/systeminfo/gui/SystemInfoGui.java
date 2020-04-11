@@ -34,7 +34,7 @@ public final class SystemInfoGui {
         Inventory inventory = Bukkit.createInventory(player, 27, "SystemInfo");
         player.openInventory(inventory);
         fillBackground(inventory);
-        Bukkit.getScheduler().runTaskTimer(SystemInfo.instance, r -> {
+        Bukkit.getScheduler().runTaskTimer(SystemInfo.getInstance(), r -> {
             if (player.getOpenInventory().getTitle().equals("SystemInfo")) {
                 updateInventory(inventory);
             } else {
@@ -51,7 +51,7 @@ public final class SystemInfoGui {
      */
     private static void fillBackground(Inventory inventory) {
         Iterator<Integer> invSlot = SystemInfoGui.backgroundSlots.iterator();
-        Bukkit.getScheduler().runTaskTimer(SystemInfo.instance, r -> {
+        Bukkit.getScheduler().runTaskTimer(SystemInfo.getInstance(), r -> {
             if (invSlot.hasNext()) {
                 createCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, invSlot.next(), " ", " ");
             } else {
@@ -111,7 +111,7 @@ public final class SystemInfoGui {
                 String.format("&7Processes: &a%d", values.getRunningProcesses()));
 
         createCustomItem(inventory, Material.BLUE_CONCRETE, 17, "&2Uptime",
-                String.format("&7Jvm uptime: &a%d min", ChronoUnit.MINUTES.between(SystemInfo.time, LocalDateTime.now())),
+                String.format("&7Jvm uptime: &a%d min", ChronoUnit.MINUTES.between(SystemInfo.getInstance().getStartupTime(), LocalDateTime.now())),
                 String.format("&7Current time: &a%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("d\\M\\u h:m:s a"))));
     }
 }
