@@ -2,13 +2,18 @@ package me.thevipershow.systeminfo.oshi;
 
 import me.thevipershow.systeminfo.utils.Utils;
 import oshi.SystemInfo;
-import oshi.hardware.*;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.GlobalMemory;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.Sensors;
+import oshi.hardware.VirtualMemory;
+import oshi.hardware.HWDiskStore;
+import oshi.hardware.UsbDevice;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 
 public final class SystemValues {
 
-    private SystemInfo systemInfo;
     private OperatingSystem operatingSystem;
     private HardwareAbstractionLayer hardwareAbstractionLayer;
     private CentralProcessor centralProcessor;
@@ -29,7 +34,7 @@ public final class SystemValues {
     }
 
     public void updateValues() {
-        systemInfo = new SystemInfo();
+        final SystemInfo systemInfo = new SystemInfo();
         operatingSystem = systemInfo.getOperatingSystem();
         hardwareAbstractionLayer = systemInfo.getHardware();
         centralProcessor = hardwareAbstractionLayer.getProcessor();
@@ -121,11 +126,11 @@ public final class SystemValues {
      * @return Returns fans speed in RPM separated by a blank space.
      */
     public String getFansRPM() {
-        String rpm = "";
+        StringBuilder rpm = new StringBuilder();
         int[] speeds = sensors.getFanSpeeds();
         for (int speed : speeds)
-            rpm = rpm + speed + " ";
-        return rpm;
+            rpm.append(speed).append(" ");
+        return rpm.toString();
     }
 
     /**
