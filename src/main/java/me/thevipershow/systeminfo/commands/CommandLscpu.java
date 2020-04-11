@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public final class CommandLscpu extends Command {
 
+    private final SystemValues values = SystemValues.getInstance();
+
     public CommandLscpu() {
         super("lscpu",
                 "get information about the system processor(s)",
@@ -34,11 +36,11 @@ public final class CommandLscpu extends Command {
 
     private void printLscpu(CommandSender sender) {
         sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
-        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", SystemValues.getOSFamily(), SystemValues.getOSManufacturer(), SystemValues.getOSVersion())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", SystemValues.getCpuVendor())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", SystemValues.getCpuModel(), SystemValues.getCpuModelName())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", SystemValues.getCpuMaxFrequency())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", SystemValues.getCpuStepping())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", SystemValues.getCpuCores(), SystemValues.getCpuThreads())));
+        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", values.getOSFamily(), values.getOSManufacturer(), values.getOSVersion())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", values.getCpuVendor())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", values.getCpuModel(), values.getCpuModelName())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", values.getCpuMaxFrequency())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", values.getCpuStepping())));
+        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", values.getCpuCores(), values.getCpuThreads())));
     }
 }

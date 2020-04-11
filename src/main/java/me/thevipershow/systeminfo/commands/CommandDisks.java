@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public final class CommandDisks extends Command {
 
+    private final SystemValues values = SystemValues.getInstance();
 
     public CommandDisks() {
         super("disks",
@@ -40,7 +41,7 @@ public final class CommandDisks extends Command {
     }
 
     private void printDisks(CommandSender sender) {
-        for (HWDiskStore disk : SystemValues.getDiskStores()) {
+        for (HWDiskStore disk : values.getDiskStores()) {
             sender.sendMessage(Utils.builderHover(String.format("&7[%s %s", disk.getName(), disk.getModel()),
                     String.format("&7Serial: &a%s\n&7Disk Read: &a%s\n&7Disk Written: &a%s\n",
                             disk.getSerial(), Utils.formatData(disk.getReadBytes()), Utils.formatData(disk.getWriteBytes()))));

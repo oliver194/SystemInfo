@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public final class CommandVmstat extends Command {
 
+    private final SystemValues values = SystemValues.getInstance();
+
     public CommandVmstat() {
         super("vmstat",
                 "get info about the system memory",
@@ -34,10 +36,10 @@ public final class CommandVmstat extends Command {
 
     private void vmstat(CommandSender sender) {
         sender.sendMessage(Utils.color("&2«« &7Memory info &2»»"));
-        sender.sendMessage(String.format(Utils.color("&7Available memory: &a%s"), SystemValues.getAvailableMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Allocated memory: &a%s"), SystemValues.getUsedMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Total memory: &a%s"), SystemValues.getMaxMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Swap total memory: &a%s"), SystemValues.getTotalSwap()));
-        sender.sendMessage(Utils.color(String.format("&7Swap used memory: &a%s", SystemValues.getUsedSwap())));
+        sender.sendMessage(String.format(Utils.color("&7Available memory: &a%s"), values.getAvailableMemory()));
+        sender.sendMessage(String.format(Utils.color("&7Allocated memory: &a%s"), values.getUsedMemory()));
+        sender.sendMessage(String.format(Utils.color("&7Total memory: &a%s"), values.getMaxMemory()));
+        sender.sendMessage(String.format(Utils.color("&7Swap total memory: &a%s"), values.getTotalSwap()));
+        sender.sendMessage(Utils.color(String.format("&7Swap used memory: &a%s", values.getUsedSwap())));
     }
 }

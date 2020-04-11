@@ -5,7 +5,9 @@ import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.OfflinePlayer;
 
-public class SysteminfoPlaceholder extends PlaceholderExpansion {
+public final class SysteminfoPlaceholder extends PlaceholderExpansion {
+
+    private final SystemValues values = SystemValues.getInstance();
 
     @Override
     public String getIdentifier() {
@@ -27,31 +29,31 @@ public class SysteminfoPlaceholder extends PlaceholderExpansion {
         StringBuilder toReturnString = new StringBuilder();
         switch (params) {
             case "cpu-model":
-                toReturnString.append(String.format("%s %s", SystemValues.getCpuModel(), SystemValues.getCpuModelName()));
+                toReturnString.append(String.format("%s %s", values.getCpuModel(), values.getCpuModelName()));
                 break;
             case "cpu-frequency":
-                toReturnString.append(SystemValues.getCpuMaxFrequency());
+                toReturnString.append(values.getCpuMaxFrequency());
                 break;
             case "cpu-temperature":
-                toReturnString.append(SystemValues.getCpuTemperature());
+                toReturnString.append(values.getCpuTemperature());
                 break;
             case "swap-max":
-                toReturnString.append(SystemValues.getTotalSwap());
+                toReturnString.append(values.getTotalSwap());
                 break;
             case "swap-used":
-                toReturnString.append(SystemValues.getUsedSwap());
+                toReturnString.append(values.getUsedSwap());
                 break;
             case "memory-max":
-                toReturnString.append(SystemValues.getMaxMemory());
+                toReturnString.append(values.getMaxMemory());
                 break;
             case "memory-available":
-                toReturnString.append(SystemValues.getAvailableMemory());
+                toReturnString.append(values.getAvailableMemory());
                 break;
             case "memory-used":
-                toReturnString.append(SystemValues.getUsedMemory());
+                toReturnString.append(values.getUsedMemory());
                 break;
             case "processes":
-                toReturnString.append(SystemValues.getRunningProcesses());
+                toReturnString.append(values.getRunningProcesses());
                 break;
             default:
                 break;

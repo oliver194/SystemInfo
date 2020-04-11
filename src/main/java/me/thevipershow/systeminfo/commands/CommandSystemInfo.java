@@ -1,15 +1,15 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.ArrayList;
 import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.gui.SystemInfoGui;
+import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public final class CommandSystemInfo extends Command {
 
@@ -29,13 +29,16 @@ public final class CommandSystemInfo extends Command {
             } else if (args.length == 1 && args[0].equals("2")) {
                 systemInfo2(sender);
                 return true;
-            } else if (args.length == 1 && args[0].equals("version")) {
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
                 sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.instance.getDescription().getVersion()));
                 return true;
-            } else if (args.length == 1 && args[0].equals("stats")) {
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("stats")) {
                 stats(sender);
                 return true;
-            } else if (args.length == 1 && args[0].equals("gui")) {
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+                SystemValues.getInstance().updateValues();
+                reload(sender);
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
                 if (sender instanceof Player) {
                     SystemInfoGui.createGui((Player) sender);
                 } else {
@@ -77,5 +80,9 @@ public final class CommandSystemInfo extends Command {
         sender.sendMessage(String.format(Utils.color("&2» &7Overworld Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NORMAL), Utils.loadedChunksInWorlds(World.Environment.NORMAL)));
         sender.sendMessage(String.format(Utils.color("&2» &7Nether Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NETHER), Utils.loadedChunksInWorlds(World.Environment.NETHER)));
         sender.sendMessage(String.format(Utils.color("&2» &7End Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.THE_END), Utils.loadedChunksInWorlds(World.Environment.THE_END)));
+    }
+
+    private void reload(CommandSender sender) {
+        sender.sendMessage(Utils.color("&8» &aSuccesfully reloaded system values!"));
     }
 }

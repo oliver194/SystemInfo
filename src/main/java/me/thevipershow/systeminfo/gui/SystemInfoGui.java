@@ -17,6 +17,8 @@ import java.util.*;
 
 public final class SystemInfoGui {
 
+    private static final SystemValues values = SystemValues.getInstance();
+
     private SystemInfoGui() {
     }
 
@@ -93,24 +95,23 @@ public final class SystemInfoGui {
      */
     private static void updateInventory(Inventory inventory) {
         createCustomItem(inventory, Material.LIME_CONCRETE, 11, "&2Processor",
-                String.format("&7Vendor: &a%s", SystemValues.getCpuVendor()),
-                String.format("&7Model: &a%s %s", SystemValues.getCpuModel(), SystemValues.getCpuModelName()),
-                String.format("&7Clock speed: &a%s GHz", SystemValues.getCpuMaxFrequency()),
-                String.format("&7Cores: &a%s", SystemValues.getCpuCores()),
-                String.format("&7Threads: &a%s", SystemValues.getCpuThreads()));
+                String.format("&7Vendor: &a%s", values.getCpuVendor()),
+                String.format("&7Model: &a%s %s", values.getCpuModel(), values.getCpuModelName()),
+                String.format("&7Clock speed: &a%s GHz", values.getCpuMaxFrequency()),
+                String.format("&7Cores: &a%s", values.getCpuCores()),
+                String.format("&7Threads: &a%s", values.getCpuThreads()));
 
         createCustomItem(inventory, Material.GREEN_CONCRETE, 13, "&2Memory",
-                String.format("&7Total:&a %s", SystemValues.getMaxMemory()),
-                String.format("&7Available:&a %s", SystemValues.getAvailableMemory()),
-                String.format("&7Swap:&a %s/%s", SystemValues.getUsedSwap(), SystemValues.getTotalSwap()));
+                String.format("&7Total:&a %s", values.getMaxMemory()),
+                String.format("&7Available:&a %s", values.getAvailableMemory()),
+                String.format("&7Swap:&a %s/%s", values.getUsedSwap(), values.getTotalSwap()));
 
         createCustomItem(inventory, Material.LIGHT_BLUE_CONCRETE, 15, "&2Operating system",
-                String.format("&7Name: &a%s %s %s", SystemValues.getOSFamily(), SystemValues.getOSManufacturer(), SystemValues.getOSVersion()),
-                String.format("&7Processes: &a%d", SystemValues.getRunningProcesses()));
+                String.format("&7Name: &a%s %s %s", values.getOSFamily(), values.getOSManufacturer(), values.getOSVersion()),
+                String.format("&7Processes: &a%d", values.getRunningProcesses()));
 
         createCustomItem(inventory, Material.BLUE_CONCRETE, 17, "&2Uptime",
                 String.format("&7Jvm uptime: &a%d min", ChronoUnit.MINUTES.between(SystemInfo.time, LocalDateTime.now())),
                 String.format("&7Current time: &a%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("d\\M\\u h:m:s a"))));
     }
-
 }

@@ -5,7 +5,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class GuiClickListener implements Listener {
-
     /**
      * In this event we are listening for the player clicking in his inventory, if the inventory
      * title equals to "SystemInfo" we are cancelling every action in order to prevent stealing
@@ -20,5 +19,4 @@ public final class GuiClickListener implements Listener {
             inventoryClickEvent.setCancelled(true);
         }
     }
-
 }

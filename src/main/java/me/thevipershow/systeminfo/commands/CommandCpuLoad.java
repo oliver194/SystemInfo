@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public final class CommandCpuLoad extends Command {
 
+    private final SystemValues values = SystemValues.getInstance();
+
     public CommandCpuLoad() {
         super("cpuload",
                 "gets the load status of the CPU",
@@ -37,15 +39,15 @@ public final class CommandCpuLoad extends Command {
     private long[][] previousMultiTicks;
 
     private double getCpuLoad() {
-        previousTicks = SystemValues.getSystemCpuLoadTicks();
-        previousMultiTicks = SystemValues.getProcessorCpuLoadTicks();
+        previousTicks = values.getSystemCpuLoadTicks();
+        previousMultiTicks = values.getProcessorCpuLoadTicks();
         Util.sleep(1000);
-        return SystemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100;
+        return values.getSystemCpuLoadBetweenTicks(previousTicks) * 100;
     }
 
     private String getAverageLoads() {
         StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
-        double[] load = SystemValues.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
+        double[] load = values.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
         for (double average : load) {
             cpuLoads.append(String.format(" %.1f%%", average * 100));
         }
