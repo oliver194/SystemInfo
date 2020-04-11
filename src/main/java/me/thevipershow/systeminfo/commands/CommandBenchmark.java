@@ -19,11 +19,11 @@ public class CommandBenchmark extends Command {
                 new ArrayList<>());
     }
 
-    private final int THREADS = Runtime.getRuntime().availableProcessors();
+    private final int threads = Runtime.getRuntime().availableProcessors();
 
     private void createThreads(CommandSender commandSender) {
-        int k = 175_000_000 / THREADS;
-        for (int i = 0; i < THREADS; i++) {
+        int k = 175_000_000 / threads;
+        for (int i = 0; i < threads; i++) {
             Calculator calc = new Calculator(k * i, k * (i + 1), i + 1, commandSender);
             calc.start();
         }
@@ -31,7 +31,7 @@ public class CommandBenchmark extends Command {
 
     private void message(CommandSender sender) {
         sender.sendMessage(Utils.color("&7Starting calculation ..."));
-        sender.sendMessage(Utils.color(String.format("&7Using &a%d THREADS", THREADS)));
+        sender.sendMessage(Utils.color(String.format("&7Using &a%d THREADS", threads)));
         createThreads(sender);
     }
 
