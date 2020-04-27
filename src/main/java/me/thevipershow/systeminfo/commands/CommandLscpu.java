@@ -42,7 +42,7 @@ public final class CommandLscpu extends Command {
         sender.sendMessage(Utils.color("&7Cpu Clock Rate: &a" + values.getCpuMaxFrequency()));
         sender.sendMessage(Utils.color("&7Cpu Stepping: &a" + values.getCpuStepping()));
         sender.sendMessage(Utils.color("&7Physical Cores: &a" + values.getCpuCores()));
-        sender.sendMessage(Utils.color("&7Logical Cores: &a" + values.getThreadCount()));
+        sender.sendMessage(Utils.color("&7Logical Cores: &a" + values.getCpuThreads()));
     }
 
 }
