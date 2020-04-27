@@ -114,6 +114,6 @@ public final class SystemInfoGui {
 
         createCustomItem(inventory, Material.BLUE_CONCRETE, 17, "&2Uptime",
                 "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(SystemInfo.getInstance().getStartupTime(), LocalDateTime.now()) + " min.",
-                "&7Current time: &a%s" + LocalDateTime.now().format(TIME_FORMATTER));
+                "&7Current time: &a" + LocalDateTime.now().format(TIME_FORMATTER));
     }
 }
