@@ -17,6 +17,8 @@ import java.util.*;
 
 public final class SystemInfoGui {
 
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("d\\M\\u h:m:s a");
+
     private static final SystemValues values = SystemValues.getInstance();
 
     private SystemInfoGui() {
@@ -70,7 +72,7 @@ public final class SystemInfoGui {
      * @param loreText    the lore of the new ItemStack (this does support color codes with & and multiple lines with \n).
      * @throws IllegalArgumentException if amount of items is illegal, or the slot is illegal.
      */
-    private static void createCustomItem(Inventory inv, Material material, int invSlot, String displayName, String... loreText) throws IllegalArgumentException {
+    private static void createCustomItem(Inventory inv, Material material, int invSlot, String displayName, String... loreText) {
         if ((invSlot >= 0 && invSlot <= inv.getSize())) {
             ItemStack item;
             List<String> lore = new ArrayList<>();
@@ -83,8 +85,6 @@ public final class SystemInfoGui {
             meta.setLore(lore);
             item.setItemMeta(meta);
             inv.setItem(invSlot - 1, item);
-        } else {
-            throw new IllegalArgumentException("Illegal values chosen for creating a custom item.");
         }
     }
 
@@ -95,23 +95,25 @@ public final class SystemInfoGui {
      */
     private static void updateInventory(Inventory inventory) {
         createCustomItem(inventory, Material.LIME_CONCRETE, 11, "&2Processor",
-                String.format("&7Vendor: &a%s", values.getCpuVendor()),
-                String.format("&7Model: &a%s %s", values.getCpuModel(), values.getCpuModelName()),
-                String.format("&7Clock speed: &a%s GHz", values.getCpuMaxFrequency()),
-                String.format("&7Cores: &a%s", values.getCpuCores()),
-                String.format("&7Threads: &a%s", values.getCpuThreads()));
+                "&7Vendor: &a" + values.getCpuVendor(),
+                "&7Model: &a" + values.getCpuModel() + " " + values.getCpuModelName(),
+                "&7Clock Speed: &a" + values.getCpuMaxFrequency() + " GHz",
+                "&7Physical Cores: &a" + values.getCpuCores(),
+                "&7Logical Cores: &a" + values.getCpuThreads());
 
         createCustomItem(inventory, Material.GREEN_CONCRETE, 13, "&2Memory",
-                String.format("&7Total:&a %s", values.getMaxMemory()),
-                String.format("&7Available:&a %s", values.getAvailableMemory()),
-                String.format("&7Swap:&a %s/%s", values.getUsedSwap(), values.getTotalSwap()));
+                "&7Total: &a" + values.getMaxMemory(),
+                "&7Available: &a" + values.getAvailableMemory(),
+                "&7Swap Used: &a" + values.getUsedSwap(),
+                "&7Swap Allocated: &a" + values.getTotalSwap());
 
         createCustomItem(inventory, Material.LIGHT_BLUE_CONCRETE, 15, "&2Operating system",
-                String.format("&7Name: &a%s %s %s", values.getOSFamily(), values.getOSManufacturer(), values.getOSVersion()),
-                String.format("&7Processes: &a%d", values.getRunningProcesses()));
+                "&7Name: &a" + values.getOSFamily() + " " + values.getOSManufacturer(),
+                "&7Version: &a" + values.getOSVersion(),
+                "&7Active Processes: &a" + values.getRunningProcesses());
 
         createCustomItem(inventory, Material.BLUE_CONCRETE, 17, "&2Uptime",
-                String.format("&7Jvm uptime: &a%d min", ChronoUnit.MINUTES.between(SystemInfo.getInstance().getStartupTime(), LocalDateTime.now())),
-                String.format("&7Current time: &a%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("d\\M\\u h:m:s a"))));
+                "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(SystemInfo.getInstance().getStartupTime(), LocalDateTime.now()) + " min.",
+                "&7Current time: &a%s" + LocalDateTime.now().format(TIME_FORMATTER));
     }
 }

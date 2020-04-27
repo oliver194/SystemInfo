@@ -36,10 +36,10 @@ public final class CommandVmstat extends Command {
 
     private void vmstat(CommandSender sender) {
         sender.sendMessage(Utils.color("&2«« &7Memory info &2»»"));
-        sender.sendMessage(String.format(Utils.color("&7Available memory: &a%s"), values.getAvailableMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Allocated memory: &a%s"), values.getUsedMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Total memory: &a%s"), values.getMaxMemory()));
-        sender.sendMessage(String.format(Utils.color("&7Swap total memory: &a%s"), values.getTotalSwap()));
-        sender.sendMessage(Utils.color(String.format("&7Swap used memory: &a%s", values.getUsedSwap())));
+        sender.sendMessage(Utils.color("&7Available memory: &a" + values.getAvailableMemory()));
+        sender.sendMessage(Utils.color("&7Allocated memory: &a" + values.getUsedMemory()));
+        sender.sendMessage(Utils.color("&7Total memory: &a" + values.getMaxMemory()));
+        sender.sendMessage(Utils.color("&7Swap total memory: &a" + values.getTotalSwap()));
+        sender.sendMessage(Utils.color("&7Swap used memory: &a" + values.getUsedSwap()));
     }
 }

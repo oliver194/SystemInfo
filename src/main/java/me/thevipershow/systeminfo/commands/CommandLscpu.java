@@ -36,11 +36,13 @@ public final class CommandLscpu extends Command {
 
     private void printLscpu(CommandSender sender) {
         sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
-        sender.sendMessage(Utils.color(String.format(" &7OS: &a%s %s %s", values.getOSFamily(), values.getOSManufacturer(), values.getOSVersion())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu vendor: &a%s", values.getCpuVendor())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu model: &a%s %s", values.getCpuModel(), values.getCpuModelName())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu clock speed: &a%s GHz", values.getCpuMaxFrequency())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu stepping: &a%s", values.getCpuStepping())));
-        sender.sendMessage(Utils.color(String.format(" &7Cpu c/t: &a%s/%s", values.getCpuCores(), values.getCpuThreads())));
+        sender.sendMessage(Utils.color("&7Operating System: &a" + values.getOSFamily() + " " + values.getOSManufacturer() + " " + values.getOSVersion()));
+        sender.sendMessage(Utils.color("&7Cpu Vendor: &a" + values.getCpuVendor()));
+        sender.sendMessage(Utils.color("&7Cpu Model: &a" + values.getCpuModel() + " " + values.getCpuModelName()));
+        sender.sendMessage(Utils.color("&7Cpu Clock Rate: &a" + values.getCpuMaxFrequency()));
+        sender.sendMessage(Utils.color("&7Cpu Stepping: &a" + values.getCpuStepping()));
+        sender.sendMessage(Utils.color("&7Physical Cores: &a" + values.getCpuCores()));
+        sender.sendMessage(Utils.color("&7Logical Cores: &a" + values.getThreadCount()));
     }
+
 }

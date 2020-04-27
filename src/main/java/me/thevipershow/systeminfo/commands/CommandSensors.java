@@ -23,9 +23,9 @@ public final class CommandSensors extends Command {
     public boolean execute(CommandSender sender, String s, String[] args) {
         if (sender.hasPermission("systeminfo.commands.sensors")) {
             if (args.length == 0) {
-                sender.sendMessage(Utils.color(String.format("&7Fans RPM: &a%s", values.getFansRPM())));
-                sender.sendMessage(Utils.color(String.format("&7Cpu Voltage: &a%s", values.getCpuVoltage())));
-                sender.sendMessage(Utils.color(String.format("&7Cpu Temperature: %s", values.getCpuTemperatureStatus())));
+                sender.sendMessage(Utils.color("&7Fans RPM: &a" + values.getFansRPM()));
+                sender.sendMessage(Utils.color("&7Cpu Voltage: &a" + values.getCpuVoltage()));
+                sender.sendMessage(Utils.color("&7Cpu Temperature: " + values.getCpuTemperatureStatus()));
                 return true;
             }
         } else {

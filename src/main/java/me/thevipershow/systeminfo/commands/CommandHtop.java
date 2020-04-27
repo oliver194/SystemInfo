@@ -41,7 +41,7 @@ public final class CommandHtop extends Command {
 
     private void printHtop(CommandSender sender) {
         sender.sendMessage(Utils.color("&2« &7Htop &2»"));
-        sender.sendMessage(Utils.color(String.format("&7Processes: &a%d &7Threads: &a%d", values.getRunningProcesses(), values.getThreadCount())));
+        sender.sendMessage(Utils.color("&7Processes: &a" + values.getRunningProcesses() + " &7Threads: &a" + values.getThreadCount()));
         sender.sendMessage(Utils.color("&7    PID  %CPU %MEM     VSZ            NAME"));
         List<OSProcess> processes = Arrays.asList(values.getOSProcesses(9, OperatingSystem.ProcessSort.CPU));
         for (int i = 0; i < processes.size() && i < 8; i++) {

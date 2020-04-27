@@ -6,7 +6,7 @@ import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.gui.SystemInfoGui;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.World;
+import static org.bukkit.World.Environment.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,9 +77,9 @@ public final class CommandSystemInfo extends Command {
 
     private void stats(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Server stats &2«"));
-        sender.sendMessage(String.format(Utils.color("&2» &7Overworld Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NORMAL), Utils.loadedChunksInWorlds(World.Environment.NORMAL)));
-        sender.sendMessage(String.format(Utils.color("&2» &7Nether Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.NETHER), Utils.loadedChunksInWorlds(World.Environment.NETHER)));
-        sender.sendMessage(String.format(Utils.color("&2» &7End Entities: &a%s &7Loaded chunks: &a%s"), Utils.countEntitiesInWorlds(World.Environment.THE_END), Utils.loadedChunksInWorlds(World.Environment.THE_END)));
+        sender.sendMessage(Utils.color("&2» &7Overworld Entities: &a" + Utils.countEntitiesInWorlds(NORMAL) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NORMAL)));
+        sender.sendMessage(Utils.color("&2» &7Nether Entities: &a" + Utils.countEntitiesInWorlds(NETHER) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NETHER)));
+        sender.sendMessage(Utils.color("&2» &7End Entities: &a" + Utils.countEntitiesInWorlds(THE_END) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(THE_END)));
     }
 
     private void reload(CommandSender sender) {

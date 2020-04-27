@@ -42,14 +42,14 @@ public final class CommandDisks extends Command {
 
     private void printDisks(CommandSender sender) {
         for (HWDiskStore disk : values.getDiskStores()) {
-            sender.sendMessage(Utils.builderHover(String.format("&7[%s %s", disk.getName(), disk.getModel()),
-                    String.format("&7Serial: &a%s\n&7Disk Read: &a%s\n&7Disk Written: &a%s\n",
-                            disk.getSerial(), Utils.formatData(disk.getReadBytes()), Utils.formatData(disk.getWriteBytes()))));
+            sender.sendMessage(Utils.builderHover("&7[" + disk.getName() + " " + disk.getModel(),
+                    "&7Serial: &a" + disk.getSerial()
+                            + "\n&7Disk Read: &a" + Utils.formatData(disk.getReadBytes())
+                            + "\n&7Disk Written: &a" + Utils.formatData(disk.getWriteBytes())));
             for (HWPartition part : disk.getPartitions()) {
-                sender.sendMessage(Utils.builderHover(String.format("  &7|-- &a%s &7Size: &a%s", part.getIdentification() + " " + part.getType(), Utils.formatData(part.getSize())),
-                        String.format("&7Mount point: &a%s &7Uuid: &a%s", part.getMountPoint(), part.getUuid())));
+                sender.sendMessage(Utils.builderHover("  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()),
+                        "&7Mount Point: &a" + part.getMountPoint() + " &7Uuid: &a" + part.getUuid()));
             }
-
         }
     }
 }

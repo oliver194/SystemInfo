@@ -37,6 +37,6 @@ public final class CommandUptime extends Command {
     private void uptime(CommandSender sender) {
         final long uptime = ChronoUnit.MINUTES.between(SystemInfo.getInstance().getStartupTime(), LocalDateTime.now());
         sender.sendMessage(Utils.color("&2»» &7Machine uptime &2««"));
-        sender.sendMessage(String.format(Utils.color("&2» &7JVM Uptime: &a%s min."), uptime));
+        sender.sendMessage(Utils.color("&2» &7JVM Uptime: &a" + uptime + " min."));
     }
 }
