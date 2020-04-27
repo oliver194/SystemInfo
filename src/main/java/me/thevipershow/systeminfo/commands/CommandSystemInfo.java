@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.gui.SystemInfoGui;
-import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import static org.bukkit.World.Environment.*;
 import org.bukkit.command.Command;
@@ -26,32 +25,34 @@ public final class CommandSystemInfo extends Command {
             if (args.length == 0) {
                 systemInfo1(sender);
                 return true;
-            } else if (args.length == 1 && args[0].equals("2")) {
-                systemInfo2(sender);
-                return true;
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
-                sender.sendMessage(String.format(Utils.color("&2» &7SystemInfo version: &a%s"), SystemInfo.getInstance().getDescription().getVersion()));
-                return true;
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("stats")) {
-                stats(sender);
-                return true;
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-                SystemValues.getInstance().updateValues();
-                reload(sender);
-            } else if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
-                if (sender instanceof Player) {
-                    SystemInfoGui.createGui((Player) sender);
-                } else {
-                    sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console .-."));
+            } else if (args.length == 1) {
+                switch (args[0].toLowerCase()) {
+                    case "2":
+                        systemInfo2(sender);
+                        break;
+                    case "version":
+                        sender.sendMessage(Utils.color("&2» &7SystemInfo version: &a" + SystemInfo.getInstance().getDescription().getVersion()));
+                        break;
+                    case "stats":
+                        stats(sender);
+                        break;
+                    case "reload":
+                        reload(sender);
+                        break;
+                    case "gui":
+                        if (sender instanceof Player) {
+                            SystemInfoGui.createGui((Player) sender);
+                        } else {
+                            sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console"));
+                        }
+                        break;
+                    default:
+                        sender.sendMessage(Messages.INVALID_ARGS.value(true));
+                        break;
                 }
-                return true;
-            } else {
-                sender.sendMessage(Messages.INVALID_ARGS.value(true));
             }
-        } else {
-            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
         }
-        return false;
+        return true;
     }
 
     private void systemInfo1(CommandSender sender) {
@@ -61,7 +62,6 @@ public final class CommandSystemInfo extends Command {
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[*]", "this gets memory usage\nof the entire host"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[*]", "gets various info from sensors"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[*]", "prints out a map of disks."));
-        //sender.spigot().sendMessage(Utils.builderHover("&f- &7/benchmark &aget CPU-benchmark score! &8[*]", "Makes a CPU benchmark and gives a score!")); @Deprecated
         sender.spigot().sendMessage(Utils.builderClick("&7»» Click here for second page &f[*]", "/systeminfo 2"));
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
     }
