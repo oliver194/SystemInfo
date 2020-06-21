@@ -26,7 +26,6 @@ public final class SystemInfoGui {
 
     private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 
-
     /**
      * This methods creates the GUI to a Player
      *
@@ -55,7 +54,7 @@ public final class SystemInfoGui {
         Iterator<Integer> invSlot = SystemInfoGui.backgroundSlots.iterator();
         Bukkit.getScheduler().runTaskTimer(SystemInfo.getInstance(), r -> {
             if (invSlot.hasNext()) {
-                createCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, invSlot.next(), " ", " ");
+                createCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, invSlot.next(), "", "");
             } else {
                 r.cancel();
             }

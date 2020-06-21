@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.Collections;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
@@ -20,7 +21,7 @@ public final class CommandHtop extends Command {
         super("htop",
                 "shows a list of the processes running on the system",
                 "/<command>",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override

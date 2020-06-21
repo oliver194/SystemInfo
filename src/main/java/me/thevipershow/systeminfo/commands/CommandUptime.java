@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.Collections;
 import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.utils.Utils;
@@ -16,7 +17,7 @@ public final class CommandUptime extends Command {
         super("uptime",
                 "get the JVM uptime",
                 "/<command>",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override
@@ -40,3 +41,4 @@ public final class CommandUptime extends Command {
         sender.sendMessage(Utils.color("&2» &7JVM Uptime: &a" + uptime + " min."));
     }
 }
+

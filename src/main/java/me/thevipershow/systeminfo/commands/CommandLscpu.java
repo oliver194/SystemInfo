@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.Collections;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
@@ -16,7 +17,7 @@ public final class CommandLscpu extends Command {
         super("lscpu",
                 "get information about the system processor(s)",
                 "/<command>",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.Collections;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
@@ -17,7 +18,7 @@ public final class CommandDevices extends Command {
         super("devices",
                 "get a list of system devices",
                 "/<command>",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override

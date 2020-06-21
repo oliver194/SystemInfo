@@ -7,8 +7,23 @@ import org.bukkit.command.CommandMap;
 import java.util.Arrays;
 import java.util.List;
 
-public class Manager {
-    private static final List<Command> commands = Arrays.asList(
+public final class Manager {
+    
+    private static Manager instance = null;
+    private final CommandMap commandMap;
+    
+    private Manager(CommandMap map) {
+        this.commandMap = map;
+    }
+    
+    public static Manager getInstance(CommandMap map) {
+        if (instance == null) {
+            instance = new Manager(map);
+        }
+        return instance;
+    }
+    
+    private final List<Command> commands = Arrays.asList(
             new  CommandCpuLoad(),
             new CommandDevices(),
             new CommandDisks(),
@@ -19,8 +34,9 @@ public class Manager {
             new CommandUptime(),
             new CommandVmstat()
     );
-
-    public Manager(CommandMap map) {
-        map.registerAll("system", commands);
+    
+    public final void registerAll() {
+        commandMap.registerAll("system", commands);
     }
 }
+

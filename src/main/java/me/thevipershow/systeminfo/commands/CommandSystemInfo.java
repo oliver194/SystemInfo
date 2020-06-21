@@ -1,11 +1,13 @@
 package me.thevipershow.systeminfo.commands;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import me.thevipershow.systeminfo.SystemInfo;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.gui.SystemInfoGui;
 import me.thevipershow.systeminfo.utils.Utils;
-import static org.bukkit.World.Environment.*;
+import static org.bukkit.World.Environment.NETHER;
+import static org.bukkit.World.Environment.NORMAL;
+import static org.bukkit.World.Environment.THE_END;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +18,7 @@ public final class CommandSystemInfo extends Command {
         super("systeminfo",
                 "main command of SystemInfo plugin",
                 "/<command> [stats|gui|version|2]",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override

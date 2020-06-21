@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.commands;
 
+import java.util.Collections;
 import me.thevipershow.systeminfo.enums.Messages;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
@@ -18,7 +19,7 @@ public final class CommandDisks extends Command {
         super("disks",
                 "get your system disks list",
                 "/<command>",
-                new ArrayList<>());
+                Collections.emptyList());
     }
 
     @Override
