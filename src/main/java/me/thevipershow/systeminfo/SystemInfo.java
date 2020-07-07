@@ -2,7 +2,9 @@ package me.thevipershow.systeminfo;
 
 import me.thevipershow.systeminfo.api.SysteminfoPlaceholder;
 import me.thevipershow.systeminfo.commands.register.Manager;
+import me.thevipershow.systeminfo.csvwriter.CSVLogger;
 import me.thevipershow.systeminfo.gui.GuiClickListener;
+import me.thevipershow.systeminfo.oshi.SystemValues;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +16,7 @@ public final class SystemInfo extends JavaPlugin {
 
     private final LocalDateTime startupTime = LocalDateTime.now();
     private final PluginManager pluginManager = Bukkit.getPluginManager();
+    private CSVLogger csvLogger;
     private Manager commandManager;
     private static SystemInfo instance;
 
@@ -37,6 +40,13 @@ public final class SystemInfo extends JavaPlugin {
             return;
         }
         pluginManager.registerEvents(new GuiClickListener(), instance);
+        csvLogger = CSVLogger.getInstance(SystemValues.getInstance(), this);
+        csvLogger.startLogging();
+    }
+
+    @Override
+    public void onDisable() {
+        csvLogger.stopLogging();
     }
 
     public static SystemInfo getInstance() {

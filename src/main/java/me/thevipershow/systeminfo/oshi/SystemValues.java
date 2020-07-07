@@ -73,6 +73,10 @@ public final class SystemValues {
         return Utils.formatData(memory.getTotal() - memory.getAvailable());
     }
 
+    public String getUsedMemory2() {
+        return String.valueOf((memory.getTotal() - memory.getAvailable()) / 1e+9);
+    }
+
     /**
      * @return Returns the formatted value of the system current maximum swap memory.
      */
