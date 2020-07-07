@@ -5,6 +5,7 @@ import me.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import oshi.util.Util;
 
 import java.io.File;
@@ -24,6 +25,8 @@ public final class CSVLogger {
     private final static String[] head = {"Cpu_Load", "Used_Memory", "Players", "Entities", "Chunks"};
     private LinkedList<String[]> rows = new LinkedList<>();
     private long[] previousTicks;
+    private BukkitTask bukkitTask = null;
+
 
     private CSVLogger(SystemValues systemValues, Plugin plugin) {
         this.systemValues = systemValues;
@@ -37,18 +40,21 @@ public final class CSVLogger {
     }
 
     public void startLogging() {
-        startTime = LocalDateTime.now().format(formatter);
-        previousTicks = systemValues.getSystemCpuLoadTicks();
-        Util.sleep(1000);
-        rows.push(new String[]{String.valueOf(systemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100),
-                systemValues.getUsedMemory(),
-                systemValues.getUsedMemory2(),
-                String.valueOf(Bukkit.getOnlinePlayers().size()),
-                String.valueOf(Bukkit.getWorlds().stream().mapToInt(World::getEntityCount).sum()),
-                String.valueOf(Bukkit.getWorlds().stream().mapToInt(w -> w.getLoadedChunks().length).sum())});
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            startTime = LocalDateTime.now().format(formatter);
+            previousTicks = systemValues.getSystemCpuLoadTicks();
+            Util.sleep(1000);
+            rows.push(new String[]{String.valueOf(systemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100),
+                    systemValues.getUsedMemory(),
+                    systemValues.getUsedMemory2(),
+                    String.valueOf(Bukkit.getOnlinePlayers().size()),
+                    String.valueOf(Bukkit.getWorlds().stream().mapToInt(World::getEntityCount).sum()),
+                    String.valueOf(Bukkit.getWorlds().stream().mapToInt(w -> w.getLoadedChunks().length).sum())});
+        }, 1L, 20L * 60L);
     }
 
     public void stopLogging() {
+        bukkitTask.cancel();
         logFile = new File(plugin.getDataFolder(), "data-" + startTime + ".csv");
         try {
             logFile.createNewFile();
