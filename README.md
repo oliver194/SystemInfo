@@ -1,3 +1,4 @@
+https://img.shields.io/github/issues/TheViperShow/SystemInfo?style=for-the-badge https://img.shields.io/github/forks/TheViperShow/SystemInfo?style=for-the-badge https://img.shields.io/github/stars/TheViperShow/SystemInfo?style=for-the-badge https://img.shields.io/github/license/TheViperShow/SystemInfo?style=for-the-badge https://img.shields.io/badge/speed-optimized-green
 **SystemInfo**
 This plugins is the refactored version of the previous SystemInfoPRO
 This has been built to easily achieve info from the system where the minecraft server is being hosted on.
