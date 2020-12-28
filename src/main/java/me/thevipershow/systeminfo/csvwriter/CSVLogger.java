@@ -1,9 +1,9 @@
 package me.thevipershow.systeminfo.csvwriter;
 
 import com.opencsv.CSVWriter;
+import java.time.temporal.TemporalAccessor;
 import me.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import oshi.util.Util;
@@ -15,14 +15,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class CSVLogger {
     private static CSVLogger instance = null;
     private SystemValues systemValues;
     private Plugin plugin;
     private File logFile;
     private String startTime;
-    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-    private final static String[] head = {"Cpu_Load", "Used_Memory", "Used_Swap", "Players", "LivingEntities", "Chunks"};
+    private final static DateTimeFormatter fileTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+    private final static DateTimeFormatter csvTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    private final static String[] head = {"Time", "Cpu_Load", "Used_Memory", "Used_Swap", "Players", "LivingEntities", "Chunks"};
     private final LinkedList<String[]> rows = new LinkedList<>();
     private long[] previousTicks;
     private BukkitTask bukkitTask = null;
@@ -41,11 +43,12 @@ public final class CSVLogger {
 
     public void startLogging() {
         bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            startTime = LocalDateTime.now().format(formatter);
+            startTime = LocalDateTime.now().format(fileTimeFormatter);
             previousTicks = systemValues.getSystemCpuLoadTicks();
             Util.sleep(1000);
             rows.push(
                     new String[]{
+                            csvTimeFormatter.format(LocalDateTime.now()),
                             String.format("%.2f", systemValues.getSystemCpuLoadBetweenTicks(previousTicks) * 100),
                             String.valueOf(systemValues.getMemory().getTotal() - systemValues.getMemory().getAvailable()),
                             String.valueOf(systemValues.getMemory().getVirtualMemory().getSwapUsed()),
