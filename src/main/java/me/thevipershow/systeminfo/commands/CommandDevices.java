@@ -41,8 +41,8 @@ public final class CommandDevices extends Command {
         sender.sendMessage(Utils.color("&2» &7List:"));
         for (UsbDevice usb : values.getUsbDevices()) {
             sender.sendMessage(Utils.color("&7- &a" + usb.getVendor() + " " + usb.getSerialNumber()));
-            sender.sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
-            if (usb.getConnectedDevices().length != 0) {
+            sender.spigot().sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
+            if (usb.getConnectedDevices().size() != 0) {
                 for (UsbDevice subUsb : usb.getConnectedDevices()) {
                     sender.sendMessage(Utils.color((" &7|- &a" + subUsb.getVendor() + " " + subUsb.getName())));
                 }

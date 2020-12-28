@@ -43,12 +43,12 @@ public final class CommandDisks extends Command {
 
     private void printDisks(CommandSender sender) {
         for (HWDiskStore disk : values.getDiskStores()) {
-            sender.sendMessage(Utils.builderHover("&7[" + disk.getName() + " " + disk.getModel(),
+            sender.spigot().sendMessage(Utils.builderHover("&7[" + disk.getName() + " " + disk.getModel(),
                     "&7Serial: &a" + disk.getSerial()
                             + "\n&7Disk Read: &a" + Utils.formatData(disk.getReadBytes())
                             + "\n&7Disk Written: &a" + Utils.formatData(disk.getWriteBytes())));
             for (HWPartition part : disk.getPartitions()) {
-                sender.sendMessage(Utils.builderHover("  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()),
+                sender.spigot().sendMessage(Utils.builderHover("  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()),
                         "&7Mount Point: &a" + part.getMountPoint() + " &7Uuid: &a" + part.getUuid()));
             }
         }

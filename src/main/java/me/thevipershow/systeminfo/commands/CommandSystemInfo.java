@@ -17,7 +17,7 @@ public final class CommandSystemInfo extends Command {
     public CommandSystemInfo() {
         super("systeminfo",
                 "main command of SystemInfo plugin",
-                "/<command> [stats|gui|version|2]",
+                "/<command> [stats|gui|version|reload]",
                 Collections.emptyList());
     }
 

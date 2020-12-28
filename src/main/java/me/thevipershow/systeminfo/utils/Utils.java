@@ -108,13 +108,7 @@ public class Utils {
      */
     public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {
         if (commandMap == null) {
-            try {
-                commandMap = Bukkit.getCommandMap();
-                return commandMap;
-            } catch (NoSuchMethodError ignored) {
-                //exception is ignored
-            }
-            final Class<? extends Server> serverClass = Bukkit.getServer().getClass();
+            Class<? extends Server> serverClass = Bukkit.getServer().getClass();
             Field commandMapField = serverClass.getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
             commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());

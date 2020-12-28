@@ -1,5 +1,6 @@
 package me.thevipershow.systeminfo.oshi;
 
+import java.util.List;
 import me.thevipershow.systeminfo.utils.Utils;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -43,6 +44,38 @@ public final class SystemValues {
         processorIdentifier = centralProcessor.getProcessorIdentifier();
         virtualMemory = memory.getVirtualMemory();
         osVersionInfo = operatingSystem.getVersionInfo();
+    }
+
+    public OperatingSystem getOperatingSystem() {
+        return operatingSystem;
+    }
+
+    public HardwareAbstractionLayer getHardwareAbstractionLayer() {
+        return hardwareAbstractionLayer;
+    }
+
+    public CentralProcessor getCentralProcessor() {
+        return centralProcessor;
+    }
+
+    public Sensors getSensors() {
+        return sensors;
+    }
+
+    public GlobalMemory getMemory() {
+        return memory;
+    }
+
+    public CentralProcessor.ProcessorIdentifier getProcessorIdentifier() {
+        return processorIdentifier;
+    }
+
+    public VirtualMemory getVirtualMemory() {
+        return virtualMemory;
+    }
+
+    public OperatingSystem.OSVersionInfo getOsVersionInfo() {
+        return osVersionInfo;
     }
 
     /**
@@ -209,7 +242,7 @@ public final class SystemValues {
      * @param processSort the type of resource to sort processes by
      * @return returns an array of processes
      */
-    public OSProcess[] getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
+    public List<OSProcess> getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
         return operatingSystem.getProcesses(pids, processSort);
     }
 
@@ -231,7 +264,7 @@ public final class SystemValues {
      * @return get an array of HWDiskStore which represents a NVM
      * @see <a href=https://en.wikipedia.org/wiki/Non-volatile_memory>"Wikipedia Non-volatile memory</a>
      */
-    public HWDiskStore[] getDiskStores() {
+    public List<HWDiskStore> getDiskStores() {
         return hardwareAbstractionLayer.getDiskStores();
     }
 
@@ -239,7 +272,7 @@ public final class SystemValues {
      * @return get an array of USB devices attached to the machine
      * @see <a href=https://en.wikipedia.org/wiki/USB>Wikipedia USB</a>
      */
-    public UsbDevice[] getUsbDevices() {
+    public List<UsbDevice> getUsbDevices() {
         return hardwareAbstractionLayer.getUsbDevices(true);
     }
 
