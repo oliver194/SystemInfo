@@ -16,6 +16,14 @@ and\or analyze performance issues.
 
 ![csv](https://i.imgur.com/CZeeNFh.png)
 
+<h2> Speedtest </h2>
+With SystemInfo you can speedtest your plugin and see your network strength!
+<br>
+
+**/speedtest**
+
+![Imgur](https://i.imgur.com/QYqVd1u.png)
+
 ![Imgur](https://i.imgur.com/KFs485C.png)
 /**cpuload** prints system load info.
 
@@ -68,15 +76,17 @@ You can open it with */systeminfo gui*<br>
 
 ![Imgur](https://i.imgur.com/WRk6Bxv.png)
 Every command in the plugin requires a permission , here's a list:
-*systeminfo.command.cpuload
-systeminfo.command.devices
-systeminfo.command.disks
-systeminfo.command.htop
-systeminfo.command.lscpu
-systeminfo.command.sensors
-systeminfo.command.uptime
-systeminfo.command.vmstat
-systeminfo.command.help*
+
+*systeminfo.command.cpuload,</br>
+systeminfo.commands.devices,</br>
+systeminfo.commands.disks,</br>
+systeminfo.commands.htop,</br>
+systeminfo.commands.lscpu,</br>
+systeminfo.commands.sensors,</br>
+systeminfo.commands.uptime,</br>
+systeminfo.commands.vmstat,</br>
+systeminfo.commands.speedtest,</br>
+systeminfo.commands.help*
 
 ![Imgur](https://i.imgur.com/9l3i6FV.png)
 This plugin has various flags that can be used with PlaceHolderAPI plugin.

@@ -1,11 +1,19 @@
 package me.thevipershow.systeminfo.commands.register;
 
-import me.thevipershow.systeminfo.commands.*;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+import me.thevipershow.systeminfo.commands.CommandCpuLoad;
+import me.thevipershow.systeminfo.commands.CommandDevices;
+import me.thevipershow.systeminfo.commands.CommandDisks;
+import me.thevipershow.systeminfo.commands.CommandHtop;
+import me.thevipershow.systeminfo.commands.CommandLscpu;
+import me.thevipershow.systeminfo.commands.CommandSensors;
+import me.thevipershow.systeminfo.commands.CommandSpeedtest;
+import me.thevipershow.systeminfo.commands.CommandSystemInfo;
+import me.thevipershow.systeminfo.commands.CommandUptime;
+import me.thevipershow.systeminfo.commands.CommandVmstat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-
-import java.util.Arrays;
-import java.util.List;
 
 public final class Manager {
     
@@ -23,7 +31,7 @@ public final class Manager {
         return instance;
     }
     
-    private final List<Command> commands = Arrays.asList(
+    private final List<Command> commands = ImmutableList.of(
             new  CommandCpuLoad(),
             new CommandDevices(),
             new CommandDisks(),
@@ -32,11 +40,12 @@ public final class Manager {
             new CommandSensors(),
             new CommandSystemInfo(),
             new CommandUptime(),
-            new CommandVmstat()
+            new CommandVmstat(),
+            new CommandSpeedtest()
     );
     
     public final void registerAll() {
-        commandMap.registerAll("system", commands);
+        commandMap.registerAll("systeminfo", commands);
     }
 }
 

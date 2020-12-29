@@ -78,6 +78,7 @@ public final class CommandSystemInfo extends Command {
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/uptime &aget the machine uptime! &8[&7*&8]", "get the total uptime of machine"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/devices &aget devices list! &8[&7*&8]", "get every attached device"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/cpuload &aget the CPU load! &8[&7&8]", "Get CPU current percentage load"));
+        sender.spigot().sendMessage(Utils.builderClick("&f- &7/speedtest &aBenchmark your network! &8[&7&8]", "Get your download\\upload speeds"));
         sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
     }
 
