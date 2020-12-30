@@ -1,6 +1,6 @@
 name: "SystemInfo"
 version: ${project.version}
-main: me.thevipershow.systeminfo.SystemInfo
+main: studio.thevipershow.systeminfo.SystemInfo
 api-version: '1.13'
 load: STARTUP
 authors: [TheViperShow]
