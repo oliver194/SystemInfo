@@ -26,7 +26,7 @@ public final class CommandSystemInfo extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String name, String[] args) {
-        if (sender.hasPermission("systeminfo.command.help")) {
+        if (sender.hasPermission("systeminfo.commands.help")) {
             if (args.length == 0) {
                 systemInfo1(sender);
                 return true;

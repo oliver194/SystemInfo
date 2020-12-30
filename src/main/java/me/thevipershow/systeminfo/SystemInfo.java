@@ -4,7 +4,10 @@ import me.thevipershow.systeminfo.api.SysteminfoPlaceholder;
 import me.thevipershow.systeminfo.commands.register.Manager;
 import me.thevipershow.systeminfo.csvwriter.CSVLogger;
 import me.thevipershow.systeminfo.gui.GuiClickListener;
+import me.thevipershow.systeminfo.listeners.JoinNotifyListener;
 import me.thevipershow.systeminfo.oshi.SystemValues;
+import me.thevipershow.systeminfo.updater.DefaultConsoleUpdateHandler;
+import me.thevipershow.systeminfo.updater.PluginUpdater;
 import me.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,10 +21,18 @@ public final class SystemInfo extends JavaPlugin {
     private final PluginManager pluginManager = Bukkit.getPluginManager();
     private CSVLogger csvLogger;
     private Manager commandManager;
+    private PluginUpdater pluginUpdater;
     private static SystemInfo instance;
 
     @Override
-    public void onEnable() {
+    public final void onLoad() {
+        pluginUpdater = PluginUpdater.getInstance(this);
+        pluginUpdater.addHandler(new DefaultConsoleUpdateHandler(this));
+        pluginUpdater.performVersionChecks();
+    }
+
+    @Override
+    public final void onEnable() {
         instance = this;
 
         if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
@@ -39,13 +50,15 @@ public final class SystemInfo extends JavaPlugin {
             pluginManager.disablePlugin(this);
             return;
         }
-        pluginManager.registerEvents(new GuiClickListener(), instance);
+        pluginManager.registerEvents(new GuiClickListener(), this);
         csvLogger = CSVLogger.getInstance(SystemValues.getInstance(), this);
         csvLogger.startLogging();
+
+        pluginManager.registerEvents(new JoinNotifyListener(this), this);
     }
 
     @Override
-    public void onDisable() {
+    public final void onDisable() {
         csvLogger.stopLogging();
     }
 
@@ -53,8 +66,12 @@ public final class SystemInfo extends JavaPlugin {
         return instance;
     }
 
-    public LocalDateTime getStartupTime() {
+    public final LocalDateTime getStartupTime() {
         return startupTime;
+    }
+
+    public final PluginUpdater getPluginUpdater() {
+        return pluginUpdater;
     }
 }
 
