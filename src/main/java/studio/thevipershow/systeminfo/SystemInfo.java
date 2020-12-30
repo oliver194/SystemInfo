@@ -28,15 +28,6 @@ public final class SystemInfo extends JavaPlugin {
     private final static long EIGHT_HOURS_TICKS = 20L * 60L * 60L * 8L;
 
     @Override
-    public final void onLoad() {
-        joinNotifyListener = new JoinNotifyListener(this);
-        pluginUpdater = PluginUpdater.getInstance(this);
-        pluginUpdater.addHandler(new DefaultConsoleUpdateHandler(this));
-        pluginUpdater.addHandler(new NotifyDataUpdateHandler(this));
-        getServer().getScheduler().runTaskTimer(this, pluginUpdater::performVersionChecks, 0L, EIGHT_HOURS_TICKS);
-    }
-
-    @Override
     public final void onEnable() {
         instance = this;
 
@@ -58,6 +49,12 @@ public final class SystemInfo extends JavaPlugin {
         pluginManager.registerEvents(new GuiClickListener(), this);
         csvLogger = CSVLogger.getInstance(SystemValues.getInstance(), this);
         csvLogger.startLogging();
+
+        joinNotifyListener = new JoinNotifyListener(this);
+        pluginUpdater = PluginUpdater.getInstance(this);
+        pluginUpdater.addHandler(new DefaultConsoleUpdateHandler(this));
+        pluginUpdater.addHandler(new NotifyDataUpdateHandler(this));
+        getServer().getScheduler().runTaskTimer(this, pluginUpdater::performVersionChecks, 0L, EIGHT_HOURS_TICKS);
 
         pluginManager.registerEvents(joinNotifyListener, this);
     }

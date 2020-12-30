@@ -164,7 +164,7 @@ public final class PluginUpdater {
                 final JsonObject jsonObject = new JsonParser().parse(new String(response.body().bytes(), (StandardCharsets.UTF_8))).getAsJsonObject();
                 final String currentVersionStr = jsonObject.get("current_version").getAsString();
                 final VersionData latestVersion = parseString(currentVersionStr);
-                final VersionCompareResult compareResult = new VersionCompareResult(currentVersion, latestVersion, isCurrentVersionLower(latestVersion));
+                final VersionCompareResult compareResult = new VersionCompareResult(currentVersion, latestVersion, !isCurrentVersionLower(latestVersion));
                 setLastCompareResult(Objects.requireNonNull(compareResult, "The compareResult is null"));
                 setLastCompareTime(System.currentTimeMillis());
                 handlers.forEach(handler -> handler.onResult(compareResult));
