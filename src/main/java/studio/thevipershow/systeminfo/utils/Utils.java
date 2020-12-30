@@ -38,6 +38,22 @@ public class Utils {
                 : String.format("%s%.1f EB", s, b / 1e6);
     }
 
+    public final static int BITS_IN_BYTE = 0x08;
+
+    public static String formatDataBits(final long bytes) {
+        final long bits = Math.abs(BITS_IN_BYTE * bytes);
+
+        if (bits / 10E3 <= 99) {
+            return String.format("%.1f KiB", bits /10E2);
+        } else if (bits / 10E6 <= 99) {
+            return String.format("%.1f MiB", bits / 10E5);
+        } else if (bits / 10E9 <= 99) {
+            return String.format("%.2f GiB", bits / 10E8);
+        } else {
+            return String.format("%.3f TiB", bits / 10E11);
+        }
+    }
+
     /**
      * Creates a custom BaseComponent with an hover event using the following parameters.
      *

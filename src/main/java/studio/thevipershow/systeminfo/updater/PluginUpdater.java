@@ -142,7 +142,7 @@ public final class PluginUpdater {
     }
 
     private final OkHttpClient client = new OkHttpClient.Builder()
-            .callTimeout(1L, TimeUnit.SECONDS)
+            .callTimeout(10L, TimeUnit.SECONDS)
             .build();
 
     public final void performVersionChecks() {
