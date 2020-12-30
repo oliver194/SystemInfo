@@ -1,6 +1,7 @@
 package studio.thevipershow.systeminfo.oshi;
 
 import java.util.List;
+import java.util.logging.Logger;
 import studio.thevipershow.systeminfo.utils.Utils;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -35,15 +36,67 @@ public final class SystemValues {
     }
 
     public void updateValues() {
-        final SystemInfo systemInfo = new SystemInfo();
-        operatingSystem = systemInfo.getOperatingSystem();
-        hardwareAbstractionLayer = systemInfo.getHardware();
-        centralProcessor = hardwareAbstractionLayer.getProcessor();
-        sensors = hardwareAbstractionLayer.getSensors();
-        memory = hardwareAbstractionLayer.getMemory();
-        processorIdentifier = centralProcessor.getProcessorIdentifier();
-        virtualMemory = memory.getVirtualMemory();
-        osVersionInfo = operatingSystem.getVersionInfo();
+        Logger logger = studio.thevipershow.systeminfo.SystemInfo.getInstance().getLogger();
+        SystemInfo systemInfo;
+        try {
+            systemInfo = new SystemInfo();
+        } catch (Exception e) {
+            logger.warning("Could not create System Information instance. Plugin will not work properly!");
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            operatingSystem = systemInfo.getOperatingSystem();
+        } catch (SecurityException e) {
+            logger.warning("Could not obtain OS info");
+            e.printStackTrace();
+        }
+        try {
+            hardwareAbstractionLayer = systemInfo.getHardware();
+        } catch (SecurityException e) {
+            logger.warning("Could not obtain HAL info");
+            e.printStackTrace();
+        }
+
+        if (hardwareAbstractionLayer != null) {
+            try {
+                centralProcessor = hardwareAbstractionLayer.getProcessor();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain CPU info");
+                e.printStackTrace();
+            }
+            try {
+                sensors = hardwareAbstractionLayer.getSensors();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain sensors info");
+                e.printStackTrace();
+            }
+            try {
+                memory = hardwareAbstractionLayer.getMemory();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain memory info");
+                e.printStackTrace();
+            }
+            try {
+                processorIdentifier = centralProcessor.getProcessorIdentifier();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain processor identifier");
+                e.printStackTrace();
+            }
+            try {
+                virtualMemory = memory.getVirtualMemory();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain virtual memory info");
+                e.printStackTrace();
+            }
+            try {
+                osVersionInfo = operatingSystem.getVersionInfo();
+            } catch (SecurityException e) {
+                logger.warning("Could not obtain OS Version info");
+                e.printStackTrace();
+            }
+        }
     }
 
     public OperatingSystem getOperatingSystem() {
