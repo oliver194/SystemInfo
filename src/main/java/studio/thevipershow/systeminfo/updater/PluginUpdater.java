@@ -132,7 +132,7 @@ public final class PluginUpdater {
     public final boolean isCurrentVersionLower(VersionData latestVersion) {
         if (currentVersion.major >= latestVersion.major) {
             if (currentVersion.minor >= latestVersion.minor) {
-                return currentVersion.patch > latestVersion.patch;
+                return currentVersion.patch >= latestVersion.patch;
             } else {
                 return false;
             }
