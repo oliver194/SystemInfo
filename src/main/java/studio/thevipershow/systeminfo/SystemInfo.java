@@ -25,14 +25,16 @@ public final class SystemInfo extends JavaPlugin {
     private PluginUpdater pluginUpdater;
     private JoinNotifyListener joinNotifyListener;
     private static SystemInfo instance;
+    private SysteminfoPlaceholder systeminfoPlaceholder;
     private final static long EIGHT_HOURS_TICKS = 20L * 60L * 60L * 8L;
 
     @Override
     public final void onEnable() {
         instance = this;
 
-        if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
-            new SysteminfoPlaceholder().register();
+        if (pluginManager.getPlugin("PlaceholderAPI") != null) {
+            systeminfoPlaceholder = new SysteminfoPlaceholder();
+            systeminfoPlaceholder.register();
         } else {
             getLogger().info("Could not find PlaceholderAPI, placeholders won't be available.");
         }

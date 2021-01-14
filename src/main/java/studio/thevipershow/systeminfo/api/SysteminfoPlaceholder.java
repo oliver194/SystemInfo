@@ -1,6 +1,8 @@
 package studio.thevipershow.systeminfo.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.thevipershow.systeminfo.SystemInfo;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.OfflinePlayer;
@@ -8,6 +10,16 @@ import org.bukkit.OfflinePlayer;
 public final class SysteminfoPlaceholder extends PlaceholderExpansion {
 
     private final SystemValues values = SystemValues.getInstance();
+
+    @Override
+    public boolean canRegister() {
+        return true;
+    }
+
+    @Override
+    public boolean persist() {
+        return true;
+    }
 
     @Override
     public String getIdentifier() {
@@ -25,7 +37,7 @@ public final class SysteminfoPlaceholder extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer p, String params) {
+    public String onRequest(@NotNull final OfflinePlayer p, @NotNull final String params) {
         switch (params) {
             case "cpu-model":
                 return String.format("%s %s", values.getCpuModel(), values.getCpuModelName());
