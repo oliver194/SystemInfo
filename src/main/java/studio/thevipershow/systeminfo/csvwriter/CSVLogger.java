@@ -41,7 +41,7 @@ public final class CSVLogger {
     }
 
     public void startLogging() {
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             startTime = LocalDateTime.now().format(fileTimeFormatter);
             previousTicks = systemValues.getSystemCpuLoadTicks();
             Util.sleep(1000);
