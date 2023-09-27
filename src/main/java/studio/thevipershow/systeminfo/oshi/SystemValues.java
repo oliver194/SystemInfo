@@ -42,7 +42,7 @@ public final class SystemValues {
             systemInfo = new SystemInfo();
         } catch (Exception e) {
             logger.warning("Could not create System Information instance. Plugin will not work properly!");
-            e.printStackTrace();
+            logger.warning(e.getLocalizedMessage());
             return;
         }
 
@@ -50,13 +50,15 @@ public final class SystemValues {
             operatingSystem = systemInfo.getOperatingSystem();
         } catch (SecurityException e) {
             logger.warning("Could not obtain OS info");
-            e.printStackTrace();
+            logger.warning(e.getLocalizedMessage());
+
         }
         try {
             hardwareAbstractionLayer = systemInfo.getHardware();
         } catch (SecurityException e) {
             logger.warning("Could not obtain HAL info");
-            e.printStackTrace();
+            logger.warning(e.getLocalizedMessage());
+
         }
 
         if (hardwareAbstractionLayer != null) {
@@ -64,71 +66,44 @@ public final class SystemValues {
                 centralProcessor = hardwareAbstractionLayer.getProcessor();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain CPU info");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
+
             }
             try {
                 sensors = hardwareAbstractionLayer.getSensors();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain sensors info");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
+
             }
             try {
                 memory = hardwareAbstractionLayer.getMemory();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain memory info");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
+
             }
             try {
                 processorIdentifier = centralProcessor.getProcessorIdentifier();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain processor identifier");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
+
             }
             try {
                 virtualMemory = memory.getVirtualMemory();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain virtual memory info");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
+
             }
             try {
                 osVersionInfo = operatingSystem.getVersionInfo();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain OS Version info");
-                e.printStackTrace();
+                logger.warning(e.getLocalizedMessage());
             }
         }
-    }
-
-    public OperatingSystem getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public HardwareAbstractionLayer getHardwareAbstractionLayer() {
-        return hardwareAbstractionLayer;
-    }
-
-    public CentralProcessor getCentralProcessor() {
-        return centralProcessor;
-    }
-
-    public Sensors getSensors() {
-        return sensors;
-    }
-
-    public GlobalMemory getMemory() {
-        return memory;
-    }
-
-    public CentralProcessor.ProcessorIdentifier getProcessorIdentifier() {
-        return processorIdentifier;
-    }
-
-    public VirtualMemory getVirtualMemory() {
-        return virtualMemory;
-    }
-
-    public OperatingSystem.OSVersionInfo getOsVersionInfo() {
-        return osVersionInfo;
     }
 
     /**
@@ -157,10 +132,6 @@ public final class SystemValues {
      */
     public String getUsedMemory() {
         return Utils.formatData(memory.getTotal() - memory.getAvailable());
-    }
-
-    public String getUsedMemory2() {
-        return String.valueOf((memory.getTotal() - memory.getAvailable()) / 1e+9);
     }
 
     /**

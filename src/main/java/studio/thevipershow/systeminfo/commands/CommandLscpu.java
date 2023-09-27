@@ -1,11 +1,13 @@
 package studio.thevipershow.systeminfo.commands;
 
-import java.util.Collections;
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
 import studio.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.Collections;
 
 public final class CommandLscpu extends Command {
 
@@ -17,7 +19,6 @@ public final class CommandLscpu extends Command {
                 "/<command>",
                 Collections.emptyList());
     }
-
     @Override
     public boolean execute(CommandSender sender, String name, String[] args) {
         if (sender.hasPermission("systeminfo.commands.lscpu")) {

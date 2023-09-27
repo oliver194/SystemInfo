@@ -3,10 +3,9 @@ package studio.thevipershow.systeminfo;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import studio.thevipershow.systeminfo.api.SysteminfoPlaceholder;
+import studio.thevipershow.systeminfo.api.SystemInfoPlaceholderExtension;
 import studio.thevipershow.systeminfo.commands.register.Manager;
 import studio.thevipershow.systeminfo.gui.GuiClickListener;
-import studio.thevipershow.systeminfo.listeners.JoinNotifyListener;
 import studio.thevipershow.systeminfo.utils.Utils;
 
 import java.time.LocalDateTime;
@@ -16,17 +15,16 @@ public final class SystemInfo extends JavaPlugin {
     private final LocalDateTime startupTime = LocalDateTime.now();
     private final PluginManager pluginManager = Bukkit.getPluginManager();
     private Manager commandManager;
-    private JoinNotifyListener joinNotifyListener;
     private static SystemInfo instance;
-    private SysteminfoPlaceholder systeminfoPlaceholder;
-    private final static long EIGHT_HOURS_TICKS = 20L * 60L * 60L * 8L;
+    private SystemInfoPlaceholderExtension systeminfoPlaceholder;
+
 
     @Override
     public void onEnable() {
         instance = this;
 
         if (pluginManager.getPlugin("PlaceholderAPI") != null) {
-            systeminfoPlaceholder = new SysteminfoPlaceholder();
+            systeminfoPlaceholder = new SystemInfoPlaceholderExtension();
             systeminfoPlaceholder.register();
         } else {
             this.getLogger().info("Could not find PlaceholderAPI, placeholders won't be available.");
@@ -42,16 +40,6 @@ public final class SystemInfo extends JavaPlugin {
             return;
         }
         pluginManager.registerEvents(new GuiClickListener(), this);
-        // csvLogger = CSVLogger.getInstance(SystemValues.getInstance(), this);
-        // csvLogger.startLogging();
-
-        // joinNotifyListener = new JoinNotifyListener(this);
-        //pluginManager.registerEvents(joinNotifyListener, this);
-    }
-
-    @Override
-    public void onDisable() {
-        // csvLogger.stopLogging();
     }
 
     public static SystemInfo getInstance() {
@@ -61,11 +49,4 @@ public final class SystemInfo extends JavaPlugin {
     public LocalDateTime getStartupTime() {
         return startupTime;
     }
-
-    public JoinNotifyListener getJoinNotifyListener() {
-        return joinNotifyListener;
-    }
 }
-
-
-

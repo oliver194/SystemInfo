@@ -1,12 +1,14 @@
 package studio.thevipershow.systeminfo.commands;
 
-import java.util.Collections;
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
 import studio.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.UsbDevice;
+
+import java.util.Collections;
 
 public final class CommandDevices extends Command {
 
@@ -19,6 +21,8 @@ public final class CommandDevices extends Command {
                 Collections.emptyList());
     }
 
+
+    @SuppressWarnings("NullableProblems")
     @Override
     public boolean execute(CommandSender sender, String name, String[] args) {
         if (sender.hasPermission("systeminfo.commands.devices")) {
@@ -40,7 +44,7 @@ public final class CommandDevices extends Command {
         for (UsbDevice usb : values.getUsbDevices()) {
             sender.sendMessage(Utils.color("&7- &a" + usb.getVendor() + " " + usb.getSerialNumber()));
             sender.spigot().sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
-            if (usb.getConnectedDevices().size() != 0) {
+            if (!usb.getConnectedDevices().isEmpty()) {
                 for (UsbDevice subUsb : usb.getConnectedDevices()) {
                     sender.sendMessage(Utils.color((" &7|- &a" + subUsb.getVendor() + " " + subUsb.getName())));
                 }

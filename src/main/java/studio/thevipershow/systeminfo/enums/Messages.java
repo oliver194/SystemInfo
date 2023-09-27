@@ -13,10 +13,6 @@ public enum Messages {
         this.s = value;
     }
 
-    public String value() {
-        return this.s;
-    }
-
     public String value(boolean color) {
         return color ? Utils.color(this.s) : this.s;
     }

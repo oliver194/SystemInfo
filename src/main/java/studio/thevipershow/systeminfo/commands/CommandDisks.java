@@ -1,13 +1,13 @@
 package studio.thevipershow.systeminfo.commands;
 
-import java.util.Collections;
-import studio.thevipershow.systeminfo.enums.Messages;
-import studio.thevipershow.systeminfo.oshi.SystemValues;
-import studio.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
+import studio.thevipershow.systeminfo.enums.Messages;
+import studio.thevipershow.systeminfo.oshi.SystemValues;
+import studio.thevipershow.systeminfo.utils.Utils;
+import java.util.Collections;
 
 public final class CommandDisks extends Command {
 

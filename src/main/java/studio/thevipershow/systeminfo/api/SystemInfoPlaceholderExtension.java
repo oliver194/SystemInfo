@@ -2,12 +2,12 @@ package studio.thevipershow.systeminfo.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import studio.thevipershow.systeminfo.SystemInfo;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.OfflinePlayer;
 
-public final class SysteminfoPlaceholder extends PlaceholderExpansion {
+public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
 
     private final SystemValues values = SystemValues.getInstance();
 

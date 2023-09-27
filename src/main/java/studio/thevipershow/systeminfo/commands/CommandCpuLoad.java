@@ -2,6 +2,8 @@ package studio.thevipershow.systeminfo.commands;
 
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
@@ -16,6 +18,7 @@ public final class CommandCpuLoad extends Command {
 
     private final SystemValues values = SystemValues.getInstance();
 
+
     public CommandCpuLoad() {
         super("cpuload",
                 "gets the load status of the CPU",
@@ -24,7 +27,7 @@ public final class CommandCpuLoad extends Command {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String s, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String s, String[] args) {
         if (args.length == 0) {
             if (sender.hasPermission("systeminfo.commands.cpuload")) {
                 printCpuLoad(sender);

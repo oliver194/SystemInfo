@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collections;
+
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.gui.SystemInfoGui;
@@ -23,7 +25,6 @@ public final class CommandSystemInfo extends Command {
                 "/<command> [stats|version|reload|gui]",
                 Collections.emptyList());
     }
-
     @Override
     public boolean execute(CommandSender sender, String name, String[] args) {
         if (sender.hasPermission("systeminfo.commands.help")) {
@@ -82,7 +83,7 @@ public final class CommandSystemInfo extends Command {
         sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
     }
 
-    public static long folderFileSize(final File folder) {
+    public static long folderFileSize(File folder) {
         if (folder == null) return -1;
         try {
             return Files.walk(folder.toPath()).mapToLong(p -> p.toFile().length()).sum();

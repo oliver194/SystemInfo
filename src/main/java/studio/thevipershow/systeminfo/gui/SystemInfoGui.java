@@ -24,7 +24,8 @@ public final class SystemInfoGui {
     private SystemInfoGui() {
     }
 
-    private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
+    private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(
+            Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 
     /**
      * This methods creates the GUI to a Player
@@ -77,6 +78,7 @@ public final class SystemInfoGui {
             List<String> lore = new ArrayList<>();
             item = new ItemStack(material, 1);
             ItemMeta meta = item.getItemMeta();
+            assert meta != null;
             meta.setDisplayName(Utils.color(displayName));
             for (String s : loreText) {
                 lore.add(Utils.color(s));

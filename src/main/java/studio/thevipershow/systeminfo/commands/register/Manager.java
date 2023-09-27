@@ -19,11 +19,11 @@ public final class Manager {
     
     private static Manager instance = null;
     private final CommandMap commandMap;
-    
-    private Manager(CommandMap map) {
-        this.commandMap = map;
+
+    public Manager(CommandMap commandMap) {
+        this.commandMap = commandMap;
     }
-    
+
     public static Manager getInstance(CommandMap map) {
         if (instance == null) {
             instance = new Manager(map);
@@ -44,7 +44,7 @@ public final class Manager {
             new CommandSpeedtest()
     );
     
-    public final void registerAll() {
+    public void registerAll() {
         commandMap.registerAll("systeminfo", commands);
     }
 }

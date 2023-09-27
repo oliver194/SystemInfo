@@ -1,6 +1,6 @@
 package studio.thevipershow.systeminfo.commands;
 
-import java.util.Collections;
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.utils.Utils;
@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 
 public final class CommandUptime extends Command {
 

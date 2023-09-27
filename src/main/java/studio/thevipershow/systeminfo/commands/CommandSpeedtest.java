@@ -4,6 +4,7 @@ import fr.bmartel.speedtest.SpeedTestReport;
 import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
+
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,18 +23,17 @@ public final class CommandSpeedtest extends Command {
                 "/<command> <GBs>",
                 Collections.emptyList());
     }
-
     public final static class CustomSpeedtestListener implements ISpeedTestListener {
         private final CommandSender sender;
         private final SpeedTestSocket speedTestSocket;
 
-        public CustomSpeedtestListener(CommandSender sender, SpeedTestSocket speedTestSocket) {
+        private CustomSpeedtestListener(CommandSender sender, SpeedTestSocket speedTestSocket) {
             this.sender = sender;
             this.speedTestSocket = speedTestSocket;
         }
 
         @Override
-        public final void onCompletion(SpeedTestReport speedTestReport) {
+        public void onCompletion(SpeedTestReport speedTestReport) {
             sender.sendMessage(Utils.color("&7» &7Mode: &a" + speedTestReport.getSpeedTestMode().name()));
             sender.sendMessage(Utils.color("&7» &7Result: &a" + Utils.formatData(speedTestReport.getTransferRateOctet().longValue()) + "/s" + " &7or &a" +
                     Utils.formatDataBits(speedTestReport.getTransferRateOctet().longValue()) + "/s"));
@@ -41,12 +41,12 @@ public final class CommandSpeedtest extends Command {
         }
 
         @Override
-        public final void onProgress(float v, SpeedTestReport speedTestReport) {
+        public void onProgress(float v, SpeedTestReport speedTestReport) {
 
         }
 
         @Override
-        public final void onError(SpeedTestError speedTestError, String s) {
+        public void onError(SpeedTestError speedTestError, String s) {
             sender.sendMessage(Utils.color("&7» &cYour machine network is not configured properly."));
             sender.sendMessage(Utils.color("&7» &cThe plugin was not able to perform a speedtest, contact your host or check your system firewall."));
         }
@@ -56,13 +56,13 @@ public final class CommandSpeedtest extends Command {
         sender.sendMessage(Utils.color("&2« &7Speedtest &2»"));
         ISpeedTestListener cListener = new CustomSpeedtestListener(sender, speedTestSocket);
         speedTestSocket.addSpeedTestListener(cListener);
-        speedTestSocket.startDownload(String.format("http://ovh.net/files/%dGb.dat", size));
+        speedTestSocket.startDownload(String.format("https://ovh.net/files/%dGb.dat", size));
     }
 
     private final static Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]+$");
 
     @Override
-    public final boolean execute(CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
+    public boolean execute(CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
         if (commandSender.hasPermission("systeminfo.commands.speedtest")) {
             if (strings.length == 0) {
                 performSpeedtest(commandSender, 1);

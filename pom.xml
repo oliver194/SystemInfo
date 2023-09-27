@@ -6,7 +6,7 @@
 
     <groupId>studio.thevipershow</groupId>
     <artifactId>SystemInfo</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <packaging>jar</packaging>
 
     <name>SystemInfo</name>
@@ -39,78 +39,9 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
-
-                        <!--
-
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>org.slf4j</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.apache-commons</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.intellij.lang.annotations</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.intellij-lang-annotations</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.jetbrains.annotations</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.jetbrains-annotations</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.joda.time</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.joda-time</shadedPattern>
-                                </relocation>
-                                <!- <relocation>
-                                    <pattern>org.slf4j</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.slf4j</shadedPattern>
-                                </relocation>
-                                -->
-
-                        <!--
-                                <relocation>
-                                    <pattern>okio</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.okio</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>okhttp3</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.okhttp3</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>kotlin</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.kotlin</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>fr.bmartel.speedtest</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.speedtest</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>fr.bmartel.protocol</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.protocol</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.opencsv</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.opencsv</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>oshi</pattern>
-                                    <shadedPattern>studio.thevipershow.libs.oshi</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                        -->
                     </execution>
                 </executions>
             </plugin>
