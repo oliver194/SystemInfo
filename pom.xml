@@ -6,14 +6,14 @@
 
     <groupId>studio.thevipershow</groupId>
     <artifactId>SystemInfo</artifactId>
-    <version>1.4.1</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
 
     <name>SystemInfo</name>
 
     <description>An amazing plugin to monitor your hardware and server stats</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,23 +23,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+
+                        <!--
+
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>org.slf4j</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
@@ -58,10 +73,13 @@
                                     <pattern>org.joda.time</pattern>
                                     <shadedPattern>studio.thevipershow.libs.joda-time</shadedPattern>
                                 </relocation>
-                                <relocation>
+                                <!- <relocation>
                                     <pattern>org.slf4j</pattern>
                                     <shadedPattern>studio.thevipershow.libs.slf4j</shadedPattern>
                                 </relocation>
+                                -->
+
+                        <!--
                                 <relocation>
                                     <pattern>okio</pattern>
                                     <shadedPattern>studio.thevipershow.libs.okio</shadedPattern>
@@ -92,6 +110,7 @@
                                 </relocation>
                             </relocations>
                         </configuration>
+                        -->
                     </execution>
                 </executions>
             </plugin>
@@ -106,16 +125,8 @@
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>oshi-core</id>
-            <url>https://mvnrepository.com/artifact/com.github.oshi/oshi-core</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -125,15 +136,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>fr.bmartel</groupId>
+            <artifactId>jspeedtest</artifactId>
+            <version>1.32.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
-            <version>5.8.6</version>
-            <scope>compile</scope>
+            <version>6.4.6</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -142,29 +159,26 @@
             <version>2.10.9</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>5.5.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.bmartel</groupId>
-            <artifactId>jspeedtest</artifactId>
-            <version>1.32.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.11.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.10.0</version>
-            <scope>compile</scope>
-        </dependency>
+        <!-- <dependency>
+             <groupId>com.opencsv</groupId>
+             <artifactId>opencsv</artifactId>
+             <version>5.8</version>
+             <scope>compile</scope>
+         </dependency>
+         -->
+        <!-- <dependency>
+             <groupId>joda-time</groupId>
+             <artifactId>joda-time</artifactId>
+             <version>2.12.5</version>
+             <scope>compile</scope>
+         </dependency>
+
+         <dependency>
+             <groupId>com.squareup.okhttp3</groupId>
+             <artifactId>okhttp</artifactId>
+             <version>5.0.0-alpha.11</version>
+             <scope>compile</scope>
+         </dependency>
+         -->
     </dependencies>
 </project>

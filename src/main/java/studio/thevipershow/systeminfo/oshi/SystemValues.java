@@ -291,12 +291,10 @@ public final class SystemValues {
     }
 
     /**
-     * @param pids        the number of processes to return
-     * @param processSort the type of resource to sort processes by
      * @return returns an array of processes
      */
-    public List<OSProcess> getOSProcesses(int pids, OperatingSystem.ProcessSort processSort) {
-        return operatingSystem.getProcesses(pids, processSort);
+    public List<OSProcess> getOSProcesses() {
+        return operatingSystem.getProcesses();
     }
 
     /**
