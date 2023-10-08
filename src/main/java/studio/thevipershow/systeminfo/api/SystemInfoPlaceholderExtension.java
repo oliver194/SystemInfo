@@ -3,13 +3,17 @@ package studio.thevipershow.systeminfo.api;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.jetbrains.annotations.NotNull;
 
-import studio.thevipershow.systeminfo.SystemInfo;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
 import org.bukkit.OfflinePlayer;
 
-public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
+public class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
 
-    private final SystemValues values = SystemValues.getInstance();
+    private final SystemInfo systemInfo;
+
+    public SystemInfoPlaceholderExtension(@NotNull SystemInfo systemInfo) {
+        this.systemInfo = systemInfo;
+    }
 
     @Override
     public boolean canRegister() {
@@ -22,22 +26,23 @@ public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "systeminfo";
     }
 
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "TheViperShow";
     }
 
     @Override
-    public String getVersion() {
-        return SystemInfo.getInstance().getDescription().getVersion();
+    public @NotNull String getVersion() {
+        return this.systemInfo.getDescription().getVersion();
     }
 
     @Override
     public String onRequest(@NotNull final OfflinePlayer p, @NotNull final String params) {
+        SystemValues values = systemInfo.getsV();
         switch (params) {
             case "cpu-model":
                 return String.format("%s %s", values.getCpuModel(), values.getCpuModelName());

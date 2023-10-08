@@ -1,28 +1,26 @@
 package studio.thevipershow.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.enums.Messages;
-import studio.thevipershow.systeminfo.oshi.SystemValues;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.software.os.OSProcess;
 
 import java.util.Collections;
 import java.util.List;
 
-public final class CommandHtop extends Command {
+public final class CommandHtop extends SystemInfoCommand {
 
-    private final SystemValues values = SystemValues.getInstance();
-
-    public CommandHtop() {
-        super("htop",
+    public CommandHtop(@NotNull SystemInfo systemInfo) {
+        super(systemInfo, "htop",
                 "shows a list of the processes running on the system",
                 "/<command>",
                 Collections.emptyList());
     }
     @Override
-    public boolean execute(CommandSender sender, String name, String[] args) {
+    public boolean execute(CommandSender sender, @NotNull String name, String[] args) {
 
         if (sender.hasPermission("systeminfo.commands.htop")) {
             if (args.length == 0) {
@@ -38,16 +36,19 @@ public final class CommandHtop extends Command {
     }
 
     private void printHtop(CommandSender sender) {
+
         sender.sendMessage(Utils.color("&2« &7Htop &2»"));
-        sender.sendMessage(Utils.color("&7Processes: &a" + values.getRunningProcesses() + " &7Threads: &a" + values.getThreadCount()));
+        sender.sendMessage(Utils.color("&7Processes: &a" + systemInfo.getsV().getRunningProcesses() +
+                " &7Threads: &a" + systemInfo.getsV().getThreadCount()));
         sender.sendMessage(Utils.color("&7    PID  %CPU %MEM     VSZ            NAME"));
-        List<OSProcess> processes = values.getOSProcesses();
+        List<OSProcess> processes = systemInfo.getsV().getOSProcesses();
+
         for (int i = 0; i < processes.size() && i < 8; i++) {
             OSProcess osProcess = processes.get(i);
             sender.sendMessage(Utils.color(String.format(" &8%5d &7%5.1f %s %9s %9s &a%s",
                     osProcess.getProcessID(),
                     100d * (osProcess.getKernelTime() + osProcess.getUserTime()) / osProcess.getUpTime(),
-                    Utils.formatData(100 * osProcess.getResidentSetSize() / values.getMaxMemory2()),
+                    Utils.formatData(100 * osProcess.getResidentSetSize() / systemInfo.getsV().getMaxMemory2()),
                     Utils.formatData(osProcess.getVirtualSize()),
                     Utils.formatData(osProcess.getResidentSetSize()),
                     osProcess.getName())));

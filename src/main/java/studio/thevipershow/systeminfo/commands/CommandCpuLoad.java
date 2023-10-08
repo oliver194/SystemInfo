@@ -4,23 +4,19 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.systeminfo.SystemInfo;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
-import studio.thevipershow.systeminfo.oshi.SystemValues;
 import studio.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import oshi.util.Util;
 
-public final class CommandCpuLoad extends Command {
-
-    private final SystemValues values = SystemValues.getInstance();
+public final class CommandCpuLoad extends SystemInfoCommand {
 
 
-    public CommandCpuLoad() {
-        super("cpuload",
+    public CommandCpuLoad(@NotNull SystemInfo systemInfo) {
+        super(systemInfo,"cpuload",
                 "gets the load status of the CPU",
                 "/<command>",
                 Collections.emptyList());
@@ -46,14 +42,14 @@ public final class CommandCpuLoad extends Command {
 
     private CompletableFuture<Double> getCpuLoad() {
         final CompletableFuture<Double> future = new CompletableFuture<>();
-        final Plugin plugin = SystemInfo.getInstance();
-        final BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        final BukkitScheduler scheduler = systemInfo.getServer().getScheduler();
 
-        scheduler.runTaskAsynchronously(plugin, () -> {
-            previousTicks = values.getSystemCpuLoadTicks();
-            previousMultiTicks = values.getProcessorCpuLoadTicks();
+        scheduler.runTaskAsynchronously(systemInfo, () -> {
+            previousTicks = systemInfo.getsV().getSystemCpuLoadTicks();
+            previousMultiTicks = systemInfo.getsV().getProcessorCpuLoadTicks();
             Util.sleep(1000);
-            scheduler.runTask(plugin, () -> future.complete(values.getSystemCpuLoadBetweenTicks(previousTicks) * 100));
+            scheduler.runTask(systemInfo,
+                    () -> future.complete(systemInfo.getsV().getSystemCpuLoadBetweenTicks(previousTicks) * 100));
         });
 
         return future;
@@ -61,16 +57,15 @@ public final class CommandCpuLoad extends Command {
 
     private CompletableFuture<String> getAverageLoads() {
         final CompletableFuture<String> future = new CompletableFuture<>();
-        final Plugin plugin = SystemInfo.getInstance();
-        final BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        final BukkitScheduler scheduler = systemInfo.getServer().getScheduler();
 
-        scheduler.runTaskAsynchronously(plugin, () -> {
-            final StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
-            double[] load = values.getProcessorCpuLoadBetweenTicks(previousMultiTicks);
+        scheduler.runTaskAsynchronously(systemInfo, () -> {
+            StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
+            double[] load = systemInfo.getsV().getProcessorCpuLoadBetweenTicks(previousMultiTicks);
             for (final double average : load) {
                 cpuLoads.append(String.format(" %.1f%%", average * 100));
             }
-            scheduler.runTask(plugin, () -> future.complete(cpuLoads.toString()));
+            scheduler.runTask(systemInfo, () -> future.complete(cpuLoads.toString()));
         });
 
         return future;

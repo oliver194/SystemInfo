@@ -1,21 +1,19 @@
 package studio.thevipershow.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.enums.Messages;
-import studio.thevipershow.systeminfo.oshi.SystemValues;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import oshi.hardware.UsbDevice;
 
 import java.util.Collections;
 
-public final class CommandDevices extends Command {
+public final class CommandDevices extends SystemInfoCommand {
 
-    private final SystemValues values = SystemValues.getInstance();
-
-    public CommandDevices() {
-        super("devices",
+    public CommandDevices(@NotNull SystemInfo systemInfo) {
+        super(systemInfo,"devices",
                 "get a list of system devices",
                 "/<command>",
                 Collections.emptyList());
@@ -41,7 +39,7 @@ public final class CommandDevices extends Command {
     private void printDevices(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Attached devices &2«"));
         sender.sendMessage(Utils.color("&2» &7List:"));
-        for (UsbDevice usb : values.getUsbDevices()) {
+        for (UsbDevice usb : systemInfo.getsV().getUsbDevices()) {
             sender.sendMessage(Utils.color("&7- &a" + usb.getVendor() + " " + usb.getSerialNumber()));
             sender.spigot().sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
             if (!usb.getConnectedDevices().isEmpty()) {

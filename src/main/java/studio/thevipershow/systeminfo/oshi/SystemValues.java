@@ -2,6 +2,8 @@ package studio.thevipershow.systeminfo.oshi;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
 import studio.thevipershow.systeminfo.utils.Utils;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -14,7 +16,13 @@ import oshi.hardware.UsbDevice;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 
-public final class SystemValues {
+public class SystemValues {
+
+    public SystemValues(@NotNull Logger logger) {
+        this.logger = logger;
+    }
+
+    private final Logger logger;
 
     private OperatingSystem operatingSystem;
     private HardwareAbstractionLayer hardwareAbstractionLayer;
@@ -24,19 +32,7 @@ public final class SystemValues {
     private CentralProcessor.ProcessorIdentifier processorIdentifier;
     private VirtualMemory virtualMemory;
     private OperatingSystem.OSVersionInfo osVersionInfo;
-
-    private SystemValues() {
-        updateValues();
-    }
-
-    private static final SystemValues instance = new SystemValues();
-
-    public static SystemValues getInstance() {
-        return instance;
-    }
-
     public void updateValues() {
-        Logger logger = studio.thevipershow.systeminfo.SystemInfo.getInstance().getLogger();
         SystemInfo systemInfo;
         try {
             systemInfo = new SystemInfo();
@@ -109,6 +105,7 @@ public final class SystemValues {
     /**
      * @return Returns the formatted value of the system current maximum memory
      */
+    @NotNull
     public String getMaxMemory() {
         return Utils.formatData(memory.getTotal());
     }
@@ -123,6 +120,7 @@ public final class SystemValues {
     /**
      * @return Returns the formatted value of the system currently available memory.
      */
+    @NotNull
     public String getAvailableMemory() {
         return Utils.formatData(memory.getAvailable());
     }
@@ -130,6 +128,7 @@ public final class SystemValues {
     /**
      * @return Returns the formatted value of the system currently used memory.
      */
+    @NotNull
     public String getUsedMemory() {
         return Utils.formatData(memory.getTotal() - memory.getAvailable());
     }
@@ -137,6 +136,7 @@ public final class SystemValues {
     /**
      * @return Returns the formatted value of the system current maximum swap memory.
      */
+    @NotNull
     public String getTotalSwap() {
         return Utils.formatData(virtualMemory.getSwapTotal());
     }
@@ -144,6 +144,7 @@ public final class SystemValues {
     /**
      * @return Returns the formatted value of the system currently used swap memory.
      */
+    @NotNull
     public String getUsedSwap() {
         return Utils.formatData(virtualMemory.getSwapUsed());
     }
@@ -151,6 +152,7 @@ public final class SystemValues {
     /**
      * @return Returns the cpu voltage with unit of measure if available, else return "Unavailable".
      */
+    @NotNull
     public String getCpuVoltage() {
         return sensors.getCpuVoltage() != 0 ? sensors.getCpuVoltage() + "V" : "Unavailable";
     }
@@ -158,6 +160,7 @@ public final class SystemValues {
     /**
      * @return Returns the cpu temperature with unit of measure if available, else return "Unavailable".
      */
+    @NotNull
     public String getCpuTemperature() {
         return sensors.getCpuTemperature() != 0f ? sensors.getCpuTemperature() + "C°" : "Unavailable";
     }
@@ -169,6 +172,7 @@ public final class SystemValues {
      * 75.0-90.0 is "Overload" status
      * else is "Not available"
      */
+    @NotNull
     public String getCpuTemperatureStatus() {
         double degrees = sensors.getCpuTemperature();
         if (degrees > 0.0) {
@@ -186,6 +190,7 @@ public final class SystemValues {
     /**
      * @return Returns fans speed in RPM separated by a blank space.
      */
+    @NotNull
     public String getFansRPM() {
         StringBuilder rpm = new StringBuilder();
         int[] speeds = sensors.getFanSpeeds();
@@ -197,6 +202,7 @@ public final class SystemValues {
     /**
      * @return Get the current operating system family name.
      */
+    @NotNull
     public String getOSFamily() {
         return operatingSystem.getFamily();
     }
@@ -204,6 +210,7 @@ public final class SystemValues {
     /**
      * @return Get the current operating system manufacturer name.
      */
+    @NotNull
     public String getOSManufacturer() {
         return operatingSystem.getManufacturer();
     }
@@ -211,6 +218,7 @@ public final class SystemValues {
     /**
      * @return Get the current operating system version name.
      */
+    @NotNull
     public String getOSVersion() {
         return osVersionInfo.getVersion();
     }
@@ -218,6 +226,7 @@ public final class SystemValues {
     /**
      * @return Get the name of the current cpu vendor.
      */
+    @NotNull
     public String getCpuVendor() {
         return processorIdentifier.getVendor();
     }
@@ -225,6 +234,7 @@ public final class SystemValues {
     /**
      * @return Get the model of the current cpu.
      */
+    @NotNull
     public String getCpuModel() {
         return processorIdentifier.getModel();
     }
@@ -232,6 +242,7 @@ public final class SystemValues {
     /**
      * @return Get the model name of the current cpu.
      */
+    @NotNull
     public String getCpuModelName() {
         return processorIdentifier.getName();
     }
@@ -239,10 +250,15 @@ public final class SystemValues {
     /**
      * @return Get the max standard frequency of the current CPU with 2 decimals in GHz.
      */
+    @NotNull
     public String getCpuMaxFrequency() {
         return String.format("%.2f", centralProcessor.getMaxFreq() / 1E9F);
     }
 
+    /**
+     * @return The CPU stepping name.
+     */
+    @NotNull
     public String getCpuStepping() {
         return processorIdentifier.getStepping();
     }
@@ -250,6 +266,7 @@ public final class SystemValues {
     /**
      * @return Get the amount of physical cores in the CPU
      */
+    @NotNull
     public String getCpuCores() {
         return String.valueOf(centralProcessor.getPhysicalProcessorCount());
     }
@@ -257,6 +274,7 @@ public final class SystemValues {
     /**
      * @return Get the amount of logical cores in the CPU
      */
+    @NotNull
     public String getCpuThreads() {
         return String.valueOf(centralProcessor.getLogicalProcessorCount());
     }
@@ -264,6 +282,7 @@ public final class SystemValues {
     /**
      * @return returns an array of processes
      */
+    @NotNull
     public List<OSProcess> getOSProcesses() {
         return operatingSystem.getProcesses();
     }
@@ -286,6 +305,7 @@ public final class SystemValues {
      * @return get an array of HWDiskStore which represents a NVM
      * @see <a href=https://en.wikipedia.org/wiki/Non-volatile_memory>"Wikipedia Non-volatile memory</a>
      */
+    @NotNull
     public List<HWDiskStore> getDiskStores() {
         return hardwareAbstractionLayer.getDiskStores();
     }
@@ -294,6 +314,7 @@ public final class SystemValues {
      * @return get an array of USB devices attached to the machine
      * @see <a href=https://en.wikipedia.org/wiki/USB>Wikipedia USB</a>
      */
+    @NotNull
     public List<UsbDevice> getUsbDevices() {
         return hardwareAbstractionLayer.getUsbDevices(true);
     }

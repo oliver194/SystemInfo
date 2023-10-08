@@ -9,16 +9,18 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public final class CommandSpeedtest extends Command {
+public final class CommandSpeedtest extends SystemInfoCommand {
 
     private final SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 
-    public CommandSpeedtest() {
-        super("speedtest",
+    public CommandSpeedtest(@NotNull SystemInfo systemInfo) {
+        super(systemInfo, "speedtest",
                 "Perform a network speedtest",
                 "/<command> <GBs>",
                 Collections.emptyList());

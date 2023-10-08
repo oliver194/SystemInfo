@@ -3,30 +3,32 @@ package studio.thevipershow.systeminfo.commands;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.systeminfo.SystemInfo;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
-import studio.thevipershow.systeminfo.gui.SystemInfoGui;
 import studio.thevipershow.systeminfo.utils.Utils;
 import static org.bukkit.World.Environment.NETHER;
 import static org.bukkit.World.Environment.NORMAL;
 import static org.bukkit.World.Environment.THE_END;
-import org.bukkit.command.Command;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public final class CommandSystemInfo extends Command {
+public final class CommandSystemInfo extends SystemInfoCommand {
 
-    public CommandSystemInfo() {
-        super("systeminfo",
+    public CommandSystemInfo(@NotNull SystemInfo systemInfo) {
+        super(systemInfo, "systeminfo",
                 "main command of SystemInfo plugin",
                 "/<command> [stats|version|reload|gui]",
                 Collections.emptyList());
     }
     @Override
-    public boolean execute(CommandSender sender, String name, String[] args) {
+    public boolean execute(CommandSender sender, @NotNull String name, String[] args) {
         if (sender.hasPermission("systeminfo.commands.help")) {
             if (args.length == 0) {
                 systemInfo1(sender);
@@ -37,7 +39,7 @@ public final class CommandSystemInfo extends Command {
                         systemInfo2(sender);
                         break;
                     case "version":
-                        sender.sendMessage(Utils.color("&2» &7SystemInfo version: &a" + SystemInfo.getInstance().getDescription().getVersion()));
+                        sender.sendMessage(Utils.color("&2» &7SystemInfo version: &a" + systemInfo.getDescription().getVersion()));
                         break;
                     case "stats":
                         stats(sender);
@@ -47,7 +49,7 @@ public final class CommandSystemInfo extends Command {
                         break;
                     case "gui":
                         if (sender instanceof Player) {
-                            SystemInfoGui.createGui((Player) sender);
+                            systemInfo.getSig().createGui((Player) sender);
                         } else {
                             sender.sendMessage(Utils.color("&4» &cYou cannot create GUIs inside a console"));
                         }
@@ -83,11 +85,14 @@ public final class CommandSystemInfo extends Command {
         sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
     }
 
-    public static long folderFileSize(File folder) {
+    public long folderFileSize(File folder) {
         if (folder == null) return -1;
-        try {
-            return Files.walk(folder.toPath()).mapToLong(p -> p.toFile().length()).sum();
-        } catch (IOException ignored) {
+
+        try (Stream<Path> paths = Files.walk(folder.toPath())) {
+            return paths.mapToLong(p -> p.toFile().length()).sum();
+        } catch (IOException ioException) {
+            systemInfo.getLogger().warning("An exception has occured while calculating folder size of " + folder.getAbsolutePath());
+            systemInfo.getLogger().warning(ioException.getLocalizedMessage());
         }
         return -1L;
     }
@@ -97,7 +102,7 @@ public final class CommandSystemInfo extends Command {
         sender.sendMessage(Utils.color("&2» &7Overworld Entities: &a" + Utils.countEntitiesInWorlds(NORMAL) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NORMAL)));
         sender.sendMessage(Utils.color("&2» &7Nether Entities: &a" + Utils.countEntitiesInWorlds(NETHER) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NETHER)));
         sender.sendMessage(Utils.color("&2» &7End Entities: &a" + Utils.countEntitiesInWorlds(THE_END) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(THE_END)));
-        sender.sendMessage(Utils.color("&2» &7Server File Size: &a" + Utils.formatData(folderFileSize(SystemInfo.getInstance().getServer().getWorldContainer()))));
+        sender.sendMessage(Utils.color("&2» &7Server File Size: &a" + Utils.formatData(folderFileSize(systemInfo.getServer().getWorldContainer()))));
     }
 
     private void reload(CommandSender sender) {

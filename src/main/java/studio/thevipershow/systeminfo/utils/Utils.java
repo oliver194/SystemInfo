@@ -108,7 +108,9 @@ public class Utils {
      */
     public static String loadedChunksInWorlds(World.Environment environment) {
         StringBuilder loadedChunksInWorlds = new StringBuilder();
-        Bukkit.getWorlds().stream().filter(world -> world.getEnvironment() == environment).forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
+        Bukkit.getWorlds().stream()
+                .filter(world -> world.getEnvironment() == environment)
+                .forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
         return loadedChunksInWorlds.toString();
     }
 

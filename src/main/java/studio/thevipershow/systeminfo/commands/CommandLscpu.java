@@ -1,20 +1,19 @@
 package studio.thevipershow.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
+import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.oshi.SystemValues;
+import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.utils.Utils;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 
-public final class CommandLscpu extends Command {
+public final class CommandLscpu extends SystemInfoCommand {
 
-    private final SystemValues values = SystemValues.getInstance();
-
-    public CommandLscpu() {
-        super("lscpu",
+    public CommandLscpu(@NotNull SystemInfo systemInfo) {
+        super(systemInfo, "lscpu",
                 "get information about the system processor(s)",
                 "/<command>",
                 Collections.emptyList());
@@ -35,6 +34,7 @@ public final class CommandLscpu extends Command {
     }
 
     private void printLscpu(CommandSender sender) {
+        SystemValues values = systemInfo.getsV();
         sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
         sender.sendMessage(Utils.color("&7Operating System: &a" + values.getOSFamily() + " " + values.getOSManufacturer() + " " + values.getOSVersion()));
         sender.sendMessage(Utils.color("&7Cpu Vendor: &a" + values.getCpuVendor()));
