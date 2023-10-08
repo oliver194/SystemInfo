@@ -16,6 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+/**
+ * This class is used for the interactive GUI in the systeminfo gui command.
+ * It displays basic information using Minecraft blocks and animations.
+ */
 public class SystemInfoGui {
 
     public SystemInfoGui(@NotNull SystemInfo systemInfo) {
@@ -25,6 +29,7 @@ public class SystemInfoGui {
     private final SystemInfo systemInfo;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("d\\M\\u h:m:s a");
 
+    // Corner slots for a 9x3 inventory.
     private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(
             Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 

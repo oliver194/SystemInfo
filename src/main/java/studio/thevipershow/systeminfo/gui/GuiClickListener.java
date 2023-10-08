@@ -4,6 +4,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+/**
+ * Listener used to prevent players from stealing or adding item into the plugin inventory.
+ */
 public final class GuiClickListener implements Listener {
     /**
      * In this event we are listening for the player clicking in his inventory, if the inventory

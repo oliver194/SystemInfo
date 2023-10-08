@@ -38,8 +38,16 @@ public class Utils {
                 : String.format("%s%.1f EB", s, b / 1e6);
     }
 
+    /**
+     * The amounts of bits in a byte. Used for conversions.
+     */
     public final static int BITS_IN_BYTE = 0x08;
 
+    /**
+     * Display the appropriate data format for the amount of bytes given.
+     * @param bytes The total bytes.
+     * @return formatted output.
+     */
     public static String formatDataBits(final long bytes) {
         final long bits = Math.abs(BITS_IN_BYTE * bytes);
 

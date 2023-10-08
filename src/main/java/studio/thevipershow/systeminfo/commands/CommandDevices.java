@@ -9,9 +9,17 @@ import org.bukkit.command.CommandSender;
 import oshi.hardware.UsbDevice;
 
 import java.util.Collections;
-
+/**
+ * The `CommandDevices` class is a Spigot command that allows players with the appropriate permission to retrieve a list
+ * of system devices using the "/devices" command.
+ */
 public final class CommandDevices extends SystemInfoCommand {
 
+    /**
+     * Initializes a new instance of the `CommandDevices` class.
+     *
+     * @param systemInfo The `SystemInfo` instance associated with this command.
+     */
     public CommandDevices(@NotNull SystemInfo systemInfo) {
         super(systemInfo,"devices",
                 "get a list of system devices",
@@ -19,7 +27,14 @@ public final class CommandDevices extends SystemInfoCommand {
                 Collections.emptyList());
     }
 
-
+    /**
+     * Executes the "/devices" command, displaying a list of system devices to the sender.
+     *
+     * @param sender The command sender.
+     * @param name   The command name.
+     * @param args   The command arguments (not used in this command).
+     * @return True if the command was executed successfully; otherwise, false.
+     */
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean execute(CommandSender sender, String name, String[] args) {
@@ -36,6 +51,11 @@ public final class CommandDevices extends SystemInfoCommand {
         return false;
     }
 
+    /**
+     * Displays a list of system devices to the sender.
+     *
+     * @param sender The command sender.
+     */
     private void printDevices(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Attached devices &2«"));
         sender.sendMessage(Utils.color("&2» &7List:"));

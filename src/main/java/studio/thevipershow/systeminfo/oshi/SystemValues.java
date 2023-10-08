@@ -16,14 +16,24 @@ import oshi.hardware.UsbDevice;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 
+/**
+ * The `SystemValues` class is responsible for retrieving and storing various system-related information using the OSHI library.
+ * This information includes details about the operating system, hardware, CPU, memory, sensors, and more.
+ */
 public class SystemValues {
 
+    /**
+     * Initializes a new instance of the `SystemValues` class with a provided logger.
+     *
+     * @param logger The logger to use for logging any errors or warnings during information retrieval.
+     */
     public SystemValues(@NotNull Logger logger) {
         this.logger = logger;
     }
 
-    private final Logger logger;
+    private final Logger logger; // The logger for error and warning logging.
 
+    // Variables to store system information
     private OperatingSystem operatingSystem;
     private HardwareAbstractionLayer hardwareAbstractionLayer;
     private CentralProcessor centralProcessor;
@@ -32,6 +42,10 @@ public class SystemValues {
     private CentralProcessor.ProcessorIdentifier processorIdentifier;
     private VirtualMemory virtualMemory;
     private OperatingSystem.OSVersionInfo osVersionInfo;
+
+    /**
+     * Updates the stored system information by querying various system-related data using the OSHI library.
+     */
     public void updateValues() {
         SystemInfo systemInfo;
         try {
@@ -47,14 +61,12 @@ public class SystemValues {
         } catch (SecurityException e) {
             logger.warning("Could not obtain OS info");
             logger.warning(e.getLocalizedMessage());
-
         }
         try {
             hardwareAbstractionLayer = systemInfo.getHardware();
         } catch (SecurityException e) {
             logger.warning("Could not obtain HAL info");
             logger.warning(e.getLocalizedMessage());
-
         }
 
         if (hardwareAbstractionLayer != null) {
@@ -63,35 +75,30 @@ public class SystemValues {
             } catch (SecurityException e) {
                 logger.warning("Could not obtain CPU info");
                 logger.warning(e.getLocalizedMessage());
-
             }
             try {
                 sensors = hardwareAbstractionLayer.getSensors();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain sensors info");
                 logger.warning(e.getLocalizedMessage());
-
             }
             try {
                 memory = hardwareAbstractionLayer.getMemory();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain memory info");
                 logger.warning(e.getLocalizedMessage());
-
             }
             try {
                 processorIdentifier = centralProcessor.getProcessorIdentifier();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain processor identifier");
                 logger.warning(e.getLocalizedMessage());
-
             }
             try {
                 virtualMemory = memory.getVirtualMemory();
             } catch (SecurityException e) {
                 logger.warning("Could not obtain virtual memory info");
                 logger.warning(e.getLocalizedMessage());
-
             }
             try {
                 osVersionInfo = operatingSystem.getVersionInfo();

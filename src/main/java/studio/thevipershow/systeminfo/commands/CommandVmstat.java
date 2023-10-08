@@ -10,15 +10,32 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
 
+/**
+ * The `CommandVmstat` class is a Spigot command that allows players with the appropriate permission to retrieve
+ * information about system memory using the "/vmstat" command.
+ */
 public final class CommandVmstat extends SystemInfoCommand {
 
+    /**
+     * Initializes a new instance of the `CommandVmstat` class.
+     *
+     * @param systemInfo The `SystemInfo` instance associated with this command.
+     */
     public CommandVmstat(@NotNull SystemInfo systemInfo) {
-        super(systemInfo,"vmstat",
+        super(systemInfo, "vmstat",
                 "get info about the system memory",
                 "/<command>",
                 Collections.emptyList());
     }
 
+    /**
+     * Executes the "/vmstat" command, providing information about system memory to the sender.
+     *
+     * @param sender The command sender.
+     * @param name   The command name.
+     * @param args   The command arguments (not used in this command).
+     * @return True if the command was executed successfully; otherwise, false.
+     */
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String name, String[] args) {
         if (args.length == 0) {
@@ -34,6 +51,11 @@ public final class CommandVmstat extends SystemInfoCommand {
         return false;
     }
 
+    /**
+     * Sends information about system memory to the specified command sender.
+     *
+     * @param sender The command sender.
+     */
     private void vmstat(CommandSender sender) {
         SystemValues values = systemInfo.getsV();
         sender.sendMessage(Utils.color("&2«« &7Memory info &2»»"));
