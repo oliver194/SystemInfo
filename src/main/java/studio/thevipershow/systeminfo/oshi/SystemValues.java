@@ -20,7 +20,7 @@ import oshi.software.os.OperatingSystem;
  * The `SystemValues` class is responsible for retrieving and storing various system-related information using the OSHI library.
  * This information includes details about the operating system, hardware, CPU, memory, sensors, and more.
  */
-public class SystemValues {
+public final class SystemValues {
 
     /**
      * Initializes a new instance of the `SystemValues` class with a provided logger.

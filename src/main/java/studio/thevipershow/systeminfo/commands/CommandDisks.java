@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
-import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.utils.Utils;

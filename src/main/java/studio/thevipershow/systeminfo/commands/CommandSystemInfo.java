@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.utils.Utils;
@@ -86,7 +85,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      *
      * @param sender The command sender.
      */
-    private void systemInfo1(CommandSender sender) {
+    private static void systemInfo1(CommandSender sender) {
         sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
         sender.spigot().sendMessage(Utils.builderHover("&7»» &fSystemInfo Help &7««", "This is the help page."));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/lscpu &aget processor info! &8[&7*&8]", "this returns processor info"));
@@ -102,7 +101,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      *
      * @param sender The command sender.
      */
-    private void systemInfo2(CommandSender sender) {
+    private static void systemInfo2(@NotNull CommandSender sender) {
         sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/htop &aget processes list! &8[&7*&8]", "get a list of processes"));
         sender.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]", "available args = stats, version, gui"));
@@ -136,7 +135,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      *
      * @param sender The command sender.
      */
-    private void stats(CommandSender sender) {
+    private void stats(@NotNull CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Server stats &2«"));
         sender.sendMessage(Utils.color("&2» &7Overworld Entities: &a" + Utils.countEntitiesInWorlds(NORMAL) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NORMAL)));
         sender.sendMessage(Utils.color("&2» &7Nether Entities: &a" + Utils.countEntitiesInWorlds(NETHER) + " &7Loaded Chunks: &a" + Utils.loadedChunksInWorlds(NETHER)));
@@ -149,7 +148,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      *
      * @param sender The command sender.
      */
-    private void reload(CommandSender sender) {
+    private void reload(@NotNull CommandSender sender) {
         sender.sendMessage(Utils.color("&8» &aSuccessfully reloaded system values!"));
     }
 }

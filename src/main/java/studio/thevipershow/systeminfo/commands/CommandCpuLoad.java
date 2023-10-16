@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
-import studio.thevipershow.systeminfo.commands.register.SystemInfoCommand;
 import studio.thevipershow.systeminfo.plugin.SystemInfo;
 import studio.thevipershow.systeminfo.enums.Messages;
 import studio.thevipershow.systeminfo.utils.Utils;
@@ -61,6 +60,7 @@ public final class CommandCpuLoad extends SystemInfoCommand {
      *
      * @return A CompletableFuture that holds the CPU load percentage.
      */
+    @NotNull
     private CompletableFuture<Double> getCpuLoad() {
         final CompletableFuture<Double> future = new CompletableFuture<>();
         final BukkitScheduler scheduler = systemInfo.getServer().getScheduler();
@@ -81,6 +81,7 @@ public final class CommandCpuLoad extends SystemInfoCommand {
      *
      * @return A CompletableFuture that holds the string representation of average CPU loads.
      */
+    @NotNull
     private CompletableFuture<String> getAverageLoads() {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final BukkitScheduler scheduler = systemInfo.getServer().getScheduler();
@@ -102,7 +103,7 @@ public final class CommandCpuLoad extends SystemInfoCommand {
      *
      * @param sender The command sender.
      */
-    private void printCpuLoad(CommandSender sender) {
+    private void printCpuLoad(@NotNull CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7System load: &2«"));
         getCpuLoad().thenAccept(d -> {
             sender.sendMessage(Utils.color(String.format("&7Cpu load: &a%.2f%%", d)));

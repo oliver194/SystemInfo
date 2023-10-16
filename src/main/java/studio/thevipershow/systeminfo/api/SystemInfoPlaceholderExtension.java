@@ -12,7 +12,7 @@ import org.bukkit.OfflinePlayer;
  * related to system information. These placeholders can be used in plugins to dynamically display system
  * information to players.
  */
-public class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
+public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
 
     private final SystemInfo systemInfo;
 

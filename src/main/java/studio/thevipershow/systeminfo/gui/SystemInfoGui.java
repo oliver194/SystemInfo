@@ -20,7 +20,7 @@ import java.util.*;
  * This class is used for the interactive GUI in the systeminfo gui command.
  * It displays basic information using Minecraft blocks and animations.
  */
-public class SystemInfoGui {
+public final class SystemInfoGui {
 
     public SystemInfoGui(@NotNull SystemInfo systemInfo) {
         this.systemInfo = systemInfo;
