@@ -63,7 +63,7 @@ public class Utils {
     }
 
     /**
-     * Creates a custom BaseComponent with an hover event using the following parameters.
+     * Creates a custom BaseComponent with a hover event using the following parameters.
      *
      * @param text      this is the text that will display in chat, color codes are allowed.
      * @param hoverText this is the text that will be shown when the player hovers over a message, color codes allowed.

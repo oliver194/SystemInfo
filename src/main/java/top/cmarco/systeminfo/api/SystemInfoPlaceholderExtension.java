@@ -85,27 +85,17 @@ public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
     @Override
     public String onRequest(@NotNull final OfflinePlayer p, @NotNull final String params) {
         SystemValues values = systemInfo.getsV();
-        switch (params) {
-            case "cpu-model":
-                return String.format("%s %s", values.getCpuModel(), values.getCpuModelName());
-            case "cpu-frequency":
-                return values.getCpuMaxFrequency();
-            case "cpu-temperature":
-                return values.getCpuTemperature();
-            case "swap-max":
-                return values.getTotalSwap();
-            case "swap-used":
-                return values.getUsedSwap();
-            case "memory-max":
-                return values.getMaxMemory();
-            case "memory-available":
-                return values.getAvailableMemory();
-            case "memory-used":
-                return values.getUsedMemory();
-            case "processes":
-                return Integer.toString(values.getRunningProcesses());
-            default:
-                return null;
-        }
+        return switch (params) {
+            case "cpu-model" -> String.format("%s %s", values.getCpuModel(), values.getCpuModelName());
+            case "cpu-frequency" -> values.getCpuMaxFrequency();
+            case "cpu-temperature" -> values.getCpuTemperature();
+            case "swap-max" -> values.getTotalSwap();
+            case "swap-used" -> values.getUsedSwap();
+            case "memory-max" -> values.getMaxMemory();
+            case "memory-available" -> values.getAvailableMemory();
+            case "memory-used" -> values.getUsedMemory();
+            case "processes" -> Integer.toString(values.getRunningProcesses());
+            default -> null;
+        };
     }
 }

@@ -1,5 +1,6 @@
 package top.cmarco.systeminfo.gui;
 
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import top.cmarco.systeminfo.plugin.SystemInfo;
@@ -33,18 +34,21 @@ public final class SystemInfoGui {
     private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(
             Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 
+    private final static Inventory GUI = Bukkit.createInventory(null, 27, "SystemInfo");
+
     /**
      * This method creates the GUI to a Player
      *
      * @param player a valid Player
      */
     public void createGui(@NotNull Player player) {
-        Inventory inventory = Bukkit.createInventory(player, 27, "SystemInfo");
-        player.openInventory(inventory);
-        fillBackground(inventory);
+        this.cleanBackground();
+        player.openInventory(GUI);
+        this.fillBackground();
         Bukkit.getScheduler().runTaskTimer(systemInfo, r -> {
-            if (player.getOpenInventory().getTitle().equals("SystemInfo")) {
-                updateInventory(inventory);
+            final InventoryView inventoryView = player.getOpenInventory();
+            if (inventoryView.getTopInventory().equals(GUI)) {
+                this.updateInventory();
             } else {
                 r.cancel();
             }
@@ -54,18 +58,23 @@ public final class SystemInfoGui {
     /**
      * This method generates an animation that consists in taking a list of integers that represents
      * inventory slots, then generating items with material parameter for each slot creating a cool effect
-     *
-     * @param inventory the inventory where the items will be set.
      */
-    private void fillBackground(Inventory inventory) {
-        Iterator<Integer> invSlot = SystemInfoGui.backgroundSlots.iterator();
+    private void fillBackground() {
+        final Iterator<Integer> invSlotIterator = SystemInfoGui.backgroundSlots.iterator();
         Bukkit.getScheduler().runTaskTimer(systemInfo, r -> {
-            if (invSlot.hasNext()) {
-                setCustomItem(inventory, Material.BLACK_STAINED_GLASS_PANE, invSlot.next(), "", "");
+            if (invSlotIterator.hasNext()) {
+                setCustomItem(SystemInfoGui.GUI, Material.BLACK_STAINED_GLASS_PANE, invSlotIterator.next(), "", "");
             } else {
                 r.cancel();
             }
         }, 1L, 1L);
+    }
+
+    private void cleanBackground() {
+        for (int backgroundSlot : SystemInfoGui.backgroundSlots) {
+            final int slot = backgroundSlot - 1;
+            SystemInfoGui.GUI.setItem(slot, null);
+        }
     }
 
     /**
@@ -97,30 +106,28 @@ public final class SystemInfoGui {
 
     /**
      * This method updates the inventory with new items
-     *
-     * @param inventory the target inventory where items will be set.
      */
-    public void updateInventory(Inventory inventory) {
+    public void updateInventory() {
         SystemValues values = this.systemInfo.getsV();
-        setCustomItem(inventory, Material.LIME_CONCRETE, 11, "&2Processor",
+        setCustomItem(GUI, Material.LIME_CONCRETE, 11, "&2Processor",
                 "&7Vendor: &a" + values.getCpuVendor(),
                 "&7Model: &a" + values.getCpuModel() + " " + values.getCpuModelName(),
                 "&7Clock Speed: &a" + values.getCpuMaxFrequency() + " GHz",
                 "&7Physical Cores: &a" + values.getCpuCores(),
                 "&7Logical Cores: &a" + values.getCpuThreads());
 
-        setCustomItem(inventory, Material.GREEN_CONCRETE, 13, "&2Memory",
+        setCustomItem(GUI, Material.GREEN_CONCRETE, 13, "&2Memory",
                 "&7Total: &a" + values.getMaxMemory(),
                 "&7Available: &a" + values.getAvailableMemory(),
                 "&7Swap Used: &a" + values.getUsedSwap(),
                 "&7Swap Allocated: &a" + values.getTotalSwap());
 
-        setCustomItem(inventory, Material.LIGHT_BLUE_CONCRETE, 15, "&2Operating system",
+        setCustomItem(GUI, Material.LIGHT_BLUE_CONCRETE, 15, "&2Operating system",
                 "&7Name: &a" + values.getOSFamily() + " " + values.getOSManufacturer(),
                 "&7Version: &a" + values.getOSVersion(),
                 "&7Active Processes: &a" + values.getRunningProcesses());
 
-        setCustomItem(inventory, Material.BLUE_CONCRETE, 17, "&2Uptime",
+        setCustomItem(GUI, Material.BLUE_CONCRETE, 17, "&2Uptime",
                 "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(systemInfo.getsT(), LocalDateTime.now()) + " min.",
                 "&7Current time: &a" + LocalDateTime.now().format(TIME_FORMATTER));
     }
