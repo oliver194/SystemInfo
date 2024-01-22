@@ -19,24 +19,24 @@ public class Utils {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
-    /**
-     * This method takes a long value in bytes and formats it to make it human readable
-     *
-     * @param bytes a valid long value which represents bytes
-     * @return depending from the size of the input, returns B, kB, MB, GB, TB, PB, EB.
-     */
     public static String formatData(long bytes) {
-        //https://programming.guide/java/formatting-byte-size-to-human-readable-format.html
-        String s = bytes < 0 ? "-" : "";
-        long b = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
-        return b < 1000L ? bytes + " B"
-                : b < 999_950L ? String.format("%s%.1f kB", s, b / 1e3)
-                : (b /= 1000) < 999_950L ? String.format("%s%.1f MB", s, b / 1e3)
-                : (b /= 1000) < 999_950L ? String.format("%s%.1f GB", s, b / 1e3)
-                : (b /= 1000) < 999_950L ? String.format("%s%.1f TB", s, b / 1e3)
-                : (b /= 1000) < 999_950L ? String.format("%s%.1f PB", s, b / 1e3)
-                : String.format("%s%.1f EB", s, b / 1e6);
+        final String[] units = {"B", "kB", "MB", "GB", "TB", "PB", "EB"};
+
+        if (bytes == Long.MIN_VALUE) {
+            bytes = Long.MAX_VALUE;
+        }
+
+        int unitIndex = 0;
+        double size = Math.abs(bytes);
+
+        while (size >= 1000 && unitIndex < units.length - 1) {
+            size /= 1000;
+            unitIndex++;
+        }
+
+        return String.format("%s%.1f %s", bytes < 0 ? "-" : "", size, units[unitIndex]);
     }
+
 
     /**
      * The amounts of bits in a byte. Used for conversions.
@@ -52,7 +52,7 @@ public class Utils {
         final long bits = Math.abs(BITS_IN_BYTE * bytes);
 
         if (bits / 10E3 <= 99) {
-            return String.format("%.1f KiB", bits /10E2);
+            return String.format("%.1f KiB", bits / 10E2);
         } else if (bits / 10E6 <= 99) {
             return String.format("%.1f MiB", bits / 10E5);
         } else if (bits / 10E9 <= 99) {
@@ -131,11 +131,11 @@ public class Utils {
     private static CommandMap commandMap;
 
     /**
-     * This methods allows to use the CommandMap on different forks
+     * These methods allow to use the CommandMap on different forks
      * This method has been provided by electroniccat , thanks to him!
      *
      * @return the CommandMap
-     * @throws NoSuchFieldException   if field isn't found
+     * @throws NoSuchFieldException if field isn't found
      * @throws IllegalAccessException if access is invalid
      */
     public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {

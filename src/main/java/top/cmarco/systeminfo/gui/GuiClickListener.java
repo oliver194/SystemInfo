@@ -3,6 +3,7 @@ package top.cmarco.systeminfo.gui;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Listener used to prevent players from stealing or adding item into the plugin inventory.
@@ -17,9 +18,11 @@ public final class GuiClickListener implements Listener {
      */
     @EventHandler
     public void clickEvent(InventoryClickEvent inventoryClickEvent) {
-        String invTitle = inventoryClickEvent.getView().getTitle();
-        if (invTitle.equals("SystemInfo")) {
+        final Inventory inventory = inventoryClickEvent.getView().getTopInventory();
+
+        if (inventory.equals(SystemInfoGui.GUI)) {
             inventoryClickEvent.setCancelled(true);
         }
+
     }
 }

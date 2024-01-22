@@ -34,7 +34,7 @@ public final class SystemInfoGui {
     private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(
             Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
 
-    private final static Inventory GUI = Bukkit.createInventory(null, 27, "SystemInfo");
+    public final static Inventory GUI = Bukkit.createInventory(null, 27, "SystemInfo");
 
     /**
      * This method creates the GUI to a Player
