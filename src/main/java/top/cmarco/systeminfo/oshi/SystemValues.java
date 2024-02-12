@@ -1,5 +1,6 @@
 package top.cmarco.systeminfo.oshi;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,7 +48,7 @@ public final class SystemValues {
      * Updates the stored system information by querying various system-related data using the OSHI library.
      */
     public void updateValues() {
-        SystemInfo systemInfo;
+        SystemInfo systemInfo = null;
         try {
             systemInfo = new SystemInfo();
         } catch (Exception e) {

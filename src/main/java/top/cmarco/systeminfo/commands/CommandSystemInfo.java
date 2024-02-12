@@ -86,14 +86,26 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      * @param sender The command sender.
      */
     private static void systemInfo1(CommandSender sender) {
-        sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
-        sender.spigot().sendMessage(Utils.builderHover("&7»» &fSystemInfo Help &7««", "This is the help page."));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/lscpu &aget processor info! &8[&7*&8]", "this returns processor info"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[&7*&8]", "this gets memory usage\nof the entire host"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[&7*&8]", "gets various info from sensors"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[&7*&8]", "prints out a map of disks."));
-        sender.spigot().sendMessage(Utils.builderClick("&7»» Click here for the second page &8[&7*&8]", "/systeminfo 2"));
-        sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
+            player.spigot().sendMessage(Utils.builderHover("&7»» &fSystemInfo Help &7««", "This is the help page."));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/lscpu &aget processor info! &8[&7*&8]", "this returns processor info"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[&7*&8]", "this gets memory usage\nof the entire host"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[&7*&8]", "gets various info from sensors"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[&7*&8]", "prints out a map of disks."));
+            player.spigot().sendMessage(Utils.builderClick("&7»» Click here for the second page &8[&7*&8]", "/systeminfo 2"));
+            player.sendMessage(Utils.color("&7&m&l--------------------------------------"));
+        } else {
+            sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
+            sender.sendMessage(Utils.color("&7»» &fSystemInfo Help &7««"));
+            sender.sendMessage(Utils.color("&f- &7/lscpu &aget processor info! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/vmstat &aget memory info! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/sensors &aget sensors info! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/disks &aget disks info! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&7»» Click here for the second page &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
+        }
     }
 
     /**
@@ -102,15 +114,28 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      * @param sender The command sender.
      */
     private static void systemInfo2(@NotNull CommandSender sender) {
-        sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/htop &aget processes list! &8[&7*&8]", "get a list of processes"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]", "available args = stats, version, gui"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/uptime &aget the machine uptime! &8[&7*&8]", "get the total uptime of the machine"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/devices &aget devices list! &8[&7*&8]", "get every attached device"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/cpuload &aget the CPU load! &8[&7*&8]", "Get CPU current percentage load"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/speedtest &aBenchmark your network! &8[&7*&8]", "Get your download\\upload speeds"));
-        sender.spigot().sendMessage(Utils.builderHover("&f- &7/java &aGet information about Java! &8[&7*&8]", "Show Version, Brand, Args and PID of JVM."));
-        sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/htop &aget processes list! &8[&7*&8]", "get a list of processes"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]", "available args = stats, version, gui"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/uptime &aget the machine uptime! &8[&7*&8]", "get the total uptime of the machine"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/devices &aget devices list! &8[&7*&8]", "get every attached device"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/cpuload &aget the CPU load! &8[&7*&8]", "Get CPU current percentage load"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/speedtest &aBenchmark your network! &8[&7*&8]", "Get your download\\upload speeds"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/java &aGet information about Java! &8[&7*&8]", "Show Version, Brand, Args and PID of JVM."));
+            sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
+        } else {
+            sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
+            sender.sendMessage(Utils.color("&f- &7/htop &aget processes list! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/uptime &aget the machine uptime! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/devices &aget devices list! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/cpuload &aget the CPU load! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/speedtest &aBenchmark your network! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/java &aGet information about Java! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
+        }
     }
 
     /**

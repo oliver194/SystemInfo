@@ -1,7 +1,6 @@
 name: "SystemInfo"
 version: ${project.version}
 main: top.cmarco.systeminfo.plugin.SystemInfo
-api-version: '1.13'
 authors: [CMarco_]
 softdepend: [PlaceholderAPI]
 description: "An amazing plugin to monitor your hardware and server stats"

@@ -1,6 +1,8 @@
 package top.cmarco.systeminfo.commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
@@ -59,14 +61,34 @@ public final class CommandDisks extends SystemInfoCommand {
      * @param sender The command sender.
      */
     private void printDisks(CommandSender sender) {
-        for (HWDiskStore disk : systemInfo.getsV().getDiskStores()) {
-            sender.spigot().sendMessage(Utils.builderHover("&7[" + disk.getName() + " " + disk.getModel(),
-                    "&7Serial: &a" + disk.getSerial()
-                            + "\n&7Disk Read: &a" + Utils.formatData(disk.getReadBytes())
-                            + "\n&7Disk Written: &a" + Utils.formatData(disk.getWriteBytes())));
-            for (HWPartition part : disk.getPartitions()) {
-                sender.spigot().sendMessage(Utils.builderHover("  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()),
-                        "&7Mount Point: &a" + part.getMountPoint() + " &7Uuid: &a" + part.getUuid()));
+
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            for (HWDiskStore disk : systemInfo.getsV().getDiskStores()) {
+                player.spigot().sendMessage(Utils.builderHover("&7[" + disk.getName() + " " + disk.getModel(),
+                        "&7Serial: &a" + disk.getSerial()
+                                + "\n&7Disk Read: &a" + Utils.formatData(disk.getReadBytes())
+                                + "\n&7Disk Written: &a" + Utils.formatData(disk.getWriteBytes())));
+                for (HWPartition part : disk.getPartitions()) {
+                    player.spigot().sendMessage(Utils.builderHover("  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()),
+                            "&7Mount Point: &a" + part.getMountPoint() + " &7Uuid: &a" + part.getUuid()));
+                }
+            }
+        } else {
+            for (HWDiskStore disk : systemInfo.getsV().getDiskStores()) {
+                final String diskStr = "&7[" + disk.getName() + " " + disk.getModel() +
+                        "&7Serial: &a" + disk.getSerial()
+                        + "\n&7Disk Read: &a" + Utils.formatData(disk.getReadBytes())
+                        + "\n&7Disk Written: &a" + Utils.formatData(disk.getWriteBytes());
+
+                sender.sendMessage(Utils.color(diskStr));
+
+                for (HWPartition part : disk.getPartitions()) {
+                    final String diskPart = "  &7|-- &a" + part.getIdentification() + " " + part.getType() + " &7Size: &a" + Utils.formatData(part.getSize()) +
+                    "&7Mount Point: &a" + part.getMountPoint() + " &7Uuid: &a" + part.getUuid();
+
+                    sender.sendMessage(Utils.color(diskStr));
+                }
             }
         }
     }

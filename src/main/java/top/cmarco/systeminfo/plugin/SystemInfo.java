@@ -1,7 +1,5 @@
 package top.cmarco.systeminfo.plugin;
 
-import net.byteflux.libby.BukkitLibraryManager;
-import net.byteflux.libby.Library;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,8 +24,6 @@ public final class SystemInfo extends JavaPlugin {
     private CommandManager cM; // The custom CommandManager for handling plugin commands.
     private SystemInfoPlaceholderExtension pH; // PlaceholderAPI extension for custom placeholders.
     private SystemValues sV; // Manager for system information values.
-    private BukkitLibraryManager blm; // Manager for loading external libraries.
-    private Library lb; // Configuration for an external library.
     private SystemInfoGui sig; // Graphical User Interface for the plugin.
 
     /**
@@ -82,29 +78,11 @@ public final class SystemInfo extends JavaPlugin {
     }
 
     /**
-     * Initializes and loads external libraries using the BukkitLibraryManager.
-     * This method also relocates the library to a custom package to avoid conflicts.
-     */
-    private void loadLibraries() {
-        blm = new BukkitLibraryManager(this);
-        lb = Library.builder()
-                .groupId("com.github.oshi") // Group ID of the library.
-                .artifactId("oshi-core") // Artifact ID of the library.
-                .version("6.4.6") // Version of the library.
-                .id("oshi-core") // Sets an id for the library.
-                .relocate("com.github.oshi", "top.cmarco.systeminfo.libs") // Relocates the library package.
-                .isolatedLoad(true) // Indicates isolated loading.
-                .build();
-        blm.addMavenCentral(); // Adds the Maven Central repository.
-        blm.loadLibrary(lb); // Loads the specified library.
-    }
-
-    /**
      * Called when the plugin is enabled. It initializes various components and registers listeners.
      */
     @Override
     public void onEnable() {
-        loadLibraries();
+       // loadLibraries();
         loadValues();
         loadAPI();
         loadCommands();
@@ -152,22 +130,6 @@ public final class SystemInfo extends JavaPlugin {
     @NotNull
     public SystemValues getsV() {
         return sV;
-    }
-
-    /**
-     * @return Gets the dependency library manager.
-     */
-    @NotNull
-    public BukkitLibraryManager getBlm() {
-        return blm;
-    }
-
-    /**
-     * @return Gets external library config.
-     */
-    @NotNull
-    public Library getLb() {
-        return lb;
     }
 
     /**

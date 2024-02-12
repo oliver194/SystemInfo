@@ -1,5 +1,6 @@
 package top.cmarco.systeminfo.commands;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.plugin.SystemInfo;
@@ -60,11 +61,17 @@ public final class CommandDevices extends SystemInfoCommand {
         sender.sendMessage(Utils.color("&2» &7List:"));
         for (UsbDevice usb : systemInfo.getsV().getUsbDevices()) {
             sender.sendMessage(Utils.color("&7- &a" + usb.getVendor() + " " + usb.getSerialNumber()));
-            sender.spigot().sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
-            if (!usb.getConnectedDevices().isEmpty()) {
-                for (UsbDevice subUsb : usb.getConnectedDevices()) {
-                    sender.sendMessage(Utils.color((" &7|- &a" + subUsb.getVendor() + " " + subUsb.getName())));
-                }
+
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                player.spigot().sendMessage(Utils.builderHover(" &7Serial-ID &8[&a*&8]&r", usb.getSerialNumber()));
+            } else {
+                sender.sendMessage(Utils.color(String.format(" &7Serial-ID &8[&a%s&8]&r", usb.getSerialNumber())));
+            }
+
+            usb.getConnectedDevices();
+            for (final UsbDevice subUsb : usb.getConnectedDevices()) {
+                sender.sendMessage(Utils.color((" &7|- &a" + subUsb.getVendor() + " " + subUsb.getName())));
             }
         }
     }

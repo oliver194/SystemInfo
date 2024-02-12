@@ -41,7 +41,8 @@ public final class CommandSpeedtest extends SystemInfoCommand {
         sender.sendMessage(Utils.color("&2« &7Speedtest &2»"));
         ISpeedTestListener cListener = new CustomSpeedtestListener(sender, speedTestSocket);
         speedTestSocket.addSpeedTestListener(cListener);
-        speedTestSocket.startDownload(String.format("https://ovh.net/files/%dGb.dat", size));
+        // https://proof.ovh.net/files/10Gb.dat
+        speedTestSocket.startDownload(String.format("https://proof.ovh.net/files/%dGb.dat", size));
     }
 
     /**

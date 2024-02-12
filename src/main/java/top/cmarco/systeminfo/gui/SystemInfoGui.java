@@ -1,6 +1,8 @@
 package top.cmarco.systeminfo.gui;
 
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import top.cmarco.systeminfo.plugin.SystemInfo;
@@ -36,6 +38,9 @@ public final class SystemInfoGui {
 
     public final static Inventory GUI = Bukkit.createInventory(null, 27, "SystemInfo");
 
+    private final HashMap<UUID, BukkitTask> tasks = new HashMap<>();
+    private BukkitTask fillTask = null;
+
     /**
      * This method creates the GUI to a Player
      *
@@ -45,14 +50,23 @@ public final class SystemInfoGui {
         this.cleanBackground();
         player.openInventory(GUI);
         this.fillBackground();
-        Bukkit.getScheduler().runTaskTimer(systemInfo, r -> {
+
+
+        final BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(systemInfo, () -> {
             final InventoryView inventoryView = player.getOpenInventory();
             if (inventoryView.getTopInventory().equals(GUI)) {
                 this.updateInventory();
             } else {
-                r.cancel();
+                BukkitTask bt = this.tasks.get(player.getUniqueId());
+                if (bt != null) {
+                    bt.cancel();
+                    this.tasks.remove(player.getUniqueId());
+                }
             }
         }, 2L, 20L);
+
+        this.tasks.put(player.getUniqueId(), bukkitTask);
+
     }
 
     /**
@@ -61,11 +75,14 @@ public final class SystemInfoGui {
      */
     private void fillBackground() {
         final Iterator<Integer> invSlotIterator = SystemInfoGui.backgroundSlots.iterator();
-        Bukkit.getScheduler().runTaskTimer(systemInfo, r -> {
+        this.fillTask = Bukkit.getScheduler().runTaskTimer(systemInfo, () -> {
             if (invSlotIterator.hasNext()) {
-                setCustomItem(SystemInfoGui.GUI, Material.BLACK_STAINED_GLASS_PANE, invSlotIterator.next(), "", "");
+                setCustomItem(SystemInfoGui.GUI, Material.STAINED_GLASS_PANE, invSlotIterator.next(), "", "");
             } else {
-                r.cancel();
+                if (this.fillTask != null) {
+                    this.fillTask.cancel();
+                    this.fillTask = null;
+                }
             }
         }, 1L, 1L);
     }
@@ -109,25 +126,25 @@ public final class SystemInfoGui {
      */
     public void updateInventory() {
         SystemValues values = this.systemInfo.getsV();
-        setCustomItem(GUI, Material.LIME_CONCRETE, 11, "&2Processor",
+        setCustomItem(GUI, Material.GREEN_RECORD, 11, "&2Processor",
                 "&7Vendor: &a" + values.getCpuVendor(),
                 "&7Model: &a" + values.getCpuModel() + " " + values.getCpuModelName(),
                 "&7Clock Speed: &a" + values.getCpuMaxFrequency() + " GHz",
                 "&7Physical Cores: &a" + values.getCpuCores(),
                 "&7Logical Cores: &a" + values.getCpuThreads());
 
-        setCustomItem(GUI, Material.GREEN_CONCRETE, 13, "&2Memory",
+        setCustomItem(GUI, Material.RECORD_4, 13, "&2Memory",
                 "&7Total: &a" + values.getMaxMemory(),
                 "&7Available: &a" + values.getAvailableMemory(),
                 "&7Swap Used: &a" + values.getUsedSwap(),
                 "&7Swap Allocated: &a" + values.getTotalSwap());
 
-        setCustomItem(GUI, Material.LIGHT_BLUE_CONCRETE, 15, "&2Operating system",
+        setCustomItem(GUI, Material.GOLD_RECORD, 15, "&2Operating system",
                 "&7Name: &a" + values.getOSFamily() + " " + values.getOSManufacturer(),
                 "&7Version: &a" + values.getOSVersion(),
                 "&7Active Processes: &a" + values.getRunningProcesses());
 
-        setCustomItem(GUI, Material.BLUE_CONCRETE, 17, "&2Uptime",
+        setCustomItem(GUI, Material.RECORD_9, 17, "&2Uptime",
                 "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(systemInfo.getsT(), LocalDateTime.now()) + " min.",
                 "&7Current time: &a" + LocalDateTime.now().format(TIME_FORMATTER));
     }

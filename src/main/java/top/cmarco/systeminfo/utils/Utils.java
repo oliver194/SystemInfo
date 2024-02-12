@@ -102,7 +102,7 @@ public class Utils {
     public static String countEntitiesInWorlds(World.Environment environment) {
         StringBuilder entitiesInWorlds = new StringBuilder();
         Bukkit.getWorlds().stream().filter(world -> world.getEnvironment() == environment).forEach(world -> entitiesInWorlds.append(world.getEntities().size()).append(" "));
-        if (entitiesInWorlds.isEmpty()) {
+        if (entitiesInWorlds.length() == 0) {
             return Utils.color("&cUnloaded");
         }
         return entitiesInWorlds.toString();
@@ -122,7 +122,7 @@ public class Utils {
         Bukkit.getWorlds().stream()
                 .filter(world -> world.getEnvironment() == environment)
                 .forEach(world -> loadedChunksInWorlds.append(world.getLoadedChunks().length).append(" "));
-        if (loadedChunksInWorlds.isEmpty()) {
+        if (loadedChunksInWorlds.length() == 0) {
             return Utils.color("&cUnloaded");
         }
         return loadedChunksInWorlds.toString();
@@ -132,7 +132,7 @@ public class Utils {
 
     /**
      * These methods allow to use the CommandMap on different forks
-     * This method has been provided by electroniccat , thanks to him!
+     * @author electronicboy , thanks!
      *
      * @return the CommandMap
      * @throws NoSuchFieldException if field isn't found
