@@ -1,7 +1,24 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.gui;
 
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.oshi.SystemValues;
@@ -125,7 +142,7 @@ public final class SystemInfoGui {
      * This method updates the inventory with new items
      */
     public void updateInventory() {
-        SystemValues values = this.systemInfo.getsV();
+        SystemValues values = this.systemInfo.getSystemValues();
         setCustomItem(GUI, Material.GREEN_RECORD, 11, "&2Processor",
                 "&7Vendor: &a" + values.getCpuVendor(),
                 "&7Model: &a" + values.getCpuModel() + " " + values.getCpuModelName(),
@@ -145,7 +162,7 @@ public final class SystemInfoGui {
                 "&7Active Processes: &a" + values.getRunningProcesses());
 
         setCustomItem(GUI, Material.RECORD_9, 17, "&2Uptime",
-                "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(systemInfo.getsT(), LocalDateTime.now()) + " min.",
+                "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(systemInfo.getStartupTime(), LocalDateTime.now()) + " min.",
                 "&7Current time: &a" + LocalDateTime.now().format(TIME_FORMATTER));
     }
 }

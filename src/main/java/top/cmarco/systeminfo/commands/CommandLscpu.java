@@ -1,3 +1,21 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +75,7 @@ public final class CommandLscpu extends SystemInfoCommand {
      * @param sender The command sender.
      */
     private void printLscpu(CommandSender sender) {
-        SystemValues values = systemInfo.getsV();
+        SystemValues values = systemInfo.getSystemValues();
         sender.sendMessage(Utils.color("&2«« &7Cpu info &2»»"));
         sender.sendMessage(Utils.color("&7Operating System: &a" + values.getOSFamily() + " " + values.getOSManufacturer() + " " + values.getOSVersion()));
         sender.sendMessage(Utils.color("&7Cpu Vendor: &a" + values.getCpuVendor()));

@@ -1,3 +1,21 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,9 +57,9 @@ public final class CommandSensors extends SystemInfoCommand {
     public boolean execute(CommandSender sender, String s, String[] args) {
         if (sender.hasPermission("systeminfo.commands.sensors")) {
             if (args.length == 0) {
-                sender.sendMessage(Utils.color("&7Fans RPM: &a" + systemInfo.getsV().getFansRPM()));
-                sender.sendMessage(Utils.color("&7Cpu Voltage: &a" + systemInfo.getsV().getCpuVoltage()));
-                sender.sendMessage(Utils.color("&7Cpu Temperature: " + systemInfo.getsV().getCpuTemperatureStatus()));
+                sender.sendMessage(Utils.color("&7Fans RPM: &a" + systemInfo.getSystemValues().getFansRPM()));
+                sender.sendMessage(Utils.color("&7Cpu Voltage: &a" + systemInfo.getSystemValues().getCpuVoltage()));
+                sender.sendMessage(Utils.color("&7Cpu Temperature: " + systemInfo.getSystemValues().getCpuTemperatureStatus()));
                 return true;
             }
         } else {

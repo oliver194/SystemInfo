@@ -1,3 +1,21 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.commands;
 
 import org.bukkit.entity.Player;
@@ -59,7 +77,7 @@ public final class CommandDevices extends SystemInfoCommand {
     private void printDevices(CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7Attached devices &2«"));
         sender.sendMessage(Utils.color("&2» &7List:"));
-        for (UsbDevice usb : systemInfo.getsV().getUsbDevices()) {
+        for (UsbDevice usb : systemInfo.getSystemValues().getUsbDevices()) {
             sender.sendMessage(Utils.color("&7- &a" + usb.getVendor() + " " + usb.getSerialNumber()));
 
             if (sender instanceof Player) {

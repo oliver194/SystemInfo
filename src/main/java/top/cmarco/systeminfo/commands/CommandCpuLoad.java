@@ -1,3 +1,21 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.commands;
 
 import java.util.Collections;
@@ -66,11 +84,11 @@ public final class CommandCpuLoad extends SystemInfoCommand {
         final BukkitScheduler scheduler = systemInfo.getServer().getScheduler();
 
         scheduler.runTaskAsynchronously(systemInfo, () -> {
-            previousTicks = systemInfo.getsV().getSystemCpuLoadTicks();
-            previousMultiTicks = systemInfo.getsV().getProcessorCpuLoadTicks();
+            previousTicks = systemInfo.getSystemValues().getSystemCpuLoadTicks();
+            previousMultiTicks = systemInfo.getSystemValues().getProcessorCpuLoadTicks();
             Util.sleep(1000);
             scheduler.runTask(systemInfo,
-                    () -> future.complete(systemInfo.getsV().getSystemCpuLoadBetweenTicks(previousTicks) * 100));
+                    () -> future.complete(systemInfo.getSystemValues().getSystemCpuLoadBetweenTicks(previousTicks) * 100));
         });
 
         return future;
@@ -88,7 +106,7 @@ public final class CommandCpuLoad extends SystemInfoCommand {
 
         scheduler.runTaskAsynchronously(systemInfo, () -> {
             StringBuilder cpuLoads = new StringBuilder("&7Load per core:&a");
-            double[] load = systemInfo.getsV().getProcessorCpuLoadBetweenTicks(previousMultiTicks);
+            double[] load = systemInfo.getSystemValues().getProcessorCpuLoadBetweenTicks(previousMultiTicks);
             for (final double average : load) {
                 cpuLoads.append(String.format(" %.1f%%", average * 100));
             }

@@ -1,3 +1,21 @@
+/*
+ *     SystemInfo - The Master of Server Hardware
+ *     Copyright © 2024 CMarco
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.cmarco.systeminfo.commands;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,10 +80,10 @@ public final class CommandHtop extends SystemInfoCommand {
      */
     private void printHtop(CommandSender sender) {
         sender.sendMessage(Utils.color("&2« &7Htop &2»"));
-        sender.sendMessage(Utils.color("&7Processes: &a" + systemInfo.getsV().getRunningProcesses() +
-                " &7Threads: &a" + systemInfo.getsV().getThreadCount()));
+        sender.sendMessage(Utils.color("&7Processes: &a" + systemInfo.getSystemValues().getRunningProcesses() +
+                " &7Threads: &a" + systemInfo.getSystemValues().getThreadCount()));
         sender.sendMessage(Utils.color("&7    PID  %CPU %MEM     VSZ            NAME"));
-        List<OSProcess> processes = systemInfo.getsV().getOSProcesses();
+        List<OSProcess> processes = systemInfo.getSystemValues().getOSProcesses();
         processes.sort((proc1, proc2) -> (int) (getOsProcPercentage(proc2) - getOsProcPercentage(proc1)));
 
         for (int i = 0; i < processes.size() && i < 8; i++) {
@@ -73,7 +91,7 @@ public final class CommandHtop extends SystemInfoCommand {
             sender.sendMessage(Utils.color(String.format(" &8%5d &7%5.1f %s %9s %9s &a%s",
                     osProcess.getProcessID(),
                     100d * (osProcess.getKernelTime() + osProcess.getUserTime()) / osProcess.getUpTime(),
-                    Utils.formatData(100 * osProcess.getResidentSetSize() / systemInfo.getsV().getMaxMemory2()),
+                    Utils.formatData(100 * osProcess.getResidentSetSize() / systemInfo.getSystemValues().getMaxMemory2()),
                     Utils.formatData(osProcess.getVirtualSize()),
                     Utils.formatData(osProcess.getResidentSetSize()),
                     osProcess.getName())));

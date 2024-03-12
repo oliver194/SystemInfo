@@ -6,7 +6,7 @@
 
     <groupId>top.cmarco</groupId>
     <artifactId>SystemInfo</artifactId>
-    <version>1.7.0</version>
+    <version>1.8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SystemInfo</name>
@@ -41,89 +41,32 @@
                         </goals>
                         <configuration>
                             <relocations>
+
+                                <!--
                                 <relocation>
-                                    <pattern>com.github.oshi</pattern>
-                                    <shadedPattern>top.cmarco.libs.com.github.oshi</shadedPattern>
+                                    <pattern>oshi</pattern>
+                                    <shadedPattern>top.cmarco.systeminfo.libs.oshi</shadedPattern>
                                 </relocation>
+                                -->
+
+                                <!--
+                                <relocation>
+                                    <pattern>oshi</pattern>
+                                    <shadedPattern>top.cmarco.systeminfo.libs.oshi</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.sun.jna</pattern>
+                                    <shadedPattern>top.cmarco.systeminfo.libs.com.sun.jna </shadedPattern>
+                                </relocation>
+                                -->
+
+                                <relocation>
+                                    <pattern>fr.bmartel</pattern>
+                                    <shadedPattern>top.cmarco.systeminfo.libs.bmartel</shadedPattern>
+                                </relocation>
+
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.yworks</groupId>
-                        <artifactId>yguard</artifactId>
-                        <version>4.0.0</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <id>obfuscate</id>
-                        <configuration>
-                            <target>
-                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask"
-                                         classpath="${runtime_classpath}"/>
-                                <yguard>
-                                    <inoutpair in="${project.build.directory}/${project.build.finalName}.jar"
-                                               out="${project.build.directory}/${project.build.finalName}.jar"/>
-
-                                    <rename logfile="${project.build.directory}/yguard.log.xml"
-                                            replaceClassNameStrings="true" scramble="true">
-                                        <property name="obfuscation-prefix"
-                                                  value="top.cmarco.systeminfo.plugin"/>
-
-                                        <property name="overload-enabled" value="true"/>
-                                        <property name="naming-scheme" value="small"/>
-                                        <property name="language-conformity" value="legal"/>
-
-                                        <keep>
-                                            <class fields="none" methods="public">
-                                                <patternset>
-                                                    <include name="top.cmarco.systeminfo.plugin.SystemInfo"/>
-                                                </patternset>
-                                            </class>
-
-                                            <class methods="private" classes="private" fields="private">
-                                                <patternset>
-                                                    <include name="com.sun.jna.**"/>
-                                                </patternset>
-                                            </class>
-
-                                            <package>
-                                                <patternset>
-                                                    <include name="com.sun.jna.**"/>
-                                                    <include name="org.**"/>
-                                                    <include name="net.**"/>
-                                                    <include name="net.byteflux.libby.**"/>
-                                                    <include name="top.cmarco.libs.net.byteflux.libby.**"/>
-                                                    <include name="top.cmarco.libs.com.github.oshi.**"/>
-                                                    <include name="com.github.oshi.**"/>
-                                                </patternset>
-                                            </package>
-
-                                        </keep>
-
-
-                                    </rename>
-                                    <externalclasses>
-                                        <!--suppress UnresolvedMavenProperty -->
-                                        <pathelement path="${mvn.classpath}"/>
-                                    </externalclasses>
-                                </yguard>
-                            </target>
                         </configuration>
                     </execution>
                 </executions>
@@ -143,10 +86,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>AlessioDP</id>
-            <url>https://repo.alessiodp.com/releases/</url>
-        </repository>
-        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -157,7 +96,6 @@
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>fr.bmartel</groupId>
             <artifactId>jspeedtest</artifactId>
@@ -168,7 +106,7 @@
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
-            <version>5.8.2</version>
+            <version>6.4.12</version>
             <scope>compile</scope>
         </dependency>
 
@@ -182,7 +120,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.11.5</version>
             <scope>provided</scope>
         </dependency>
 
