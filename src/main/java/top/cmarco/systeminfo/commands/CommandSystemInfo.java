@@ -109,6 +109,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
             sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
             player.spigot().sendMessage(Utils.builderHover("&7»» &fSystemInfo Help &7««", "This is the help page."));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/lscpu &aget processor info! &8[&7*&8]", "this returns processor info"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/gpu &aget gpu info! &8[&7*&8]", "prints all necessary GPU info."));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/vmstat &aget memory info! &8[&7*&8]", "this gets memory usage\nof the entire host"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/sensors &aget sensors info! &8[&7*&8]", "gets various info from sensors"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/disks &aget disks info! &8[&7*&8]", "prints out a map of disks."));
@@ -117,11 +118,11 @@ public final class CommandSystemInfo extends SystemInfoCommand {
         } else {
             sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
             sender.sendMessage(Utils.color("&7»» &fSystemInfo Help &7««"));
-            sender.sendMessage(Utils.color("&f- &7/lscpu &aget processor info! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/vmstat &aget memory info! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/sensors &aget sensors info! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/disks &aget disks info! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&7»» Click here for the second page &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/lscpu &aget processor info!"));
+            sender.sendMessage(Utils.color("&f- &7/gpu &aget gpu info!"));
+            sender.sendMessage(Utils.color("&f- &7/vmstat &aget memory info!"));
+            sender.sendMessage(Utils.color("&f- &7/sensors &aget sensors info!"));
+            sender.sendMessage(Utils.color("&f- &7/disks &aget disks info!"));
             sender.sendMessage(Utils.color("&7&m&l--------------------------------------"));
         }
     }
@@ -136,7 +137,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
             Player player = (Player) sender;
             sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/htop &aget processes list! &8[&7*&8]", "get a list of processes"));
-            player.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]", "available args = stats, version, gui"));
+            player.spigot().sendMessage(Utils.builderHover("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &8[&7*&8]", "available args = stats, version, gui"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/uptime &aget the machine uptime! &8[&7*&8]", "get the total uptime of the machine"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/devices &aget devices list! &8[&7*&8]", "get every attached device"));
             player.spigot().sendMessage(Utils.builderHover("&f- &7/cpuload &aget the CPU load! &8[&7*&8]", "Get CPU current percentage load"));
@@ -145,13 +146,13 @@ public final class CommandSystemInfo extends SystemInfoCommand {
             sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
         } else {
             sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
-            sender.sendMessage(Utils.color("&f- &7/htop &aget processes list! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui] &amain command &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/uptime &aget the machine uptime! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/devices &aget devices list! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/cpuload &aget the CPU load! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/speedtest &aBenchmark your network! &8[&7*&8]"));
-            sender.sendMessage(Utils.color("&f- &7/java &aGet information about Java! &8[&7*&8]"));
+            sender.sendMessage(Utils.color("&f- &7/htop &aget processes list!"));
+            sender.sendMessage(Utils.color("&f- &7/systeminfo [reload&f|&7version&f|&7stats&f|&7gui]"));
+            sender.sendMessage(Utils.color("&f- &7/uptime &aget the machine uptime!"));
+            sender.sendMessage(Utils.color("&f- &7/devices &aget devices list!"));
+            sender.sendMessage(Utils.color("&f- &7/cpuload &aget the CPU load!"));
+            sender.sendMessage(Utils.color("&f- &7/speedtest &aBenchmark your network!"));
+            sender.sendMessage(Utils.color("&f- &7/java &aGet information about Java!"));
             sender.sendMessage(Utils.color("&7&l&m--------------------------------------"));
         }
     }
@@ -171,6 +172,7 @@ public final class CommandSystemInfo extends SystemInfoCommand {
             systemInfo.getLogger().warning("An exception has occurred while calculating the folder size of " + folder.getAbsolutePath());
             systemInfo.getLogger().warning(ioException.getLocalizedMessage());
         }
+
         return -1L;
     }
 
