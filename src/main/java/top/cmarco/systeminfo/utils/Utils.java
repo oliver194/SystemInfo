@@ -48,18 +48,18 @@ public class Utils {
 
     public static Character cachedColor = null;
     public static Character cachedDarkColor = null;
-    public static Map<Character, Character> lightDarkCharacterMap = new HashMap<>();
+    public static final Map<Character, Character> LIGHT_DARK_CHARACTER_MAP = new HashMap<>();
 
 
     static {
-        lightDarkCharacterMap.put('a', '2');
-        lightDarkCharacterMap.put('b', '3');
-        lightDarkCharacterMap.put('c', '4');
-        lightDarkCharacterMap.put('d', '5');
-        lightDarkCharacterMap.put('e', '6');
-        lightDarkCharacterMap.put('f', '7');
-        lightDarkCharacterMap.put('7', '8');
-        lightDarkCharacterMap.put('9', '1');
+        LIGHT_DARK_CHARACTER_MAP.put('a', '2');
+        LIGHT_DARK_CHARACTER_MAP.put('b', '3');
+        LIGHT_DARK_CHARACTER_MAP.put('c', '4');
+        LIGHT_DARK_CHARACTER_MAP.put('d', '5');
+        LIGHT_DARK_CHARACTER_MAP.put('e', '6');
+        LIGHT_DARK_CHARACTER_MAP.put('f', '7');
+        LIGHT_DARK_CHARACTER_MAP.put('7', '8');
+        LIGHT_DARK_CHARACTER_MAP.put('9', '1');
     }
 
     /**
@@ -69,11 +69,11 @@ public class Utils {
      * @return returns the string with colors which can be displayed inside Minecraft chat/console
      */
     public static String color(String input) {
-        if (SystemInfo.INSANCE == null) {
+        if (SystemInfo.INSTANCE == null) {
             return ChatColor.translateAlternateColorCodes('&', input);
         } else {
             if (cachedColor == null) {
-                SystemInfo systemInfo = SystemInfo.INSANCE;
+                SystemInfo systemInfo = SystemInfo.INSTANCE;
                 SystemInfoConfig config = systemInfo.getSystemInfoConfig();
                 String colorName = config.getColorScheme();
                 ChatColor chatColor = null;
@@ -92,7 +92,7 @@ public class Utils {
                 char currentChar = chatColor.getChar();
 
                 cachedColor = currentChar;
-                cachedDarkColor = lightDarkCharacterMap.get(currentChar);
+                cachedDarkColor = LIGHT_DARK_CHARACTER_MAP.get(currentChar);
 
             }
 

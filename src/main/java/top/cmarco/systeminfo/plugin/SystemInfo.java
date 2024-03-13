@@ -18,6 +18,7 @@
 
 package top.cmarco.systeminfo.plugin;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -41,7 +42,7 @@ import java.util.Arrays;
  */
 public final class SystemInfo extends JavaPlugin {
 
-    public static SystemInfo INSANCE = null;
+    public static SystemInfo INSTANCE = null;
     private final LocalDateTime startupTime = LocalDateTime.now(); // Timestamp when the plugin was loaded.
     private final PluginManager pluginManager = Bukkit.getPluginManager(); // The Spigot PluginManager instance.
     private CommandManager commandManager; // The custom CommandManager for handling plugin commands.
@@ -56,7 +57,7 @@ public final class SystemInfo extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        INSANCE = this;
+        INSTANCE = this;
         setupConfig();
         loadDependencies();
         loadValues();
@@ -64,6 +65,12 @@ public final class SystemInfo extends JavaPlugin {
         loadGui();
         loadAPI();
         registerListener();
+        setupConfig();
+        setupMetrics();
+    }
+
+    private void setupMetrics() {
+        Metrics metrics = new Metrics(this, 5610);
     }
 
     private void setupConfig() {

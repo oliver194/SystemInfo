@@ -56,6 +56,11 @@ public final class SystemValues {
     private VirtualMemory virtualMemory;
     private OperatingSystem.OSVersionInfo osVersionInfo;
 
+    private static int CPU_CORES_CACHE = -1; // caching to improve performance.
+    private static int CPU_THREADS_CACHE = -1; // caching to improve performance.
+    private static long CPU_MAX_FREQ = -1L; // caching to improve performance.
+    private static String CPU_STEPPING = null; // caching to improve performance.
+
     /**
      * Updates the stored system information by querying various system-related data using the OSHI library.
      */
@@ -272,7 +277,11 @@ public final class SystemValues {
      */
     @NotNull
     public String getCpuMaxFrequency() {
-        return String.format("%.2f", centralProcessor.getMaxFreq() / 1E9F);
+        if (CPU_MAX_FREQ == -1L) {
+            CPU_MAX_FREQ = centralProcessor.getMaxFreq();
+        }
+
+        return String.format("%.2f", CPU_MAX_FREQ / 1E9);
     }
 
     /**
@@ -280,7 +289,11 @@ public final class SystemValues {
      */
     @NotNull
     public String getCpuStepping() {
-        return processorIdentifier.getStepping();
+        if (CPU_STEPPING == null) {
+            CPU_STEPPING = processorIdentifier.getStepping();
+        }
+
+        return CPU_STEPPING;
     }
 
     /**
@@ -288,7 +301,12 @@ public final class SystemValues {
      */
     @NotNull
     public String getCpuCores() {
-        return String.valueOf(centralProcessor.getPhysicalProcessorCount());
+
+        if (CPU_CORES_CACHE == -1) {
+            CPU_CORES_CACHE = centralProcessor.getPhysicalProcessorCount();
+        }
+
+        return String.valueOf(CPU_CORES_CACHE);
     }
 
     /**
@@ -296,7 +314,12 @@ public final class SystemValues {
      */
     @NotNull
     public String getCpuThreads() {
-        return String.valueOf(centralProcessor.getLogicalProcessorCount());
+
+        if (CPU_THREADS_CACHE == -1) {
+            CPU_THREADS_CACHE = centralProcessor.getLogicalProcessorCount();
+        }
+
+        return String.valueOf(CPU_THREADS_CACHE);
     }
 
     /**

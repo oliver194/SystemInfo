@@ -18,7 +18,9 @@
 
 package top.cmarco.systeminfo.gui;
 
+import com.google.common.collect.ImmutableList;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.oshi.SystemValues;
@@ -47,16 +49,18 @@ public final class SystemInfoGui {
     }
 
     private final SystemInfo systemInfo;
+    private final Map<UUID, BukkitTask> tasks = new HashMap<>();
+
+    /* ---------------------------- */
+    private static final List<Integer> BACKGROUND_SLOTS = ImmutableList.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("d\\M\\u h:m:s a");
+    public static final Inventory GUI = Bukkit.createInventory(null, 9*3, "SystemInfo");
 
-    // Corner slots for a 9x3 inventory.
-    private static final Set<Integer> backgroundSlots = new LinkedHashSet<>(
-            Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 26, 25, 24, 23, 22, 21, 20, 19, 10));
+    /* ---------------------------- */
 
-    public final static Inventory GUI = Bukkit.createInventory(null, 27, "SystemInfo");
-
-    private final HashMap<UUID, BukkitTask> tasks = new HashMap<>();
     private BukkitTask fillTask = null;
+
+    /* ---------------------------- */
 
     /**
      * This method creates the GUI to a Player
@@ -65,25 +69,30 @@ public final class SystemInfoGui {
      */
     public void createGui(@NotNull Player player) {
         this.cleanBackground();
-        player.openInventory(GUI);
         this.fillBackground();
+        player.openInventory(GUI);
 
 
         final BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(systemInfo, () -> {
+
             final InventoryView inventoryView = player.getOpenInventory();
+
             if (inventoryView.getTopInventory().equals(GUI)) {
+
                 this.updateInventory();
+
             } else {
                 BukkitTask bt = this.tasks.get(player.getUniqueId());
+
                 if (bt != null) {
                     bt.cancel();
                     this.tasks.remove(player.getUniqueId());
                 }
+
             }
         }, 2L, 20L);
 
         this.tasks.put(player.getUniqueId(), bukkitTask);
-
     }
 
     /**
@@ -91,21 +100,27 @@ public final class SystemInfoGui {
      * inventory slots, then generating items with material parameter for each slot creating a cool effect
      */
     private void fillBackground() {
-        final Iterator<Integer> invSlotIterator = SystemInfoGui.backgroundSlots.iterator();
+        final Iterator<Integer> invSlotIterator = SystemInfoGui.BACKGROUND_SLOTS.iterator();
+
         this.fillTask = Bukkit.getScheduler().runTaskTimer(systemInfo, () -> {
+
             if (invSlotIterator.hasNext()) {
-                setCustomItem(SystemInfoGui.GUI, Material.STAINED_GLASS_PANE, invSlotIterator.next(), "", "");
+
+                setCustomItem(SystemInfoGui.GUI, Material.STAINED_GLASS_PANE, invSlotIterator.next(), " ", " ");
+
             } else {
+
                 if (this.fillTask != null) {
                     this.fillTask.cancel();
                     this.fillTask = null;
                 }
             }
+
         }, 1L, 1L);
     }
 
     private void cleanBackground() {
-        for (int backgroundSlot : SystemInfoGui.backgroundSlots) {
+        for (int backgroundSlot : SystemInfoGui.BACKGROUND_SLOTS) {
             final int slot = backgroundSlot - 1;
             SystemInfoGui.GUI.setItem(slot, null);
         }
@@ -133,6 +148,7 @@ public final class SystemInfoGui {
                 lore.add(Utils.color(s));
             }
             meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.values());
             item.setItemMeta(meta);
             inv.setItem(invSlot - 1, item);
         }
