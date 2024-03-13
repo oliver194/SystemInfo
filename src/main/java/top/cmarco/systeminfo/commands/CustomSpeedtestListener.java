@@ -23,12 +23,14 @@ import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import top.cmarco.systeminfo.utils.Utils;
 
 /**
  * A custom listener for handling speedtest events.
  */
 public final class CustomSpeedtestListener implements ISpeedTestListener {
+
     private final CommandSender sender;
     private final SpeedTestSocket speedTestSocket;
 
@@ -43,16 +45,42 @@ public final class CustomSpeedtestListener implements ISpeedTestListener {
         sender.sendMessage(Utils.color("&7» &7Result: &a" + Utils.formatData(speedTestReport.getTransferRateOctet().longValue()) + "/s" + " &7or &a" +
                 Utils.formatDataBits(speedTestReport.getTransferRateOctet().longValue()) + "/s"));
         speedTestSocket.removeSpeedTestListener(this);
+        speedTestSocket.shutdownAndWait();
     }
+
+    private float lastPercent = -1f;
 
     @Override
     public void onProgress(float v, SpeedTestReport speedTestReport) {
-        // Not used in this implementation
+        long startTime = speedTestReport.getStartTime();
+        float percent = speedTestReport.getProgressPercent();
+
+        if (Math.floor(percent - lastPercent) < 0.101f) {
+            return;
+        }
+
+        if (!((System.currentTimeMillis() - startTime) % 500 == 0)) {
+            return;
+        }
+
+        StringBuilder barBuilder = new StringBuilder("&7[");
+        for (int i = 0; i < 100; i+=10) {
+            barBuilder.append(i < percent ? "&a|" : "&c|");
+        }
+        barBuilder.append("&7]");
+        sender.sendMessage(Utils.color("&7| &aDownload Progress: &e" + barBuilder + "  " + String.format("%.1f", percent) + "%"));
+
     }
 
     @Override
     public void onError(SpeedTestError speedTestError, String s) {
         sender.sendMessage(Utils.color("&7» &cYour machine network is not configured properly."));
         sender.sendMessage(Utils.color("&7» &cThe plugin was not able to perform a speedtest, contact your host or check your system firewall."));
+        if (sender instanceof Player) {
+            ((Player) sender).spigot().sendMessage(Utils.builderHover("&7» &cError Code: &4&l" + speedTestError.name(), "&cError: " + s));
+        } else {
+            sender.sendMessage(Utils.color("&7» &cError Code: &4&l" + speedTestError.name()));
+        }
+        speedTestSocket.shutdownAndWait();
     }
 }

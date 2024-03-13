@@ -41,7 +41,10 @@ public enum CommandType {
     SYSTEM_INFO("System Info", CommandSystemInfo.class),
     UPTIME("Uptime", CommandUptime.class),
     VMSTAT("VmStat", CommandVmstat.class),
-    JAVA("Java", CommandJava.class);
+    JAVA("Java", CommandJava.class),
+
+    GPU("Gpu", CommandGpu.class)
+    ;
 
     private final String displayName;
     private final Class<? extends SystemInfoCommand> clazz;
