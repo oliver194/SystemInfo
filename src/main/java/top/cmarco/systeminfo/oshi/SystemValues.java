@@ -20,8 +20,10 @@ package top.cmarco.systeminfo.oshi;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.*;
 import top.cmarco.systeminfo.utils.Utils;
@@ -62,69 +64,48 @@ public final class SystemValues {
     private static String CPU_STEPPING = null; // caching to improve performance.
 
     /**
+     * A method to check for {@link SecurityException} and return object from supplier.
+     *
+     * @param sup The typed supplier.
+     * @param error The error to print if SecurityException is thrown.
+     * @return The object provided by the supplier, or null if errors thrown.
+     * @param <T> A generic type for the supplier.
+     */
+    private <T> T checkSecurityExc(@NotNull final Supplier<T> sup, @NotNull final String error) {
+        try {
+            return sup.get();
+        } catch (final SecurityException exception) {
+            logger.warning(error);
+            logger.warning(exception.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    /**
      * Updates the stored system information by querying various system-related data using the OSHI library.
      */
     public void updateValues() {
-        SystemInfo systemInfo = null;
-        try {
-            systemInfo = new SystemInfo();
-        } catch (Exception e) {
-            logger.warning("Could not create System Information instance. Plugin will not work properly!");
-            logger.warning(e.getLocalizedMessage());
+        SystemInfo systemInfo = checkSecurityExc(SystemInfo::new, "Could not create System Information instance. Plugin will not work properly!");
+
+        if (systemInfo == null) {
+            Bukkit.getPluginManager().disablePlugin(top.cmarco.systeminfo.plugin.SystemInfo.INSTANCE);
             return;
         }
 
-        try {
-            operatingSystem = systemInfo.getOperatingSystem();
-        } catch (SecurityException e) {
-            logger.warning("Could not obtain OS info");
-            logger.warning(e.getLocalizedMessage());
-        }
-        try {
-            hardwareAbstractionLayer = systemInfo.getHardware();
-        } catch (SecurityException e) {
-            logger.warning("Could not obtain HAL info");
-            logger.warning(e.getLocalizedMessage());
+        operatingSystem = checkSecurityExc(systemInfo::getOperatingSystem, "Could not obtain OS info");
+        hardwareAbstractionLayer = checkSecurityExc(systemInfo::getHardware, "Could not obtain HAL info");
+
+        if (hardwareAbstractionLayer == null) {
+            logger.warning("The hardware abstraction layer could not be obtained, many features will not work properly!");
+            return;
         }
 
-        if (hardwareAbstractionLayer != null) {
-            try {
-                centralProcessor = hardwareAbstractionLayer.getProcessor();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain CPU info");
-                logger.warning(e.getLocalizedMessage());
-            }
-            try {
-                sensors = hardwareAbstractionLayer.getSensors();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain sensors info");
-                logger.warning(e.getLocalizedMessage());
-            }
-            try {
-                memory = hardwareAbstractionLayer.getMemory();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain memory info");
-                logger.warning(e.getLocalizedMessage());
-            }
-            try {
-                processorIdentifier = centralProcessor.getProcessorIdentifier();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain processor identifier");
-                logger.warning(e.getLocalizedMessage());
-            }
-            try {
-                virtualMemory = memory.getVirtualMemory();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain virtual memory info");
-                logger.warning(e.getLocalizedMessage());
-            }
-            try {
-                osVersionInfo = operatingSystem.getVersionInfo();
-            } catch (SecurityException e) {
-                logger.warning("Could not obtain OS Version info");
-                logger.warning(e.getLocalizedMessage());
-            }
-        }
+        centralProcessor = checkSecurityExc(hardwareAbstractionLayer::getProcessor, "Could not obtain CPU info");
+        sensors = checkSecurityExc(hardwareAbstractionLayer::getSensors, "Could not obtain sensors info");
+        memory = checkSecurityExc(hardwareAbstractionLayer::getMemory, "Could not obtain memory info");
+        processorIdentifier = checkSecurityExc(centralProcessor::getProcessorIdentifier, "Could not obtain processor identifier");
+        virtualMemory = checkSecurityExc(memory::getVirtualMemory, "Could not obtain virtual memory info");
+        osVersionInfo = checkSecurityExc(operatingSystem::getVersionInfo, "Could not obtain OS Version info");
     }
 
     /**
@@ -187,7 +168,7 @@ public final class SystemValues {
      */
     @NotNull
     public String getCpuTemperature() {
-        return sensors.getCpuTemperature() != 0f ? String.format("%.1f",sensors.getCpuTemperature()) + "C°" : "Unavailable";
+        return sensors.getCpuTemperature() != 0f ? String.format("%.1f", sensors.getCpuTemperature()) + "C°" : "Unavailable";
     }
 
     /**
@@ -364,8 +345,9 @@ public final class SystemValues {
 
     /**
      * Get all the GPUs currently available in this machine.
-     * @see <a href=https://en.wikipedia.org/wiki/GPU>Wikipedia GPU</a>
+     *
      * @return A list with all the available GPUs, represented by {@link GraphicsCard}.
+     * @see <a href=https://en.wikipedia.org/wiki/GPU>Wikipedia GPU</a>
      */
     @NotNull
     public List<GraphicsCard> getGPUs() {
