@@ -19,6 +19,7 @@
 package top.cmarco.systeminfo.plugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -26,10 +27,12 @@ import top.cmarco.systeminfo.api.SystemInfoPlaceholderExtension;
 import top.cmarco.systeminfo.commands.register.CommandManager;
 import top.cmarco.systeminfo.gui.GuiClickListener;
 import top.cmarco.systeminfo.gui.SystemInfoGui;
+import top.cmarco.systeminfo.libraries.LibraryManager;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import top.cmarco.systeminfo.utils.Utils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * The main class of the SystemInfo Spigot plugin, responsible for initializing and managing the plugin's features.
@@ -43,6 +46,44 @@ public final class SystemInfo extends JavaPlugin {
     private SystemInfoPlaceholderExtension systemInfoExtension; // PlaceholderAPI extension for custom placeholders.
     private SystemValues systemValues; // Manager for system information values.
     private SystemInfoGui systemInfoGui; // Graphical User Interface for the plugin.
+    private LibraryManager libraryManager; // Download and load dependencies.
+
+    /**
+     * Called when the plugin is enabled. It initializes various components and registers listeners.
+     */
+    @Override
+    public void onEnable() {
+        loadDependencies();
+        loadValues();
+        loadCommands();
+        loadGui();
+        loadAPI();
+        registerListener();
+    }
+
+    /**
+     * Checks if the bukkit version contains OSHI.
+     * @param plugin The Plugin.
+     * @return True if at least Bukkit 1.17.
+     */
+    private static boolean checkVersion(@NotNull Plugin plugin) {
+        final String[] hasVersionOshi = {"1.17", "1.18", "1.19", "1.20", "1.21"};
+        final String currentVer = plugin.getServer().getBukkitVersion();
+        return Arrays.stream(hasVersionOshi).noneMatch(currentVer::contains);
+    }
+
+    /**
+     * Loads the dependencies necessary for this plugin at runtime.
+     * Loads: oshi-core and jspeedtest.
+     */
+    private void loadDependencies() {
+        this.libraryManager = new LibraryManager(this);
+        this.libraryManager.loadSpeedtestLibraries();
+
+        if (checkVersion(this)) {
+            this.libraryManager.loadOshiLibraries();
+        }
+    }
 
     /**
      * Initializes and loads the SystemInfoGui.
@@ -94,18 +135,6 @@ public final class SystemInfo extends JavaPlugin {
      */
     private void registerListener() {
         pluginManager.registerEvents(new GuiClickListener(), this);
-    }
-
-    /**
-     * Called when the plugin is enabled. It initializes various components and registers listeners.
-     */
-    @Override
-    public void onEnable() {
-        loadValues();
-        loadCommands();
-        loadGui();
-        loadAPI();
-        registerListener();
     }
 
     // Getters for class members

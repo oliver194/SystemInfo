@@ -20,7 +20,9 @@ package top.cmarco.systeminfo.commands;
 
 import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
+import fr.bmartel.speedtest.model.SpeedTestMode;
 import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.utils.Utils;
@@ -57,10 +59,14 @@ public final class CommandSpeedtest extends SystemInfoCommand {
      */
     private void performSpeedtest(CommandSender sender, int size) {
         sender.sendMessage(Utils.color("&2« &7Speedtest &2»"));
-        ISpeedTestListener cListener = new CustomSpeedtestListener(sender, speedTestSocket);
-        speedTestSocket.addSpeedTestListener(cListener);
-        // https://proof.ovh.net/files/10Gb.dat
-        speedTestSocket.startDownload(String.format("https://proof.ovh.net/files/%dGb.dat", size));
+
+        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
+
+        speedTestSocket.addSpeedTestListener(new CustomSpeedtestListener(sender, speedTestSocket));
+
+        // Start the download test
+        speedTestSocket.startDownload(String.format("https://testfile.org/file-%dGB", size));
+
     }
 
     /**

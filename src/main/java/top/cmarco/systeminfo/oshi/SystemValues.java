@@ -23,15 +23,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.jetbrains.annotations.NotNull;
+import oshi.hardware.*;
 import top.cmarco.systeminfo.utils.Utils;
 import oshi.SystemInfo;
-import oshi.hardware.CentralProcessor;
-import oshi.hardware.GlobalMemory;
-import oshi.hardware.HardwareAbstractionLayer;
-import oshi.hardware.Sensors;
-import oshi.hardware.VirtualMemory;
-import oshi.hardware.HWDiskStore;
-import oshi.hardware.UsbDevice;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 
@@ -343,6 +337,16 @@ public final class SystemValues {
     @NotNull
     public List<UsbDevice> getUsbDevices() {
         return hardwareAbstractionLayer.getUsbDevices(true);
+    }
+
+    /**
+     * Get all the GPUs currently available in this machine.
+     * @see <a href=https://en.wikipedia.org/wiki/GPU>Wikipedia GPU</a>
+     * @return A list with all the available GPUs, represented by {@link GraphicsCard}.
+     */
+    @NotNull
+    public List<GraphicsCard> getGPUs() {
+        return hardwareAbstractionLayer.getGraphicsCards();
     }
 
     /**
