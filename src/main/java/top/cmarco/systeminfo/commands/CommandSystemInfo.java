@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.enums.Messages;
@@ -195,6 +196,9 @@ public final class CommandSystemInfo extends SystemInfoCommand {
      * @param sender The command sender.
      */
     private void reload(@NotNull CommandSender sender) {
-        sender.sendMessage(Utils.color("&8» &aSuccessfully reloaded system values!"));
+        Utils.cachedColor = null;
+        Utils.cachedDarkColor = null;
+        systemInfo.getSystemInfoConfig().reloadValues();
+        sender.sendMessage(Utils.color("&8» &aSuccessfully reloaded system values and config!"));
     }
 }

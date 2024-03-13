@@ -21,6 +21,8 @@ package top.cmarco.systeminfo.utils;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
@@ -28,6 +30,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.CommandMap;
+import top.cmarco.systeminfo.config.SystemInfoConfig;
+import top.cmarco.systeminfo.plugin.SystemInfo;
 
 public class Utils {
 
@@ -42,6 +46,22 @@ public class Utils {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
+    public static Character cachedColor = null;
+    public static Character cachedDarkColor = null;
+    public static Map<Character, Character> lightDarkCharacterMap = new HashMap<>();
+
+
+    static {
+        lightDarkCharacterMap.put('a', '2');
+        lightDarkCharacterMap.put('b', '3');
+        lightDarkCharacterMap.put('c', '4');
+        lightDarkCharacterMap.put('d', '5');
+        lightDarkCharacterMap.put('e', '6');
+        lightDarkCharacterMap.put('f', '7');
+        lightDarkCharacterMap.put('7', '8');
+        lightDarkCharacterMap.put('9', '1');
+    }
+
     /**
      * This method takes a String as input and replaces & with color codes.
      *
@@ -49,7 +69,38 @@ public class Utils {
      * @return returns the string with colors which can be displayed inside Minecraft chat/console
      */
     public static String color(String input) {
-        return ChatColor.translateAlternateColorCodes('&', input);
+        if (SystemInfo.INSANCE == null) {
+            return ChatColor.translateAlternateColorCodes('&', input);
+        } else {
+            if (cachedColor == null) {
+                SystemInfo systemInfo = SystemInfo.INSANCE;
+                SystemInfoConfig config = systemInfo.getSystemInfoConfig();
+                String colorName = config.getColorScheme();
+                ChatColor chatColor = null;
+
+                for (ChatColor color : ChatColor.values()) {
+                    if (color.name().equalsIgnoreCase(colorName) || color.name().replace("_", " ").equalsIgnoreCase(colorName)) {
+                        chatColor = color;
+                        break;
+                    }
+                }
+
+                if (chatColor == null) {
+                    return "§cFix your config.yml &e`color-scheme` &c!!!";
+                }
+
+                char currentChar = chatColor.getChar();
+
+                cachedColor = currentChar;
+                cachedDarkColor = lightDarkCharacterMap.get(currentChar);
+
+            }
+
+            input = input.replace("&a", String.format("&%c", cachedColor));
+            input = input.replace("&2", String.format("&%c", cachedDarkColor));
+
+            return ChatColor.translateAlternateColorCodes('&', input);
+        }
     }
 
     public static String formatData(long bytes) {

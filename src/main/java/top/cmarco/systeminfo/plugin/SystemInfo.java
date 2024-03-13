@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.api.SystemInfoPlaceholderExtension;
 import top.cmarco.systeminfo.commands.register.CommandManager;
+import top.cmarco.systeminfo.config.SystemInfoConfig;
 import top.cmarco.systeminfo.gui.GuiClickListener;
 import top.cmarco.systeminfo.gui.SystemInfoGui;
 import top.cmarco.systeminfo.libraries.LibraryManager;
@@ -40,6 +41,7 @@ import java.util.Arrays;
  */
 public final class SystemInfo extends JavaPlugin {
 
+    public static SystemInfo INSANCE = null;
     private final LocalDateTime startupTime = LocalDateTime.now(); // Timestamp when the plugin was loaded.
     private final PluginManager pluginManager = Bukkit.getPluginManager(); // The Spigot PluginManager instance.
     private CommandManager commandManager; // The custom CommandManager for handling plugin commands.
@@ -47,18 +49,25 @@ public final class SystemInfo extends JavaPlugin {
     private SystemValues systemValues; // Manager for system information values.
     private SystemInfoGui systemInfoGui; // Graphical User Interface for the plugin.
     private LibraryManager libraryManager; // Download and load dependencies.
+    private SystemInfoConfig systemInfoConfig;
 
     /**
      * Called when the plugin is enabled. It initializes various components and registers listeners.
      */
     @Override
     public void onEnable() {
+        INSANCE = this;
+        setupConfig();
         loadDependencies();
         loadValues();
         loadCommands();
         loadGui();
         loadAPI();
         registerListener();
+    }
+
+    private void setupConfig() {
+        this.systemInfoConfig = new SystemInfoConfig(this);
     }
 
     /**
@@ -185,5 +194,13 @@ public final class SystemInfo extends JavaPlugin {
     @NotNull
     public SystemInfoGui getSystemInfoGui() {
         return systemInfoGui;
+    }
+
+    /**
+     * @return Gets the mail config used by system info.
+     */
+    @NotNull
+    public SystemInfoConfig getSystemInfoConfig() {
+        return systemInfoConfig;
     }
 }
