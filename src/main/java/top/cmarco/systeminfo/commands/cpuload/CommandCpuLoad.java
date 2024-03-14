@@ -16,12 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.cpuload;
 
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.utils.Utils;

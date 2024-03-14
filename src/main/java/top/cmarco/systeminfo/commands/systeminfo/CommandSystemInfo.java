@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.systeminfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.utils.Utils;

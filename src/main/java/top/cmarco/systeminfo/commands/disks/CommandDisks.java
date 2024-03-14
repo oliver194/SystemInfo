@@ -16,13 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.disks;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.HWPartition;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
 import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.utils.Utils;

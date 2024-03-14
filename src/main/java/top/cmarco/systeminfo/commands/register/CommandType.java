@@ -20,6 +20,19 @@ package top.cmarco.systeminfo.commands.register;
 
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.commands.*;
+import top.cmarco.systeminfo.commands.cpuload.CommandCpuLoad;
+import top.cmarco.systeminfo.commands.devices.CommandDevices;
+import top.cmarco.systeminfo.commands.disks.CommandDisks;
+import top.cmarco.systeminfo.commands.gpu.CommandGpu;
+import top.cmarco.systeminfo.commands.htop.CommandHtop;
+import top.cmarco.systeminfo.commands.java.CommandJava;
+import top.cmarco.systeminfo.commands.lscpu.CommandLscpu;
+import top.cmarco.systeminfo.commands.neofetch.CommandNeofetch;
+import top.cmarco.systeminfo.commands.sensors.CommandSensors;
+import top.cmarco.systeminfo.commands.speedtest.CommandSpeedtest;
+import top.cmarco.systeminfo.commands.systeminfo.CommandSystemInfo;
+import top.cmarco.systeminfo.commands.uptime.CommandUptime;
+import top.cmarco.systeminfo.commands.vmstat.CommandVmstat;
 
 /**
  * An enum that represents different types of system information commands in your Spigot plugin.
@@ -42,8 +55,8 @@ public enum CommandType {
     UPTIME("Uptime", CommandUptime.class),
     VMSTAT("VmStat", CommandVmstat.class),
     JAVA("Java", CommandJava.class),
-
-    GPU("Gpu", CommandGpu.class)
+    GPU("Gpu", CommandGpu.class),
+    NEOFETCH("Neofetch", CommandNeofetch.class),
     ;
 
     private final String displayName;

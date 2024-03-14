@@ -16,14 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.speedtest;
 
 import fr.bmartel.speedtest.SpeedTestSocket;
-import fr.bmartel.speedtest.inter.ISpeedTestListener;
-import fr.bmartel.speedtest.model.SpeedTestMode;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.utils.Utils;
 

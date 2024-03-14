@@ -16,30 +16,51 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.neofetch;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
+import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 
 import java.util.Collections;
 
 /**
- * This class represents a Spigot command to perform a CPU benchmark test.
+ * A class that prints a server logo with basic information about hardware.
+ * <br>
+ * Inspired by the Linux neofetch command
+ * <br>
+ * <a href="https://github.com/dylanaraps/neofetch">GitHub - neofetch</a>
  */
-public final class CommandCPUBenchmark extends SystemInfoCommand {
+public final class CommandNeofetch extends SystemInfoCommand {
 
     /**
      * Constructs a new `SystemInfoCommand` with the provided information.
      *
      * @param systemInfo   The `SystemInfo` instance to use for system information.
      */
-    public CommandCPUBenchmark(@NotNull SystemInfo systemInfo) {
-        super(systemInfo, "cpubenchmark", "Benchmark your CPU.", "/<command>", Collections.singletonList("benchmark"));
+    public CommandNeofetch(@NotNull SystemInfo systemInfo) {
+        super(systemInfo, "neofetch", "prints the server logo and general information", "/<command>", Collections.emptyList());
+    }
+
+    private static void printNeofetch(@NotNull CommandSender sender) {
+
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String s, String[] strings) {
+    public boolean execute(CommandSender sender, String s, String[] args) {
+        if (sender.hasPermission("systeminfo.commands.neofetch")) {
+            if (args.length == 0) {
+                printNeofetch(sender);
+                return true;
+            } else {
+                sender.sendMessage(Messages.OUT_OF_ARGS.value(true));
+            }
+        } else {
+            sender.sendMessage(Messages.NO_PERMISSIONS.value(true));
+        }
+
         return false;
     }
 }

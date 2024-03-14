@@ -16,11 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.cmarco.systeminfo.commands;
+package top.cmarco.systeminfo.commands.gpu;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.GraphicsCard;
+import top.cmarco.systeminfo.commands.SystemInfoCommand;
 import top.cmarco.systeminfo.enums.Messages;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import top.cmarco.systeminfo.plugin.SystemInfo;
