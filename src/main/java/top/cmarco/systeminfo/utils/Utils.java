@@ -30,6 +30,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.CommandMap;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import top.cmarco.systeminfo.config.SystemInfoConfig;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 

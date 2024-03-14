@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.map.MinecraftFont;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.*;
 import top.cmarco.systeminfo.utils.Utils;
@@ -65,7 +66,7 @@ public final class SystemValues {
 
     /**
      * A method to check for {@link SecurityException} and return object from supplier.
-     *
+     * {@linkplain MinecraftFont#Font#getChar(char ch)}
      * @param sup The typed supplier.
      * @param error The error to print if SecurityException is thrown.
      * @return The object provided by the supplier, or null if errors thrown.

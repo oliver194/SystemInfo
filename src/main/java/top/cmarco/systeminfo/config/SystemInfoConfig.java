@@ -50,4 +50,12 @@ public final class SystemInfoConfig {
     public String getColorScheme() {
         return configuration.getString("messages.color-scheme");
     }
+
+    /**
+     * Get the notification update frequency for the Speedtest command.
+     * @return The notification update frequency.
+     */
+    public int getSpeedtestUpdateFrequency() {
+        return configuration.getInt("speedtest.update-frequency", 2500);
+    }
 }

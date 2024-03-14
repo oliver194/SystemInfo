@@ -62,11 +62,10 @@ public final class CommandSpeedtest extends SystemInfoCommand {
 
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 
-        speedTestSocket.addSpeedTestListener(new CustomSpeedtestListener(sender, speedTestSocket));
+        speedTestSocket.addSpeedTestListener(new CustomSpeedtestListener(sender, speedTestSocket, systemInfo));
 
         // Start the download test
         speedTestSocket.startDownload(String.format("https://testfile.org/file-%dGB", size));
-
     }
 
     /**

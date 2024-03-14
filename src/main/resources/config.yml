@@ -12,3 +12,8 @@
 messages:
   color-scheme: 'GREEN'   # Please refer to Minecraft color codes
                           # (AQUA, YELLOW, RED, LIGHT_PURPLE, GREEN, . . .)
+
+speedtest:
+  update-frequency: 2500  # This allows you to set up how often you will receive
+                          # a notification during the /speedtest command.
+                          # The value is expressed in MILLISECONDS (s⋅1000)

@@ -24,6 +24,7 @@ import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.utils.Utils;
 
 /**
@@ -33,10 +34,12 @@ public final class CustomSpeedtestListener implements ISpeedTestListener {
 
     private final CommandSender sender;
     private final SpeedTestSocket speedTestSocket;
+    private final SystemInfo plugin;
 
-    CustomSpeedtestListener(CommandSender sender, SpeedTestSocket speedTestSocket) {
+    CustomSpeedtestListener(CommandSender sender, SpeedTestSocket speedTestSocket, SystemInfo plugin) {
         this.sender = sender;
         this.speedTestSocket = speedTestSocket;
+        this.plugin = plugin;
     }
 
     @Override
@@ -59,7 +62,7 @@ public final class CustomSpeedtestListener implements ISpeedTestListener {
             return;
         }
 
-        if (!((System.currentTimeMillis() - startTime) % 500 == 0)) {
+        if (!((System.currentTimeMillis() - startTime) % plugin.getSystemInfoConfig().getSpeedtestUpdateFrequency() == 0)) {
             return;
         }
 
