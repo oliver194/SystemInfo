@@ -84,6 +84,8 @@ public final class CommandNeofetch extends SystemInfoCommand {
             serverLogo = ServerLogo.PURPUR;
         } else if (version.contains("pufferfish")) {
             serverLogo = ServerLogo.PUFFERFISH;
+        } else if (version.contains("arclight")) {
+            serverLogo = ServerLogo.ARCLIGHT;
         }
 
         String[] logoLines = serverLogo.getLogoLines();
