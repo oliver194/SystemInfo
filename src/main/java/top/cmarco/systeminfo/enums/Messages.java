@@ -27,7 +27,8 @@ import top.cmarco.systeminfo.utils.Utils;
 public enum Messages {
     INVALID_ARGS("&4» &cInvalid arguments."),
     OUT_OF_ARGS("&4» &cArguments number is incorrect."),
-    NO_PERMISSIONS("&4» &cInsufficient permissions.");
+    NO_PERMISSIONS("&4» &cInsufficient permissions."),
+    CONSOLE_ONLY("&4» &cConsole Only Command!");
 
     private final String s;
 

@@ -27,6 +27,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.map.MinecraftFont;
 import org.jetbrains.annotations.NotNull;
 import oshi.hardware.*;
+import oshi.software.os.linux.LinuxOperatingSystem;
+import oshi.software.os.unix.freebsd.FreeBsdOperatingSystem;
+import oshi.software.os.windows.WindowsOperatingSystem;
 import top.cmarco.systeminfo.utils.Utils;
 import oshi.SystemInfo;
 import oshi.software.os.OSProcess;
@@ -195,6 +198,15 @@ public final class SystemValues {
     }
 
     /**
+     * Get the kernel version of this operating system.
+     * @return The kernel version.
+     */
+    @NotNull
+    public String getKernelVersion() {
+        return operatingSystem.getVersionInfo().getBuildNumber();
+    }
+
+    /**
      * @return Returns fans speed in RPM separated by a blank space.
      */
     @NotNull
@@ -353,6 +365,15 @@ public final class SystemValues {
     @NotNull
     public List<GraphicsCard> getGPUs() {
         return hardwareAbstractionLayer.getGraphicsCards();
+    }
+
+    /**
+     * Gets the main GPU used by this system.
+     * @return The system main GPU.
+     */
+    @NotNull
+    public GraphicsCard getMainGPU() {
+        return hardwareAbstractionLayer.getGraphicsCards().get(0x00);
     }
 
     /**
