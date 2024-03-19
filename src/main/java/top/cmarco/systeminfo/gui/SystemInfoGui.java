@@ -25,6 +25,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import top.cmarco.systeminfo.plugin.SystemInfo;
+import top.cmarco.systeminfo.protocol.BukkitNetworkingManager;
+import top.cmarco.systeminfo.protocol.NetworkStatsData;
 import top.cmarco.systeminfo.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -166,19 +168,57 @@ public final class SystemInfoGui {
                 "&7Physical Cores: &a" + values.getCpuCores(),
                 "&7Logical Cores: &a" + values.getCpuThreads());
 
+        setCustomItem(GUI, Material.RECORD_10, 12, "&2CPU Load",
+                "&7Global Load: &a" + String.format("%.2f", values.getLastCpuLoad()) + "%");
+
         setCustomItem(GUI, Material.RECORD_4, 13, "&2Memory",
                 "&7Total: &a" + values.getMaxMemory(),
                 "&7Available: &a" + values.getAvailableMemory(),
                 "&7Swap Used: &a" + values.getUsedSwap(),
                 "&7Swap Allocated: &a" + values.getTotalSwap());
 
+        setCustomItem(GUI, Material.RECORD_6, 14, "&2GPU",
+                "&7GPU Model: &a" + values.getMainGPU().getName(),
+                "&7GPU Vendor: &a" + values.getMainGPU().getVendor(),
+                "&7GPU VRAM: &a" + Utils.formatData(values.getMainGPU().getVRam()));
+
         setCustomItem(GUI, Material.GOLD_RECORD, 15, "&2Operating system",
                 "&7Name: &a" + values.getOSFamily() + " " + values.getOSManufacturer(),
                 "&7Version: &a" + values.getOSVersion(),
                 "&7Active Processes: &a" + values.getRunningProcesses());
 
+        BukkitNetworkingManager networkingManager = systemInfo.getNetworkingManager();
+
+        if (networkingManager != null) {
+
+            final NetworkStatsData networkStatsData = networkingManager.getNetworkStats();
+
+            setCustomItem(GUI, Material.RECORD_3, 16, "&2Networking",
+                    "&7Name: &a" + values.getNetworkInterfaceName(),
+                    "&7Packets OUT_Flux: &a" + networkingManager.getLastSentPackets() + "/s",
+                    "&7Packets IN_Flux: &a" + networkingManager.getLastReceivedPackets() + "/s",
+                    "&7Packets OUT_Total: &a" + networkingManager.getTotalSentPackets(),
+                    "&7Packets IN_Total: &a" + networkingManager.getTotalReceivedPackets(),
+                    "&7MC Data Sent: &a" + Utils.formatData(networkingManager.getTotalSentBytes()),
+                    "&7Data Received: &a" + Utils.formatData(networkingManager.getTotalReceivedBytes()),
+                    "&7Packet Speed OUT: &a" + Utils.formatData(networkingManager.getLastSentBytes()) + "/s",
+                    "&7Packet Speed IN: &a" + Utils.formatData(networkingManager.getLastReceivedBytes()) + "/s"
+            );
+
+        } else {
+
+            setCustomItem(GUI, Material.RECORD_3, 16, "&cNetworking",
+                    "&c! Missing ProtocolLib !",
+                    "&7In order to use this networking feature",
+                    "&7you are required to install the correct",
+                    "&7version of ProtocolLib in your server.");
+
+        }
+
         setCustomItem(GUI, Material.RECORD_9, 17, "&2Uptime",
                 "&7Jvm uptime: &a" + ChronoUnit.MINUTES.between(systemInfo.getStartupTime(), LocalDateTime.now()) + " min.",
                 "&7Current time: &a" + LocalDateTime.now().format(TIME_FORMATTER));
+
+
     }
 }

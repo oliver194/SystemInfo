@@ -88,8 +88,7 @@ public final class CommandCpuLoad extends SystemInfoCommand {
             previousTicks = systemInfo.getSystemValues().getSystemCpuLoadTicks();
             previousMultiTicks = systemInfo.getSystemValues().getProcessorCpuLoadTicks();
             Util.sleep(1000);
-            scheduler.runTask(systemInfo,
-                    () -> future.complete(systemInfo.getSystemValues().getSystemCpuLoadBetweenTicks(previousTicks) * 100));
+            scheduler.runTask(systemInfo, () -> future.complete(systemInfo.getSystemValues().getSystemCpuLoadBetweenTicks(previousTicks) * 100));
         });
 
         return future;
@@ -124,9 +123,10 @@ public final class CommandCpuLoad extends SystemInfoCommand {
      */
     private void printCpuLoad(@NotNull CommandSender sender) {
         sender.sendMessage(Utils.color("&2» &7System load: &2«"));
-        getCpuLoad().thenAccept(d -> {
-            sender.sendMessage(Utils.color(String.format("&7Cpu load: &a%.2f%%", d)));
-            getAverageLoads().thenAccept(str -> sender.sendMessage(Utils.color(str)));
+
+        getCpuLoad().thenAcceptBothAsync(getAverageLoads(), (cpuload, loads) -> {
+            sender.sendMessage(Utils.color(String.format("&7Cpu load: &a%.2f%%", cpuload)));
+            sender.sendMessage(Utils.color(loads));
         });
     }
 }

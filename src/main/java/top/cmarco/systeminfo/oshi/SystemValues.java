@@ -18,22 +18,20 @@
 
 package top.cmarco.systeminfo.oshi;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.map.MinecraftFont;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import oshi.hardware.*;
-import oshi.software.os.linux.LinuxOperatingSystem;
-import oshi.software.os.unix.freebsd.FreeBsdOperatingSystem;
-import oshi.software.os.windows.WindowsOperatingSystem;
-import top.cmarco.systeminfo.utils.Utils;
-import oshi.SystemInfo;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
+import top.cmarco.systeminfo.plugin.SystemInfo;
+import top.cmarco.systeminfo.utils.Utils;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 /**
  * The `SystemValues` class is responsible for retrieving and storing various system-related information using the OSHI library.
@@ -61,6 +59,9 @@ public final class SystemValues {
     private CentralProcessor.ProcessorIdentifier processorIdentifier;
     private VirtualMemory virtualMemory;
     private OperatingSystem.OSVersionInfo osVersionInfo;
+    private NetworkIF serverNetworkInterface;
+    private double lastCpuLoad = -1.00d;
+    private long[] previousTicks;
 
     private static int CPU_CORES_CACHE = -1; // caching to improve performance.
     private static int CPU_THREADS_CACHE = -1; // caching to improve performance.
@@ -70,10 +71,11 @@ public final class SystemValues {
     /**
      * A method to check for {@link SecurityException} and return object from supplier.
      * {@linkplain MinecraftFont#Font#getChar(char ch)}
-     * @param sup The typed supplier.
+     *
+     * @param sup   The typed supplier.
      * @param error The error to print if SecurityException is thrown.
+     * @param <T>   A generic type for the supplier.
      * @return The object provided by the supplier, or null if errors thrown.
-     * @param <T> A generic type for the supplier.
      */
     private <T> T checkSecurityExc(@NotNull final Supplier<T> sup, @NotNull final String error) {
         try {
@@ -89,7 +91,7 @@ public final class SystemValues {
      * Updates the stored system information by querying various system-related data using the OSHI library.
      */
     public void updateValues() {
-        SystemInfo systemInfo = checkSecurityExc(SystemInfo::new, "Could not create System Information instance. Plugin will not work properly!");
+        oshi.SystemInfo systemInfo = checkSecurityExc(oshi.SystemInfo::new, "Could not create System Information instance. Plugin will not work properly!");
 
         if (systemInfo == null) {
             Bukkit.getPluginManager().disablePlugin(top.cmarco.systeminfo.plugin.SystemInfo.INSTANCE);
@@ -110,6 +112,15 @@ public final class SystemValues {
         processorIdentifier = checkSecurityExc(centralProcessor::getProcessorIdentifier, "Could not obtain processor identifier");
         virtualMemory = checkSecurityExc(memory::getVirtualMemory, "Could not obtain virtual memory info");
         osVersionInfo = checkSecurityExc(operatingSystem::getVersionInfo, "Could not obtain OS Version info");
+
+        List<NetworkIF> loadedNetworkIFs = checkSecurityExc(hardwareAbstractionLayer::getNetworkIFs, "Could not obtain network interfaces.");
+
+        if (loadedNetworkIFs == null) {
+            return;
+        }
+
+        Optional<NetworkIF> firstInterfaceOptional = loadedNetworkIFs.stream().findFirst();
+        serverNetworkInterface = firstInterfaceOptional.orElseThrow(RuntimeException::new);
     }
 
     /**
@@ -199,6 +210,7 @@ public final class SystemValues {
 
     /**
      * Get the kernel version of this operating system.
+     *
      * @return The kernel version.
      */
     @NotNull
@@ -340,6 +352,7 @@ public final class SystemValues {
 
     /**
      * @return get an array of HWDiskStore which represents a NVM
+     *
      * @see <a href=https://en.wikipedia.org/wiki/Non-volatile_memory>"Wikipedia Non-volatile memory</a>
      */
     @NotNull
@@ -360,6 +373,7 @@ public final class SystemValues {
      * Get all the GPUs currently available in this machine.
      *
      * @return A list with all the available GPUs, represented by {@link GraphicsCard}.
+     *
      * @see <a href=https://en.wikipedia.org/wiki/GPU>Wikipedia GPU</a>
      */
     @NotNull
@@ -369,6 +383,7 @@ public final class SystemValues {
 
     /**
      * Gets the main GPU used by this system.
+     *
      * @return The system main GPU.
      */
     @NotNull
@@ -404,5 +419,95 @@ public final class SystemValues {
      */
     public double[] getProcessorCpuLoadBetweenTicks(long[][] oldTicks) {
         return centralProcessor.getProcessorCpuLoadBetweenTicks(oldTicks);
+    }
+
+    /**
+     * Set the last CPU load.
+     *
+     * @param lastCpuLoad The CPU Load.
+     */
+    public void setLastCpuLoad(@Range(from = 0, to = Integer.MAX_VALUE) final double lastCpuLoad) {
+        this.lastCpuLoad = lastCpuLoad;
+    }
+
+    /**
+     * Get the most recent CPU load.
+     *
+     * @return The CPU load.
+     */
+    public double getLastCpuLoad() {
+        return lastCpuLoad;
+    }
+
+    /**
+     * Start a task that automatically updates the global CPU load.
+     */
+    public void startUpdateCpuLoadTask() {
+        if (top.cmarco.systeminfo.plugin.SystemInfo.INSTANCE == null) {
+            return;
+        }
+
+        SystemInfo.INSTANCE.getServer().getScheduler()
+                .runTaskTimerAsynchronously(SystemInfo.INSTANCE, () -> {
+                    if (previousTicks != null) {
+                        lastCpuLoad = SystemInfo.INSTANCE.getSystemValues().getSystemCpuLoadBetweenTicks(previousTicks) * 100;
+                    }
+                    previousTicks = SystemInfo.INSTANCE.getSystemValues().getSystemCpuLoadTicks();
+                }, 20L, 20L);
+    }
+
+    /**
+     * Get the Network Interface bound to the TCP port used by the CraftBukkit server.
+     *
+     * @return The Network Interface
+     */
+    @NotNull
+    public NetworkIF getServerConnection() {
+        return serverNetworkInterface;
+    }
+
+    /**
+     * Get the received queue for the minecraft server.
+     *
+     * @return The receive queue.
+     */
+    public long getBytesRecv() {
+        return serverNetworkInterface.getBytesRecv();
+    }
+
+    /**
+     * Get the transmit queue for the minecraft server.
+     *
+     * @return The transmit queue.
+     */
+    public long getBytesSent() {
+        return serverNetworkInterface.getBytesSent();
+    }
+
+    /**
+     * Get the current speed of this network interface.
+     *
+     * @return The speed.
+     */
+    public long getSpeed() {
+        return serverNetworkInterface.getSpeed();
+    }
+
+    /**
+     * Get the IPv4 address of the current network interface.
+     *
+     * @return Get the address.
+     */
+    public String getIPv4Address() {
+        return String.join(".", serverNetworkInterface.getIPv4addr());
+    }
+
+    /**
+     * Get the name of the network interface.
+     *
+     * @return The name of the network interface.
+     */
+    public String getNetworkInterfaceName() {
+        return serverNetworkInterface.getName();
     }
 }

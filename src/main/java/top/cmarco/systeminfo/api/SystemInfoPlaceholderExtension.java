@@ -110,6 +110,8 @@ public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
                 return values.getCpuMaxFrequency();
             case "cpu-temperature":
                 return values.getCpuTemperature();
+            case "cpu-load":
+                return String.format("%.2f",values.getLastCpuLoad()) + "%";
             case "swap-max":
                 return values.getTotalSwap();
             case "swap-used":

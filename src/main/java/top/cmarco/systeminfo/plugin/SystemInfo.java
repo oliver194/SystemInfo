@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import top.cmarco.systeminfo.api.SystemInfoPlaceholderExtension;
 import top.cmarco.systeminfo.commands.register.CommandManager;
 import top.cmarco.systeminfo.config.SystemInfoConfig;
@@ -31,6 +32,7 @@ import top.cmarco.systeminfo.gui.GuiClickListener;
 import top.cmarco.systeminfo.gui.SystemInfoGui;
 import top.cmarco.systeminfo.libraries.LibraryManager;
 import top.cmarco.systeminfo.oshi.SystemValues;
+import top.cmarco.systeminfo.protocol.BukkitNetworkingManager;
 import top.cmarco.systeminfo.utils.Utils;
 
 import java.time.LocalDateTime;
@@ -50,7 +52,8 @@ public final class SystemInfo extends JavaPlugin {
     private SystemValues systemValues; // Manager for system information values.
     private SystemInfoGui systemInfoGui; // Graphical User Interface for the plugin.
     private LibraryManager libraryManager; // Download and load dependencies.
-    private SystemInfoConfig systemInfoConfig;
+    private SystemInfoConfig systemInfoConfig; // YAML configuration manager.
+    private BukkitNetworkingManager networkingManager;
 
     /**
      * Called when the plugin is enabled. It initializes various components and registers listeners.
@@ -60,6 +63,7 @@ public final class SystemInfo extends JavaPlugin {
         INSTANCE = this;
         setupConfig();
         loadDependencies();
+        setupProtocolLib();
         loadValues();
         loadCommands();
         loadGui();
@@ -67,6 +71,23 @@ public final class SystemInfo extends JavaPlugin {
         registerListener();
         setupConfig();
         setupMetrics();
+    }
+
+    /**
+     * Set up behaviour when ProtocolLib is present.
+     * The method will do nothing is the soft-dependency is absent.
+     */
+    private void setupProtocolLib() {
+        final boolean hasProtocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib") != null;
+
+        if (!hasProtocolLib) {
+            getLogger().warning("Did not found [ProtocolLib] will not enable networking managing features.");
+            getLogger().info("Please, install the necessary version of ProtocolLib to enable more features!");
+            return;
+        }
+
+        this.networkingManager = new BukkitNetworkingManager(this);
+        this.networkingManager.loadPacketListeners();
     }
 
     private void setupMetrics() {
@@ -114,6 +135,7 @@ public final class SystemInfo extends JavaPlugin {
     private void loadValues() {
         systemValues = new SystemValues(getLogger());
         systemValues.updateValues();
+        systemValues.startUpdateCpuLoadTask();
     }
 
     /**
@@ -209,5 +231,16 @@ public final class SystemInfo extends JavaPlugin {
     @NotNull
     public SystemInfoConfig getSystemInfoConfig() {
         return systemInfoConfig;
+    }
+
+    /**
+     * Get the Bukkit server networking manager class of this plugin.
+     * Can be null when ProtocolLib dependency is missing.
+     *
+     * @return The Bukkit networking manager.
+     */
+    @Nullable
+    public BukkitNetworkingManager getNetworkingManager() {
+        return networkingManager;
     }
 }
