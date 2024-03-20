@@ -195,14 +195,14 @@ public final class SystemInfoGui {
 
             setCustomItem(GUI, Material.RECORD_3, 16, "&2Networking",
                     "&7Name: &a" + values.getNetworkInterfaceName(),
-                    "&7Packets OUT_Flux: &a" + networkingManager.getLastSentPackets() + "/s",
-                    "&7Packets IN_Flux: &a" + networkingManager.getLastReceivedPackets() + "/s",
-                    "&7Packets OUT_Total: &a" + networkingManager.getTotalSentPackets(),
-                    "&7Packets IN_Total: &a" + networkingManager.getTotalReceivedPackets(),
-                    "&7MC Data Sent: &a" + Utils.formatData(networkingManager.getTotalSentBytes()),
-                    "&7Data Received: &a" + Utils.formatData(networkingManager.getTotalReceivedBytes()),
-                    "&7Packet Speed OUT: &a" + Utils.formatData(networkingManager.getLastSentBytes()) + "/s",
-                    "&7Packet Speed IN: &a" + Utils.formatData(networkingManager.getLastReceivedBytes()) + "/s"
+                    "&7Packets Out: &a" + networkStatsData.getLastSentPackets() + "/s",
+                    "&7Packets In: &a" + networkStatsData.getLastReceivedPackets() + "/s",
+                    "&7Packets Out Total: &a" + networkStatsData.getTotalSentPackets(),
+                    "&7Packets In Total: &a" + networkStatsData.getTotalReceivedPackets(),
+                    "&7Data Out Total: &a" + Utils.formatData(networkStatsData.getTotalSentBytes()),
+                    "&7Data In Total: &a" + Utils.formatData(networkStatsData.getTotalReceivedBytes()),
+                    "&7Data Out: &a" + Utils.formatData(networkStatsData.getLastSentBytes()) + "/s",
+                    "&7Data In: &a" + Utils.formatData(networkStatsData.getLastReceivedBytes()) + "/s"
             );
 
         } else {

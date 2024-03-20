@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import top.cmarco.systeminfo.plugin.SystemInfo;
 import top.cmarco.systeminfo.oshi.SystemValues;
 import org.bukkit.OfflinePlayer;
+import top.cmarco.systeminfo.protocol.BukkitNetworkingManager;
+import top.cmarco.systeminfo.utils.Utils;
 
 /**
  * The `SystemInfoPlaceholderExtension` class is an extension for PlaceholderAPI that provides placeholders
@@ -102,8 +104,27 @@ public final class SystemInfoPlaceholderExtension extends PlaceholderExpansion {
      */
     @Override
     public String onRequest(@NotNull final OfflinePlayer p, @NotNull final String params) {
-        SystemValues values = systemInfo.getSystemValues();
+        final SystemValues values = systemInfo.getSystemValues();
+        final BukkitNetworkingManager networkingManager = systemInfo.getNetworkingManager();
+        final boolean networkingEnabled = networkingManager != null;
+
         switch (params) {
+            case "packet_count_sent_total":
+                return networkingEnabled ? Long.toString(networkingManager.getTotalSentPackets()) : "Unavailable";
+            case "packet_count_recv_total":
+                return networkingEnabled ? Long.toString(networkingManager.getTotalReceivedPackets()) : "Unavailable";
+            case "packet_data_sent_total":
+                return networkingEnabled ? Utils.formatData(networkingManager.getTotalSentBytes()) : "Unavailable";
+            case "packet_data_recv_total":
+                return networkingEnabled ? Utils.formatData(networkingManager.getTotalReceivedBytes()) : "Unavailable";
+            case "packet_count_sent_now":
+                return networkingEnabled ? Long.toString(networkingManager.getLastSentPackets()) + "/s" : "Unavailable";
+            case "packet_count_recv_now":
+                return networkingEnabled ? Long.toString(networkingManager.getLastReceivedPackets()) + "/s" : "Unavailable";
+            case "packet_data_sent_now":
+                return networkingEnabled ? Utils.formatData(networkingManager.getLastSentBytes()) + "/s" : "Unavailable";
+            case "packet_data_recv_now":
+                return networkingEnabled ? Utils.formatData(networkingManager.getLastReceivedBytes()) + "/s" : "Unavailable";
             case "cpu-model":
                 return String.format("%s %s", values.getCpuModel(), values.getCpuModelName());
             case "cpu-frequency":
